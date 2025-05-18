@@ -1,4 +1,4 @@
-package manfrinmarco.observer;
+package manfrinmarco.events;
 
 public class GameEvent {
     

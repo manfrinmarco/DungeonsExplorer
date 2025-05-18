@@ -1,5 +1,5 @@
 package manfrinmarco.core;
 
-public class CommanfProcessor {
+public class GameStateMemento {
     
 }

@@ -1,4 +1,4 @@
-package manfrinmarco.factory;
+package manfrinmarco.map;
 
 public class RoomFactory {
     

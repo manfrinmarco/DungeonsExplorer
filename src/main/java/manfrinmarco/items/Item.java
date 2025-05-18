@@ -1,4 +1,4 @@
-package manfrinmarco.model;
+package manfrinmarco.items;
 
 public class Item {
     

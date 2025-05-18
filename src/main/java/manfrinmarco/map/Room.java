@@ -14,6 +14,8 @@ public class Room {
     protected Map<Direction, Room> exits = new EnumMap<>(Direction.class);
     protected Enemy enemy;
     protected List<Item> items = new ArrayList<>();
+    protected boolean locked = false;
+    protected Item keyRequired;
 
     public Room(String name, String description) {
         this.name = name;
@@ -54,5 +56,22 @@ public class Room {
 
     public List<Item> getItems() {
         return items;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked, Item keyRequired) {
+        this.locked = locked;
+        this.keyRequired = keyRequired;
+    }
+
+    public boolean unlock(Item key) {
+        if (locked && keyRequired != null && key.getName().equalsIgnoreCase(keyRequired.getName())) {
+            locked = false;
+            return true;
+        }
+        return false;
     }
 }

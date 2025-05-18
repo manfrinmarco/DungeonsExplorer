@@ -132,16 +132,32 @@ public class CommandProcessor extends AbstractCommandProcessor {
     private void useItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
         for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
+            if (item.getName().equalsIgnoreCase(itemName.trim())) {
                 if (item.getType() == ItemType.POTION) {
                     context.getPlayer().heal(20);
                     System.out.println("Hai usato " + item.getName() + " e recuperato 20 HP.");
                     inventory.removeItem(item);
                     return;
                 }
+                if (item.getType() == ItemType.KEY) {
+                    Room room = context.getCurrentRoom();
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = room.getExit(dir);
+                        if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
+                            System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
+                            inventory.removeItem(item);
+                            return;
+                        }
+                    }
+                    System.out.println("Nessuna porta è stata sbloccata.");
+                    return;
+                }
+                System.out.println("Hai usato " + item.getName() + ".");
+                inventory.removeItem(item);
+                return;
             }
         }
-        System.out.println("Oggetto non trovato o non utilizzabile.");
+        System.out.println("Oggetto non trovato.");
     }
 
     private void equipItem(String itemName) {

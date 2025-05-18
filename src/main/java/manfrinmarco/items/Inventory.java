@@ -15,6 +15,7 @@ public class Inventory implements Iterable<Item> {
         items.remove(item);
     }
 
+    @Override
     public Iterator<Item> iterator() {
         return items.iterator();
     }

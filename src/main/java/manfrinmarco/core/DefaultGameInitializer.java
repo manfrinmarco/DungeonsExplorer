@@ -6,30 +6,31 @@ import manfrinmarco.entities.Player;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemBuilder;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
+import manfrinmarco.map.RoomFactory;
 
 public class DefaultGameInitializer {
     public static void initialize(GameContext context) {
         Player player = new Player("Eroe", 100);
         Inventory inventory = new Inventory();
-        inventory.addItem(new Item("Pozione", ItemType.POTION));
+
+        Item pozione = new ItemBuilder().setName("Pozione")
+                                        .setType(ItemType.POTION)
+                                        .setPower(0)
+                                        .build();
+        inventory.addItem(pozione);
         player.setInventory(inventory);
         context.setPlayer(player);
 
         // Dungeon composto (CompositeRoom)
-        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
-        Room entrata = new Room("Entrata", "L'ingresso del castello.");
-        Room sala = new Room("Sala del Trono", "La grande sala del trono.");
-        Room armeria = new Room("Armeria Oscura", "Contiene armi abbandonate.");
-        Room cripta = new Room("Cripta", "Una cripta buia e fredda.");
-
-        castello.addRoom(entrata);
-        castello.addRoom(sala);
-        castello.addRoom(armeria);
-        castello.addRoom(cripta);
+        Room entrata = RoomFactory.createRoom("corridoio");
+        Room sala = RoomFactory.createRoom("corridoio");
+        Room armeria = RoomFactory.createRoom("armeria");
+        Room cripta = RoomFactory.createRoom("cripta");
 
         entrata.setExit(Direction.NORTH, sala);
         sala.setExit(Direction.SOUTH, entrata);
@@ -38,10 +39,17 @@ public class DefaultGameInitializer {
         sala.setExit(Direction.WEST, cripta);
         cripta.setExit(Direction.EAST, sala);
 
+        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
+        castello.addRoom(entrata);
+        castello.addRoom(sala);
+        castello.addRoom(armeria);
+        castello.addRoom(cripta);
+        castello.setMainRoom(entrata);
+        
         // Nemici
         Enemy goblin = EnemyFactory.createEnemy("goblin");
         goblin.setDrop(new Item("Chiave della Cripta", ItemType.KEY));
-        entrata.setEnemy(goblin);
+        //entrata.setEnemy(goblin);
 
         Enemy scheletro = EnemyFactory.createEnemy("skeleton");
         scheletro.setDrop(new Item("Spada Rugginosa", ItemType.WEAPON, 10));
@@ -52,8 +60,12 @@ public class DefaultGameInitializer {
         cripta.setEnemy(guardiano);
 
         armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
+        entrata.addItem(new Item("Armatura", ItemType.ARMOR, 10));
+        entrata.addItem(new Item("Spada", ItemType.WEAPON, 5));
 
-        context.setCurrentRoom(entrata);
+
+        context.setCurrentRoom(castello);
+        context.setCurrentRoom(castello.getMainRoom());
         context.getEventManager().subscribe(new ScoreListener());
     }
 }

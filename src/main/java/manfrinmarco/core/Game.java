@@ -18,5 +18,6 @@ public class Game {
             if (input.equalsIgnoreCase("exit")) break;
             processor.processCommand(input);
         }
+        scanner.close();
     }
 }

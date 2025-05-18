@@ -17,4 +17,8 @@ public class CompositeItem extends Item {
     public List<Item> getComponents() {
         return components;
     }
+
+    public void setPower(int power) {
+    this.power = power;
+}
 }

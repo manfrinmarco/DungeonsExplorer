@@ -1,0 +1,985 @@
+//annotations/autoload.java
+package manfrinmarco.annotations;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AutoLoad {}
+
+//config/gameconfig.java
+package manfrinmarco.config;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class GameConfig {
+    private static final Properties config = new Properties();
+
+    static {
+        try (FileInputStream fis = new FileInputStream("game.properties")) {
+            config.load(fis);
+        } catch (IOException e) {
+            System.err.println("Errore caricamento configurazione: " + e.getMessage());
+        }
+    }
+
+    public static String get(String key) {
+        return config.getProperty(key);
+    }
+}
+
+//core/abstractcommandprocessor.java
+package manfrinmarco.core;
+
+import manfrinmarco.io.InputSanitizer;
+
+public abstract class AbstractCommandProcessor {
+    public final void processCommand(String input) {
+        String sanitized = sanitizeInput(input);
+        String[] tokens = parseCommand(sanitized);
+        executeCommand(tokens);
+    }
+
+    protected String sanitizeInput(String input) {
+        return InputSanitizer.clean(input);
+    }
+
+    protected String[] parseCommand(String input) {
+        return input.trim().split("\\s+");
+    }
+
+    protected abstract void executeCommand(String[] tokens);
+}
+
+//core/commandprocessor.java
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.GameEvent;
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemType;
+import manfrinmarco.map.Direction;
+import manfrinmarco.map.Room;
+
+public class CommandProcessor extends AbstractCommandProcessor {
+    private final GameContext context = GameContext.getInstance();
+
+    @Override
+    protected void executeCommand(String[] tokens) {
+        if (tokens.length == 0) return;
+        String command = tokens[0].toLowerCase();
+
+        switch (command) {
+            case "guarda" -> lookAround();
+            case "muovi" -> {
+                if (tokens.length < 2) {
+                    System.out.println("Dove vuoi andare?");
+                } else {
+                    moveTo(tokens[1]);
+                }
+            }
+            case "attacca" -> attack();
+            case "stato" -> showStatus();
+            case "inventario" -> showInventory();
+            case "usa" -> {
+                if (tokens.length < 2) {
+                    System.out.println("Specifica l'oggetto da usare.");
+                } else {
+                    useItem(tokens[1]);
+                }
+            }
+            case "equip" -> {
+                if (tokens.length < 2) {
+                    System.out.println("Specifica cosa vuoi equipaggiare.");
+                } else {
+                    equipItem(tokens[1]);
+                }
+            }
+            case "prendi" -> {
+                if (tokens.length < 2) {
+                    System.out.println("Specifica cosa vuoi prendere.");
+                } else {
+                    pickItem(tokens[1]);
+                }
+            }
+            // case "salva" -> manfrinmarco.io.GameFileManager.saveContext(context);
+            // case "carica" -> {
+            //     GameContext loaded = manfrinmarco.io.GameFileManager.loadContext();
+            //     if (loaded != null) {
+            //         context.copyFrom(loaded);
+            //         System.out.println("Partita caricata.");
+            //         lookAround();
+            //     }
+            // }
+            case "esplora" -> exploreRooms();
+            default -> System.out.println("Comando sconosciuto.");
+        }
+    }
+
+    private void lookAround() {
+        Room room = context.getCurrentRoom();
+        System.out.println("Ti trovi in: " + room.getName());
+        System.out.println(room.getDescription());
+        for (Direction dir : Direction.values()) {
+            if (room.getExit(dir) != null) {
+                System.out.println("C'è un passaggio a " + dir.name().toLowerCase());
+            }
+        }
+        if (room.getEnemy() != null && room.getEnemy().isAlive()) {
+            System.out.println("Un nemico è qui: " + room.getEnemy().getName());
+        }
+    }
+
+    private void moveTo(String dirString) {
+        try {
+            Direction dir = Direction.valueOf(dirString.toUpperCase());
+            Room current = context.getCurrentRoom();
+            Room next = current.getExit(dir);
+            if (next != null) {
+                context.setCurrentRoom(next);
+                System.out.println("Ti muovi verso " + dir.name().toLowerCase());
+                lookAround();
+            } else {
+                System.out.println("Non c'è nulla in quella direzione.");
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Direzione non valida.");
+        }
+    }
+
+    private void attack() {
+        Enemy enemy = context.getCurrentRoom().getEnemy();
+        Player player = context.getPlayer();
+        if (enemy == null || !enemy.isAlive()) {
+            System.out.println("Non c'è nessun nemico da attaccare.");
+            return;
+        }
+        player.attack(enemy);
+        System.out.println("Hai attaccato il " + enemy.getName() + ". HP rimanenti: " + enemy.getHealth());
+        if (enemy.isAlive()) {
+            enemy.executeStrategy(player);
+            System.out.println("Il " + enemy.getName() + " ti attacca! HP rimanenti: " + player.getHealth());
+            if (!player.isAlive()) {
+                System.out.println("Sei morto! Game Over.");
+                System.exit(0);
+            }
+        } else {
+            System.out.println("Hai sconfitto il " + enemy.getName() + "!");
+            context.getEventManager().notify(new GameEvent("enemy_defeated", "Hai sconfitto un nemico!"));
+        }
+    }
+
+    private void showStatus() {
+        Player player = context.getPlayer();
+        System.out.println("HP: " + player.getHealth());
+    }
+
+    private void showInventory() {
+        System.out.println("Inventario:");
+        for (Item item : context.getPlayer().getInventory()) {
+            System.out.println("- " + item.getName());
+        }
+    }
+
+    private void useItem(String itemName) {
+        Inventory inventory = context.getPlayer().getInventory();
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName.trim())) {
+                if (item.getType() == ItemType.POTION) {
+                    context.getPlayer().heal(20);
+                    System.out.println("Hai usato " + item.getName() + " e recuperato 20 HP.");
+                    inventory.removeItem(item);
+                    return;
+                }
+                if (item.getType() == ItemType.KEY) {
+                    Room room = context.getCurrentRoom();
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = room.getExit(dir);
+                        if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
+                            System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
+                            inventory.removeItem(item);
+                            return;
+                        }
+                    }
+                    System.out.println("Nessuna porta è stata sbloccata.");
+                    return;
+                }
+                System.out.println("Hai usato " + item.getName() + ".");
+                inventory.removeItem(item);
+                return;
+            }
+        }
+        System.out.println("Oggetto non trovato.");
+    }
+
+    private void equipItem(String itemName) {
+        Inventory inventory = context.getPlayer().getInventory();
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                context.getPlayer().equip(item);
+                return;
+            }
+        }
+        System.out.println("Oggetto non trovato o non equipaggiabile.");
+    }
+
+    private void pickItem(String itemName) {
+        Room room = context.getCurrentRoom();
+        for (Item item : room.getItems()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                context.getPlayer().getInventory().addItem(item);
+                room.removeItem(item);
+                System.out.println("Hai raccolto: " + item.getName());
+                return;
+            }
+        }
+        System.out.println("Oggetto non trovato nella stanza.");
+    }
+
+    private void exploreRooms() {
+        System.out.println("Stanze collegate:");
+        Room current = context.getCurrentRoom();
+        for (Direction dir : Direction.values()) {
+            Room adjacent = current.getExit(dir);
+            if (adjacent != null) {
+                System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+            }
+        }
+    }
+}
+
+//core/defultgameinitializer
+package manfrinmarco.core;
+
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.EnemyFactory;
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.ScoreListener;
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemType;
+import manfrinmarco.map.CompositeRoom;
+import manfrinmarco.map.Direction;
+import manfrinmarco.map.Room;
+
+public class DefaultGameInitializer {
+    public static void initialize(GameContext context) {
+        Player player = new Player("Eroe", 100);
+        Inventory inventory = new Inventory();
+        inventory.addItem(new Item("Pozione", ItemType.POTION));
+        player.setInventory(inventory);
+        context.setPlayer(player);
+
+        // Dungeon composto (CompositeRoom)
+        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
+        Room entrata = new Room("Entrata", "L'ingresso del castello.");
+        Room sala = new Room("Sala del Trono", "La grande sala del trono.");
+        Room armeria = new Room("Armeria Oscura", "Contiene armi abbandonate.");
+        Room cripta = new Room("Cripta", "Una cripta buia e fredda.");
+
+        castello.addRoom(entrata);
+        castello.addRoom(sala);
+        castello.addRoom(armeria);
+        castello.addRoom(cripta);
+
+        entrata.setExit(Direction.NORTH, sala);
+        sala.setExit(Direction.SOUTH, entrata);
+        sala.setExit(Direction.EAST, armeria);
+        armeria.setExit(Direction.WEST, sala);
+        sala.setExit(Direction.WEST, cripta);
+        cripta.setExit(Direction.EAST, sala);
+
+        // Nemici
+        Enemy goblin = EnemyFactory.createEnemy("goblin");
+        goblin.setDrop(new Item("Chiave della Cripta", ItemType.KEY));
+        entrata.setEnemy(goblin);
+
+        Enemy scheletro = EnemyFactory.createEnemy("skeleton");
+        scheletro.setDrop(new Item("Spada Rugginosa", ItemType.WEAPON, 10));
+        sala.setEnemy(scheletro);
+
+        Enemy guardiano = EnemyFactory.createEnemy("goblin");
+        guardiano.setDrop(new Item("Elmo del Guardiano", ItemType.ARMOR, 8));
+        cripta.setEnemy(guardiano);
+
+        armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
+
+        context.setCurrentRoom(entrata);
+        context.getEventManager().subscribe(new ScoreListener());
+    }
+}
+
+//core/game.java
+package manfrinmarco.core;
+
+import java.util.Scanner;
+
+public class Game {
+    private final GameContext context = GameContext.getInstance();
+    private final CommandProcessor processor = new CommandProcessor();
+
+    public void start() {
+        DefaultGameInitializer.initialize(context);
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Benvenuto in Dungeon Explorer!");
+
+        while (true) {
+            System.out.print("\n> ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("exit")) break;
+            processor.processCommand(input);
+        }
+    }
+}
+
+//core/gamecontext.java
+package manfrinmarco.core;
+
+import java.io.Serializable;
+
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.EventManager;
+import manfrinmarco.map.Room;
+
+public class GameContext implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final GameContext instance = new GameContext();
+
+    private Player player;
+    private Room currentRoom;
+    private int score;
+    private final EventManager eventManager = new EventManager();
+
+    private GameContext() {
+        // usato solo dal singleton
+    }
+
+    private GameContext(boolean dummy) {
+        // costruttore privato per uso interno (clone)
+    }
+
+    public static GameContext getInstance() {
+        return instance;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void increaseScore(int amount) {
+        this.score += amount;
+        System.out.println("+" + amount + " punti! Punteggio attuale: " + this.score);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void copyFrom(GameContext other) {
+        this.player = other.player;
+        this.currentRoom = other.currentRoom;
+        this.score = other.score;
+    }
+
+    public GameContext cloneContext() {
+        GameContext clone = new GameContext(false); // passaggio interno
+        clone.copyFrom(this);
+        return clone;
+    }
+}
+
+//core/gamelogger.java
+package manfrinmarco.core;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+
+public class GameLogger {
+    private static final String LOG_FILE = "game.log";
+
+    public static void log(String message) {
+        try (FileWriter writer = new FileWriter(LOG_FILE, true)) {
+            writer.write(LocalDateTime.now() + ": " + message + "\n");
+        } catch (IOException e) {
+            System.err.println("Errore nel logging: " + e.getMessage());
+        }
+    }
+}
+
+//core/gameStateMemento.java
+package manfrinmarco.core;
+
+public class GameStateMemento {
+    private final GameContext snapshot;
+
+    public GameStateMemento(GameContext current) {
+        this.snapshot = current.cloneContext();
+    }
+
+    public GameContext getSnapshot() {
+        return snapshot;
+    }
+}
+
+//entities/aggressivestrategy.java
+package manfrinmarco.entities;
+
+public class AggressiveStrategy implements EnemyStrategy {
+    @Override
+    public void attack(Enemy enemy, Player player) {
+        player.takeDamage(15);
+    }
+}
+
+//entities/defensivestrategy.java
+package manfrinmarco.entities;
+
+public class DefensiveStrategy implements EnemyStrategy {
+    @Override
+    public void attack(Enemy enemy, Player player) {
+        if (enemy.getHealth() < 20) {
+            enemy.takeDamage(-5);
+        } else {
+            player.takeDamage(5);
+        }
+    }
+}
+
+//entities/enemy.java
+package manfrinmarco.entities;
+import manfrinmarco.items.Item;
+
+public class Enemy extends Entity {
+    private EnemyStrategy strategy;
+
+    public Enemy(String name, int health, EnemyStrategy strategy) {
+        super(name, health);
+        this.strategy = strategy;
+    }
+
+    public void executeStrategy(Player player) {
+        strategy.attack(this, player);
+    }
+
+    private Item drop;
+
+    public void setDrop(Item drop) {
+        this.drop = drop;
+    }
+
+    public Item getDrop() {
+      return drop;
+    }
+}
+
+//entities/enemyfactory.java
+package manfrinmarco.entities;
+
+public class EnemyFactory {
+    public static Enemy createEnemy(String type) {
+        return switch (type.toLowerCase()) {
+            case "goblin" -> new Enemy("Goblin", 30, new AggressiveStrategy());
+            case "skeleton" -> new Enemy("Scheletro", 25, new DefensiveStrategy());
+            default -> new Enemy("Ratto", 15, new AggressiveStrategy());
+        };
+    }
+}
+
+//entities/enemystategy.java
+package manfrinmarco.entities;
+
+public interface EnemyStrategy {
+    void attack(Enemy enemy, Player player);
+}
+
+//entities/player.java
+package manfrinmarco.entities;
+
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+
+public class Player extends Entity {
+    private Inventory inventory;
+    private Item equippedWeapon;
+    private Item equippedArmor;
+
+    public Player(String name, int health) {
+        super(name, health);
+        this.inventory = new Inventory();
+    }
+
+    public void attack(Entity enemy) {
+        int baseDamage = 10;
+        if (equippedWeapon != null) {
+            baseDamage += equippedWeapon.getPower();
+        }
+        enemy.takeDamage(baseDamage);
+    }
+
+    public void heal(int amount) {
+        this.health = Math.min(100, this.health + amount);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public void equip(Item item) {
+        if (item.getType() == manfrinmarco.items.ItemType.WEAPON) {
+            this.equippedWeapon = item;
+            System.out.println("Hai equipaggiato l'arma: " + item.getName());
+        } else if (item.getType() == manfrinmarco.items.ItemType.ARMOR) {
+            this.equippedArmor = item;
+            System.out.println("Hai indossato l'armatura: " + item.getName());
+        } else {
+            System.out.println("Questo oggetto non può essere equipaggiato.");
+        }
+    }
+}
+
+//events/eventListener.java
+package manfrinmarco.events;
+
+public interface EventListener {
+    void onEvent(GameEvent event);
+}
+
+//event/eventManager.java
+package manfrinmarco.events;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class EventManager {
+    private final List<EventListener> listeners = new ArrayList<>();
+
+    public void subscribe(EventListener listener) {
+        listeners.add(listener);
+    }
+
+    public void notify(GameEvent event) {
+        for (EventListener listener : listeners) {
+            listener.onEvent(event);
+        }
+    }
+}
+
+/event/gameevent.java
+package manfrinmarco.events;
+
+public class GameEvent {
+    private final String type;
+    private final String message;
+
+    public GameEvent(String type, String message) {
+        this.type = type;
+        this.message = message;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+
+//event/ScoreListener
+package manfrinmarco.events;
+
+import manfrinmarco.core.GameContext;
+
+public class ScoreListener implements EventListener {
+    @Override
+    public void onEvent(GameEvent event) {
+        if (event.getType().equals("enemy_defeated")) {
+            GameContext.getInstance().increaseScore(100);
+        }
+    }
+}
+
+//io/GameFileManager.java
+package manfrinmarco.io;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class GameFileManager {
+    private static final String SAVE_FILE = "savegame.dat";
+
+    public static void saveGame(String data) {
+        try (FileWriter writer = new FileWriter(SAVE_FILE)) {
+            writer.write(data);
+            System.out.println("Partita salvata.");
+        } catch (IOException e) {
+            System.err.println("Errore salvataggio: " + e.getMessage());
+        }
+    }
+
+    public static String loadGame() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SAVE_FILE))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            System.out.println("Partita caricata.");
+            return sb.toString();
+        } catch (IOException e) {
+            System.err.println("Errore caricamento: " + e.getMessage());
+            return null;
+        }
+    }
+}
+
+//io/InputSanitizer.java
+package manfrinmarco.io;
+
+public class InputSanitizer {
+    public static String clean(String input) {
+        return input.replaceAll("[^a-zA-Z0-9\\s]", "");
+    }
+}
+
+//io/reflectionloader.java
+package manfrinmarco.io;
+
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import manfrinmarco.annotations.AutoLoad;
+
+public class ReflectionLoader {
+    public static List<Class<?>> findAnnotatedClasses(String packageName) {
+        List<Class<?>> classes = new ArrayList<>();
+        try {
+            String path = packageName.replace('.', '/');
+            URL root = Thread.currentThread().getContextClassLoader().getResource(path);
+            if (root == null) return classes;
+            File[] files = new File(root.toURI()).listFiles();
+            if (files == null) return classes;
+            for (File file : files) {
+                if (file.getName().endsWith(".class")) {
+                    String className = packageName + '.' + file.getName().replace(".class", "");
+                    Class<?> cls = Class.forName(className);
+                    if (cls.isAnnotationPresent(AutoLoad.class)) {
+                        classes.add(cls);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Errore reflection: " + e.getMessage());
+        }
+        return classes;
+    }
+}
+
+//items/compositeitem.java
+package manfrinmarco.items;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompositeItem extends Item {
+    private final List<Item> components = new ArrayList<>();
+
+    public CompositeItem(String name) {
+        super(name, ItemType.WEAPON);
+    }
+
+    public void addItem(Item item) {
+        components.add(item);
+    }
+
+    public List<Item> getComponents() {
+        return components;
+    }
+}
+
+//items/inventory.java
+package manfrinmarco.items;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class Inventory implements Iterable<Item> {
+    private final List<Item> items = new ArrayList<>();
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public Iterator<Item> iterator() {
+        return items.iterator();
+    }
+}
+
+//items/item.java
+package manfrinmarco.items;
+
+public class Item {
+    protected String name;
+    protected ItemType type;
+    protected int power;
+
+    public Item(String name, ItemType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public Item(String name, ItemType type, int power) {
+        this.name = name;
+        this.type = type;
+        this.power = power;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public int getPower() {
+        return power;
+    }
+}
+
+//items/itembuilder.java
+package manfrinmarco.items;
+
+public class ItemBuilder {
+    private String name;
+    private ItemType type;
+    private int power;
+
+    public ItemBuilder setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ItemBuilder setType(ItemType type) {
+        this.type = type;
+        return this;
+    }
+
+    public ItemBuilder setPower(int power) {
+        this.power = power;
+        return this;
+    }
+
+    public Item build() {
+        return new Item(name, type, power);
+    }
+}
+
+//items/itemtype.java
+package manfrinmarco.items;
+
+public enum ItemType {
+    WEAPON,
+    ARMOR,
+    POTION,
+    KEY
+}
+
+//map/compositeroom.java
+package manfrinmarco.map;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompositeRoom extends Room {
+    private final List<Room> subRooms = new ArrayList<>();
+
+    public CompositeRoom(String name, String description) {
+        super(name, description);
+    }
+
+    public void addRoom(Room room) {
+        subRooms.add(room);
+    }
+
+    public List<Room> getSubRooms() {
+        return subRooms;
+    }
+}
+
+//map/directions.java
+package manfrinmarco.map;
+
+public enum Direction {
+    NORTH, SOUTH, EAST, WEST;
+}
+
+//map/room.java
+package manfrinmarco.map;
+
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.items.Item;
+
+public class Room {
+    protected String name;
+    protected String description;
+    protected Map<Direction, Room> exits = new EnumMap<>(Direction.class);
+    protected Enemy enemy;
+    protected List<Item> items = new ArrayList<>();
+    protected boolean locked = false;
+    protected Item keyRequired;
+
+    public Room(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public void setExit(Direction direction, Room room) {
+        exits.put(direction, room);
+    }
+
+    public Room getExit(Direction direction) {
+        return exits.get(direction);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked, Item keyRequired) {
+        this.locked = locked;
+        this.keyRequired = keyRequired;
+    }
+
+    public boolean unlock(Item key) {
+        if (locked && keyRequired != null && key.getName().equalsIgnoreCase(keyRequired.getName())) {
+            locked = false;
+            return true;
+        }
+        return false;
+    }
+}
+
+//map/roomfactory.java
+package manfrinmarco.map;
+
+public class RoomFactory {
+    public static Room createRoom(String type) {
+        return switch (type.toLowerCase()) {
+            case "corridoio" -> new Room("Corridoio", "Un lungo corridoio buio.");
+            case "cella" -> new Room("Cella", "Una piccola cella abbandonata.");
+            default -> new Room("Stanza misteriosa", "Non riesci a distinguere nulla.");
+        };
+    }
+}
+
+//map/roomiterator.java
+package manfrinmarco.map;
+
+import java.util.Iterator;
+import java.util.List;
+
+public class RoomIterator implements Iterator<Room> {
+    private final Iterator<Room> iterator;
+
+    public RoomIterator(List<Room> rooms) {
+        this.iterator = rooms.iterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return iterator.hasNext();
+    }
+
+    @Override
+    public Room next() {
+        return iterator.next();
+    }
+}
+
+//security/gameException.java
+package manfrinmarco.security;
+
+public class GameException extends RuntimeException {
+    public GameException(String message) {
+        super(message);
+    }
+}
+
+//main.java
+package manfrinmarco;
+
+import manfrinmarco.core.Game;
+
+public class Main {
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.start();
+    }
+}

@@ -3,9 +3,11 @@ package manfrinmarco.core;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.GameEvent;
+import manfrinmarco.items.CompositeItem;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemType;
+import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
 
@@ -60,6 +62,13 @@ public class CommandProcessor extends AbstractCommandProcessor {
             //     }
             // }
             case "esplora" -> exploreRooms();
+            case "combina" -> {
+                if (tokens.length < 3) {
+                    System.out.println("Specifica due oggetti da combinare.");
+                } else {
+                    combineItems(tokens[1], tokens[2]);
+                }
+}
             default -> System.out.println("Comando sconosciuto.");
         }
     }
@@ -75,6 +84,17 @@ public class CommandProcessor extends AbstractCommandProcessor {
         }
         if (room.getEnemy() != null && room.getEnemy().isAlive()) {
             System.out.println("Un nemico è qui: " + room.getEnemy().getName());
+            if (room.getEnemy().getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                System.out.println("Il " + room.getEnemy().getName() + " ti coglie di sorpresa!");
+                room.getEnemy().executeStrategy(context.getPlayer());
+                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+            }
+        }
+        if (!room.getItems().isEmpty()) {
+            System.out.println("Oggetti nella stanza:");
+            for (Item item : room.getItems()) {
+                System.out.println("- " + item.getName());
+            }
         }
     }
 
@@ -85,6 +105,16 @@ public class CommandProcessor extends AbstractCommandProcessor {
             Room next = current.getExit(dir);
             if (next != null) {
                 context.setCurrentRoom(next);
+                Enemy enemy = next.getEnemy();
+                if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                    System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
+                    enemy.executeStrategy(context.getPlayer());
+                    System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+                    if (!context.getPlayer().isAlive()) {
+                        System.out.println("Sei morto! Game Over.");
+                        System.exit(0);
+                    }
+                }
                 System.out.println("Ti muovi verso " + dir.name().toLowerCase());
                 lookAround();
             } else {
@@ -185,13 +215,69 @@ public class CommandProcessor extends AbstractCommandProcessor {
     }
 
     private void exploreRooms() {
-        System.out.println("Stanze collegate:");
         Room current = context.getCurrentRoom();
-        for (Direction dir : Direction.values()) {
-            Room adjacent = current.getExit(dir);
-            if (adjacent != null) {
-                System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+
+        // Se ci troviamo nella stanza principale di una CompositeRoom
+        if (current instanceof CompositeRoom composite) {
+            System.out.println("Stanze interne di " + composite.getName() + ":");
+            for (Room room : composite.getSubRooms()) {
+                System.out.println("- " + room.getName());
+            }
+        } else {
+            // Proviamo a vedere se la stanza corrente appartiene a una CompositeRoom
+            CompositeRoom parent = findParentComposite(current);
+            if (parent != null) {
+                System.out.println("Stanze interne di " + parent.getName() + ":");
+                for (Room room : parent.getSubRooms()) {
+                    System.out.println("- " + room.getName());
+                }
+            } else {
+                System.out.println("Stanze collegate:");
+                for (Direction dir : Direction.values()) {
+                    Room adjacent = current.getExit(dir);
+                    if (adjacent != null) {
+                        System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+                    }
+                }
             }
         }
     }
+
+    private CompositeRoom findParentComposite(Room room) {
+        // Se GameContext contiene una CompositeRoom come mappa principale
+        Room parent = GameContext.getInstance().getCurrentRoom();
+        if (parent instanceof CompositeRoom composite) {
+            for (Room sub : composite.getSubRooms()) {
+                if (sub == room) return composite;
+            }
+        }
+        return null;
+    }
+    
+    private void combineItems(String name1, String name2) {
+        Inventory inventory = context.getPlayer().getInventory();
+        Item item1 = null, item2 = null;
+
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(name1)) item1 = item;
+            else if (item.getName().equalsIgnoreCase(name2)) item2 = item;
+        }
+
+        if (item1 == null || item2 == null) {
+            System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");
+            return;
+        }
+
+        CompositeItem armaCombinata = new CompositeItem("Arma Combinata");
+        armaCombinata.addItem(item1);
+        armaCombinata.addItem(item2);
+        armaCombinata.setPower(item1.getPower() + item2.getPower());
+
+        inventory.removeItem(item1);
+        inventory.removeItem(item2);
+        inventory.addItem(armaCombinata);
+
+        System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
+    }
+
 }

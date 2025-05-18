@@ -16,6 +16,11 @@ public class Item {
         this.power = power;
     }
 
+    @Override
+    public String toString() {
+        return name + " (" + type + (power > 0 ? ", +" + power : "") + ")";
+    }
+
     public String getName() {
         return name;
     }

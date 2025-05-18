@@ -21,6 +21,11 @@ public abstract class Entity {
         return health > 0;
     }
 
+    public void attack(Entity enemy) {
+        int baseDamage = 0;
+        enemy.takeDamage(baseDamage);
+    }
+
     public void takeDamage(int damage) {
         health = Math.max(0, health - damage);
     }

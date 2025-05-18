@@ -14,6 +14,16 @@ public class CompositeRoom extends Room {
         subRooms.add(room);
     }
 
+    private Room mainRoom;
+
+    public void setMainRoom(Room room) {
+        this.mainRoom = room;
+    }
+
+    public Room getMainRoom() {
+        return mainRoom;
+    }
+
     public List<Room> getSubRooms() {
         return subRooms;
     }

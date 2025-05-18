@@ -1,0 +1,73 @@
+la mappa è cosi strutturata:
+
+struttura della mappa:
+Isola 
+├── zona 1 - a nord zona 4 - a ovest zona 2
+├── zona 2 - a nord zona 3 - a est zona 1
+├── zona 3 - a sud zona 2 - e est zona 4
+├── zona 4 - a sud zona 1 - a ovest zona 3
+│   ├── Albero
+|   │   ├── Castello
+|   |   |   ├── piano 1
+|   |   |   |   ├── 1.1 "entrata" - a nord vai a 1.2
+|   |   |   |   ├── 1.2 "corridoio 1" - a nord vai a 1.3 - e est vai a 1.4 - a ovest vai a 1.6 - a sud vai a 1.1
+|   |   |   |   ├── 1.3 "corridoio 2" - a est vai a 1.8 - a ovest vai a 1.7 - a sud vai a 1.2
+|   |   |   |   ├── 1.4 "s1" - a est vai a 1.5 - a ovest vai a 1.2
+|   |   |   |   ├── 1.5 "armeria" - a ovest vai a 1.4
+|   |   |   |   ├── 1.6 "cucina" - a est vai a 1.2
+|   |   |   |   ├── 1.7 "scale" (puoi solo salire) - a est vai a 1.3
+|   |   |   |   └── 1.8 "s2" - a ovest vai a 1.3
+|   |   |   ├── piano 2
+|   |   |   |   ├── 2.1 "scale" (sali e scendi) - a est vai a 2.2 - a sud vai a 2.7
+|   |   |   |   ├── 2.2 "s3" - a est vai a 2.3 - a sud vai a 2.4
+|   |   |   |   ├── 2.3 "s4" - a sud vai a 2.4 - a est vai a 2.2
+|   |   |   |   ├── 2.4 "s5" - a ovest vai a 2.5 - a nord vai a 2.3
+|   |   |   |   ├── 2.5 "s6" - a ovest vai a 2.6  a est vai a 2.4
+|   |   |   |   ├── 2.6 "s7" - a nord vai a 2.2 - a est vai a 2.5
+|   |   |   |   └── 2.7 "s8" - a nord vai a 2.1
+|   |   |   ├── piano 3
+|   |   |   |   ├── 3.1 "scale" (sali e scendi) - a sud vai a 3.2
+|   |   |   |   ├── 3.2 "corridoio" - a est vai a 3.3 - a ovest vai a 3.4
+|   |   |   |   ├── 3.3 "s9" - a ovest vai a 3.2
+|   |   |   |   └── 3.4 "s10" - a est vai a 3.2
+|   |   |   └── piano 4
+|   |   |   |   └── 4.1 "scale" (solo scendere)
+├── └── └── └── └── 4.2 exit
+├── porto
+└── └── nave (punto partenza player)
+
+cosa c'è in ogni zona 
+Isola 
+├── zona 1 : nemico DefensiveStrategy
+├── zona 2 : nemico defensivestrategy + arma da prendere
+├── zona 3 : nemico aggressivestrategy che droppa torcia
+├── zona 4 : albero + scala per salire 
+│   ├── Albero : sali sulla scala (nella zona 4) e arrivi al castello
+|   │   ├── Castello
+|   |   |   ├── piano 1
+|   |   |   |   ├── 1.1 "entrata" 
+|   |   |   |   ├── 1.2 "corridoio 1" 
+|   |   |   |   ├── 1.3 "corridoio 2" 
+|   |   |   |   ├── 1.4 "s1" : 1 nemico AggressiveStrategy + 1 nemico DefensiveStrategy
+|   |   |   |   ├── 1.5 "armeria" : spada + armatura da raccogliere 
+|   |   |   |   ├── 1.6 "cucina" : nemico defensivestrategy + cibo da raccogliere
+|   |   |   |   ├── 1.7 "scale" 
+|   |   |   |   └── 1.8 "s2" nemico defensivestrategy + nemico defensive strategy (droppa chiave) + nemico aggressive strategy (droppa armatura)
+|   |   |   ├── piano 2
+|   |   |   |   ├── 2.1 "scale" 
+|   |   |   |   ├── 2.2 "s3" : 1 nemico aggressivestrategy
+|   |   |   |   ├── 2.3 "s4" : armatura da raccogliere
+|   |   |   |   ├── 2.4 "s5" : pozione cura da raccogliere
+|   |   |   |   ├── 2.5 "s6" : elsa da raccogliere (si combina con lama)
+|   |   |   |   ├── 2.6 "s7" : pozione aumenta forza da raccogliere
+|   |   |   |   └── 2.7 "s8" : stanza buia (se usi torcia vedi easter egg: nome sviluppatore)
+|   |   |   ├── piano 3
+|   |   |   |   ├── 3.1 
+|   |   |   |   ├── 3.2 
+|   |   |   |   ├── 3.3 : nemico defensive droppa lama da combinare con elsa
+|   |   |   |   └── 3.4 : incantesmo da raccogliere per spada combinata che aumeta forza spada
+|   |   |   └── piano 4
+|   |   |   |   └── 4.1 : boss finale (si sconfigge solo con spada combinata)
+├── └── └── └── └── 4.2 exit
+├── porto
+└── └── nave (punto partenza player)

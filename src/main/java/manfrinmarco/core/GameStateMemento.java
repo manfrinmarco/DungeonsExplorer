@@ -1,13 +1,13 @@
 package manfrinmarco.core;
 
 public class GameStateMemento {
-    private final String state;
+    private final GameContext snapshot;
 
-    public GameStateMemento(String state) {
-        this.state = state;
+    public GameStateMemento(GameContext current) {
+        this.snapshot = current.cloneContext();
     }
 
-    public String getState() {
-        return state;
+    public GameContext getSnapshot() {
+        return snapshot;
     }
 }

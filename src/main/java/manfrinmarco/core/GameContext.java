@@ -1,15 +1,27 @@
 package manfrinmarco.core;
 
+import java.io.Serializable;
+
 import manfrinmarco.entities.Player;
+import manfrinmarco.events.EventManager;
 import manfrinmarco.map.Room;
 
-public class GameContext {
+public class GameContext implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final GameContext instance = new GameContext();
 
     private Player player;
     private Room currentRoom;
+    private int score;
+    private final EventManager eventManager = new EventManager();
 
-    private GameContext() {}
+    private GameContext() {
+        // usato solo dal singleton
+    }
+
+    private GameContext(boolean dummy) {
+        // costruttore privato per uso interno (clone)
+    }
 
     public static GameContext getInstance() {
         return instance;
@@ -29,5 +41,30 @@ public class GameContext {
 
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
+    public void increaseScore(int amount) {
+        this.score += amount;
+        System.out.println("+" + amount + " punti! Punteggio attuale: " + this.score);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void copyFrom(GameContext other) {
+        this.player = other.player;
+        this.currentRoom = other.currentRoom;
+        this.score = other.score;
+    }
+
+    public GameContext cloneContext() {
+        GameContext clone = new GameContext(false); // passaggio interno
+        clone.copyFrom(this);
+        return clone;
     }
 }

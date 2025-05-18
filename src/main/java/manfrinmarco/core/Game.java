@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Game {
     private final GameContext context = GameContext.getInstance();
-    private final CommandProcessor processor = new DefaultCommandProcessor();
+    private final CommandProcessor processor = new CommandProcessor();
 
     public void start() {
         DefaultGameInitializer.initialize(context);

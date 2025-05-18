@@ -14,10 +14,8 @@ public class ReflectionLoader {
             String path = packageName.replace('.', '/');
             URL root = Thread.currentThread().getContextClassLoader().getResource(path);
             if (root == null) return classes;
-
             File[] files = new File(root.toURI()).listFiles();
             if (files == null) return classes;
-
             for (File file : files) {
                 if (file.getName().endsWith(".class")) {
                     String className = packageName + '.' + file.getName().replace(".class", "");

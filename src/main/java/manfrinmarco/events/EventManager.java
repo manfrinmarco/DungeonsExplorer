@@ -10,10 +10,6 @@ public class EventManager {
         listeners.add(listener);
     }
 
-    public void unsubscribe(EventListener listener) {
-        listeners.remove(listener);
-    }
-
     public void notify(GameEvent event) {
         for (EventListener listener : listeners) {
             listener.onEvent(event);

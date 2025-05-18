@@ -1,9 +1,12 @@
 package manfrinmarco.core;
 
+import java.util.List;
+
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.ScoreListener;
+import manfrinmarco.io.ReflectionLoader;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemBuilder;
@@ -58,6 +61,25 @@ public class DefaultGameInitializer {
         Enemy guardiano = EnemyFactory.createEnemy("goblin");
         guardiano.setDrop(new Item("Elmo del Guardiano", ItemType.ARMOR, 8));
         cripta.setEnemy(guardiano);
+
+        System.out.println("Caricamento dinamico di oggetti e nemici...");
+
+        List<Object> itemInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
+        for (Object obj : itemInstances) {
+            if (obj instanceof Item item) {
+                System.out.println("Oggetto caricato: " + item.getName());
+                inventory.addItem(item);
+            }
+        }
+
+        List<Object> enemyInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
+        for (Object obj : enemyInstances) {
+            if (obj instanceof Enemy enemy) {
+                System.out.println("Nemico caricato: " + enemy.getName());
+                // Facoltativo: usarne uno in gioco
+                // entrata.setEnemy(enemy); // se vuoi metterlo nella prima stanza
+            }
+        }
 
         armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
         entrata.addItem(new Item("Armatura", ItemType.ARMOR, 10));

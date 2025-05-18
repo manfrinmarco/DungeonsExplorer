@@ -1,5 +1,7 @@
 package manfrinmarco.annotations;
 
-public class AutoLoad {
-    
-}
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AutoLoad {}

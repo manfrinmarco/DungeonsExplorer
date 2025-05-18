@@ -1,28 +1,25 @@
 package manfrinmarco.core;
 
-import manfrinmarco.io.InputSanitizer;
-import manfrinmarco.security.GameException;
+import java.util.Scanner;
 
 public class Game {
-    private GameContext context;
-
-    public Game() {
-        this.context = GameContext.getInstance();
-    }
+    private final GameContext context = GameContext.getInstance();
+    private final CommandProcessor processor = new CommandProcessor() {
+        @Override
+        protected void executeCommand(String[] tokens) {
+            System.out.println("Comando eseguito: " + String.join(" ", tokens));
+        }
+    };
 
     public void start() {
-        GameLogger.log("Gioco iniziato");
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Benvenuto in Dungeon Explorer!");
-        // Loop principale
-        while (!context.isGameOver()) {
-            try {
-                System.out.print("> ");
-                String input = InputSanitizer.readInput();
-                CommandProcessor.process(input);
-            } catch (GameException e) {
-                System.out.println(e.getUserMessage());
-                GameLogger.logError(e);
-            }
+
+        while (true) {
+            System.out.print("> ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("exit")) break;
+            processor.processCommand(input);
         }
     }
 }

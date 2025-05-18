@@ -1,5 +1,8 @@
 package manfrinmarco.items;
 
-public class ItemType {
-    
+public enum ItemType {
+    WEAPON,
+    ARMOR,
+    POTION,
+    KEY
 }

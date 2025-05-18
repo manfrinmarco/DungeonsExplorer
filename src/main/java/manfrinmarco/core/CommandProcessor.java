@@ -1,16 +1,21 @@
 package manfrinmarco.core;
 
-import manfrinmarco.security.GameException;
+import manfrinmarco.io.InputSanitizer;
 
 public abstract class CommandProcessor {
-    public static void process(String input) throws GameException {
-        switch (input) {
-            case "exit":
-                GameContext.getInstance().endGame();
-                System.out.println("Hai lasciato il dungeon.");
-                break;
-            default:
-                throw new GameException("Comando sconosciuto: " + input, "Comando non riconosciuto. Riprova.");
-        }
+    public final void processCommand(String input) {
+        String sanitized = sanitizeInput(input);
+        String[] tokens = parseCommand(sanitized);
+        executeCommand(tokens);
     }
+
+    protected String sanitizeInput(String input) {
+        return InputSanitizer.clean(input);
+    }
+
+    protected String[] parseCommand(String input) {
+        return input.trim().split("\\s+");
+    }
+
+    protected abstract void executeCommand(String[] tokens);
 }

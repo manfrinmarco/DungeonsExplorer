@@ -1,5 +1,5 @@
 package manfrinmarco.events;
 
-public class EventListener {
-    
+public interface EventListener {
+    void onEvent(GameEvent event);
 }

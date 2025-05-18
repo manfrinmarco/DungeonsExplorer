@@ -4,19 +4,16 @@ import java.util.Scanner;
 
 public class Game {
     private final GameContext context = GameContext.getInstance();
-    private final CommandProcessor processor = new CommandProcessor() {
-        @Override
-        protected void executeCommand(String[] tokens) {
-            System.out.println("Comando eseguito: " + String.join(" ", tokens));
-        }
-    };
+    private final CommandProcessor processor = new DefaultCommandProcessor();
 
     public void start() {
+        DefaultGameInitializer.initialize(context);
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Benvenuto in Dungeon Explorer!");
 
         while (true) {
-            System.out.print("> ");
+            System.out.print("\n> ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("exit")) break;
             processor.processCommand(input);

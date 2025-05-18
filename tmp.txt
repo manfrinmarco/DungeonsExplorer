@@ -1,3 +1,133 @@
+# Project Overview
+
+### Project theme
+
+Students are free to **select any project scenario or application domain** of their choice. This could be a utility, a simulation, a personal productivity tool, a data processing tool, or anything else that fits the criteria.
+
+> **The minimum required features must be implemented as specified.**
+> 
+
+Students may integrate **any number of advanced technologies** or design patterns from the optional list to improve their score.
+
+Projects will be evaluated not just on what is included, but how well technologies are integrated, justified, and secured.
+
+**Develop** a well-architected, secure, and maintainable Java SE **application** showcasing object-oriented design, use of patterns, and **core Java technologies**.
+
+### Minimum requirements
+
+- **4 Required Design Patterns:** Factory, Composite, Iterator, Exception Shielding
+- **Core Technologies:** Collections, Generics, Java I/O, Logging, JUnit Testing
+- **Secure Programming:** Input Sanitization, No Hardcoded Secrets, Controlled Exception Propagation
+
+### Additional requirements
+
+**Beyond Minimum**
+
+- Additional patterns and technologies from a defined list.
+- Correct integration and critical-path usage of optional components.
+- Additional points do not raise the grade beyond 50, but allow varied strategy.
+
+**Security Penalties**
+
+- Crashes, stack traces, insecure data handling will subtract points.
+
+**Documentation and Justification**
+
+- README must include project overview, design decisions, diagrams,
+- tech/pattern justifications, limitations.
+- Expect interview questions on alternatives and rationale.
+
+### deliverables
+
+1. Complete Java project source code
+2. README.md with:
+    1. Application overview and functionality
+    2. Technologies and patterns used, with justification
+    3. Setup and execution instructions
+    4. UML diagrams (class + architectural)
+    5. Known limitations and future work
+3. Test suite
+
+### interview
+
+During the evaluation, you will:
+
+1. Demo your application live
+2. Walk through random parts of the code
+3. Justify your design decisions
+
+Expect questions on why specific technologies and patterns were used over alternatives. Your understanding and rationale are part of your grade.
+
+## Evaluation
+
+### Required feature
+
+| Design Patterns  | 16 pt |
+| --- | --- |
+| Factory  | 3 pt |
+| Composite  | 3 pt |
+| Iterator | 3 pt |
+| Exception Shielding  | 5 pt |
+
+| Technologies | 14 pt |
+| --- | --- |
+| Collections Framework  | 3 pt |
+| Generics | 3 pt |
+| Java I/O  | 3 pt |
+| Logging | 2 pt |
+| Logging | 3 pt |
+
+All these items are required: (you must include all of them in your project)
+
+Each item coding and usage will be evaluated from 0 to N points.
+
+You must obtain a minimum of 25 points from these items. (not everything must be perfect)
+
+### Optional Advanced Features
+
+| Technologies |  |
+| --- | --- |
+| Multithreading | 8 pt |
+| Stream API & Lambdas  | 5 pt |
+| Reflection | 4 pt  |
+| Inversion of Control | 5 pt |
+| Custom Annotations  | 2 pt |
+| Custom Annotations  | 3 pt |
+
+| Design Patterns |  |
+| --- | --- |
+| Abstract Factory  | 3 pt |
+| Builder | 3 pt |
+| Strategy | 4 pt |
+| Observer | 5 pt |
+| Chain of Responsibility  | 4 pt |
+| Adapter/Bridge/Proxy/Decorator  | 2 pt each |
+| Singleton  | 2 pt |
+| Memento | 3 pt |
+| Template Method | 3 pt |
+
+### Security Penalties
+
+- Stack traces visible to users: -5 pts
+- Application crashes on invalid input: -5 pts
+- Hardcoded credentials: -3 pts
+- No input sanitization: -3 pts
+Exception propagation leaks: -3 pts
+- Poor logging practices: -2 pts
+- Minor issues: -1 pt each
+
+### Final grade
+
+Final grade will be calculated as follow:
+
+requied features + optional feature - security penalties
+
+**Minimum grade to approve the project is 25 points.
+Maximum grade obtained with at least 50 points.**
+
+
+my code untill now:
+
 //annotations/autoload.java
 package manfrinmarco.annotations;
 
@@ -54,12 +184,16 @@ public abstract class AbstractCommandProcessor {
 }
 
 //core/commandprocessor.java
+package manfrinmarco.core;
+
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.GameEvent;
+import manfrinmarco.items.CompositeItem;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemType;
+import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
 
@@ -114,6 +248,13 @@ public class CommandProcessor extends AbstractCommandProcessor {
             //     }
             // }
             case "esplora" -> exploreRooms();
+            case "combina" -> {
+                if (tokens.length < 3) {
+                    System.out.println("Specifica due oggetti da combinare.");
+                } else {
+                    combineItems(tokens[1], tokens[2]);
+                }
+}
             default -> System.out.println("Comando sconosciuto.");
         }
     }
@@ -129,6 +270,17 @@ public class CommandProcessor extends AbstractCommandProcessor {
         }
         if (room.getEnemy() != null && room.getEnemy().isAlive()) {
             System.out.println("Un nemico è qui: " + room.getEnemy().getName());
+            if (room.getEnemy().getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                System.out.println("Il " + room.getEnemy().getName() + " ti coglie di sorpresa!");
+                room.getEnemy().executeStrategy(context.getPlayer());
+                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+            }
+        }
+        if (!room.getItems().isEmpty()) {
+            System.out.println("Oggetti nella stanza:");
+            for (Item item : room.getItems()) {
+                System.out.println("- " + item.getName());
+            }
         }
     }
 
@@ -139,6 +291,16 @@ public class CommandProcessor extends AbstractCommandProcessor {
             Room next = current.getExit(dir);
             if (next != null) {
                 context.setCurrentRoom(next);
+                Enemy enemy = next.getEnemy();
+                if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                    System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
+                    enemy.executeStrategy(context.getPlayer());
+                    System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+                    if (!context.getPlayer().isAlive()) {
+                        System.out.println("Sei morto! Game Over.");
+                        System.exit(0);
+                    }
+                }
                 System.out.println("Ti muovi verso " + dir.name().toLowerCase());
                 lookAround();
             } else {
@@ -239,50 +401,114 @@ public class CommandProcessor extends AbstractCommandProcessor {
     }
 
     private void exploreRooms() {
-        System.out.println("Stanze collegate:");
         Room current = context.getCurrentRoom();
-        for (Direction dir : Direction.values()) {
-            Room adjacent = current.getExit(dir);
-            if (adjacent != null) {
-                System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+
+        // Se ci troviamo nella stanza principale di una CompositeRoom
+        if (current instanceof CompositeRoom composite) {
+            System.out.println("Stanze interne di " + composite.getName() + ":");
+            for (Room room : composite.getSubRooms()) {
+                System.out.println("- " + room.getName());
+            }
+        } else {
+            // Proviamo a vedere se la stanza corrente appartiene a una CompositeRoom
+            CompositeRoom parent = findParentComposite(current);
+            if (parent != null) {
+                System.out.println("Stanze interne di " + parent.getName() + ":");
+                for (Room room : parent.getSubRooms()) {
+                    System.out.println("- " + room.getName());
+                }
+            } else {
+                System.out.println("Stanze collegate:");
+                if (current != null) {
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = current.getExit(dir);
+                        if (adjacent != null) {
+                            System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+                        }
+                    }
+                } else {
+                    System.out.println("Errore: stanza corrente non trovata.");
+                }
             }
         }
     }
+
+    private CompositeRoom findParentComposite(Room room) {
+        // Se GameContext contiene una CompositeRoom come mappa principale
+        Room parent = GameContext.getInstance().getCurrentRoom();
+        if (parent instanceof CompositeRoom composite) {
+            for (Room sub : composite.getSubRooms()) {
+                if (sub == room) return composite;
+            }
+        }
+        return null;
+    }
+    
+    private void combineItems(String name1, String name2) {
+        Inventory inventory = context.getPlayer().getInventory();
+        Item item1 = null, item2 = null;
+
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(name1)) item1 = item;
+            else if (item.getName().equalsIgnoreCase(name2)) item2 = item;
+        }
+
+        if (item1 == null || item2 == null) {
+            System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");
+            return;
+        }
+
+        CompositeItem armaCombinata = new CompositeItem("Arma Combinata");
+        armaCombinata.addItem(item1);
+        armaCombinata.addItem(item2);
+        armaCombinata.setPower(item1.getPower() + item2.getPower());
+
+        inventory.removeItem(item1);
+        inventory.removeItem(item2);
+        inventory.addItem(armaCombinata);
+
+        System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
+    }
+
 }
 
 //core/defultgameinitializer
 package manfrinmarco.core;
 
+import java.util.List;
+
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.ScoreListener;
+import manfrinmarco.io.ReflectionLoader;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemBuilder;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
+import manfrinmarco.map.RoomFactory;
 
 public class DefaultGameInitializer {
     public static void initialize(GameContext context) {
         Player player = new Player("Eroe", 100);
         Inventory inventory = new Inventory();
-        inventory.addItem(new Item("Pozione", ItemType.POTION));
+
+        Item pozione = new ItemBuilder().setName("Pozione")
+                                        .setType(ItemType.POTION)
+                                        .setPower(0)
+                                        .build();
+        inventory.addItem(pozione);
         player.setInventory(inventory);
         context.setPlayer(player);
 
         // Dungeon composto (CompositeRoom)
-        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
-        Room entrata = new Room("Entrata", "L'ingresso del castello.");
-        Room sala = new Room("Sala del Trono", "La grande sala del trono.");
-        Room armeria = new Room("Armeria Oscura", "Contiene armi abbandonate.");
-        Room cripta = new Room("Cripta", "Una cripta buia e fredda.");
-
-        castello.addRoom(entrata);
-        castello.addRoom(sala);
-        castello.addRoom(armeria);
-        castello.addRoom(cripta);
+        Room entrata = RoomFactory.createRoom("corridoio");
+        Room sala = RoomFactory.createRoom("corridoio");
+        Room armeria = RoomFactory.createRoom("armeria");
+        Room cripta = RoomFactory.createRoom("cripta");
 
         entrata.setExit(Direction.NORTH, sala);
         sala.setExit(Direction.SOUTH, entrata);
@@ -291,10 +517,17 @@ public class DefaultGameInitializer {
         sala.setExit(Direction.WEST, cripta);
         cripta.setExit(Direction.EAST, sala);
 
+        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
+        castello.addRoom(entrata);
+        castello.addRoom(sala);
+        castello.addRoom(armeria);
+        castello.addRoom(cripta);
+        castello.setMainRoom(entrata);
+        
         // Nemici
         Enemy goblin = EnemyFactory.createEnemy("goblin");
         goblin.setDrop(new Item("Chiave della Cripta", ItemType.KEY));
-        entrata.setEnemy(goblin);
+        //entrata.setEnemy(goblin);
 
         Enemy scheletro = EnemyFactory.createEnemy("skeleton");
         scheletro.setDrop(new Item("Spada Rugginosa", ItemType.WEAPON, 10));
@@ -304,9 +537,32 @@ public class DefaultGameInitializer {
         guardiano.setDrop(new Item("Elmo del Guardiano", ItemType.ARMOR, 8));
         cripta.setEnemy(guardiano);
 
-        armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
+        System.out.println("Caricamento dinamico di oggetti e nemici...");
 
-        context.setCurrentRoom(entrata);
+        List<Object> itemInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
+        for (Object obj : itemInstances) {
+            if (obj instanceof Item item) {
+                System.out.println("Oggetto caricato: " + item.getName());
+                inventory.addItem(item);
+            }
+        }
+
+        List<Object> enemyInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
+        for (Object obj : enemyInstances) {
+            if (obj instanceof Enemy enemy) {
+                System.out.println("Nemico caricato: " + enemy.getName());
+                // Facoltativo: usarne uno in gioco
+                // entrata.setEnemy(enemy); // se vuoi metterlo nella prima stanza
+            }
+        }
+
+        armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
+        entrata.addItem(new Item("Armatura", ItemType.ARMOR, 10));
+        entrata.addItem(new Item("Spada", ItemType.WEAPON, 5));
+
+
+        context.setCurrentRoom(castello);
+        context.setCurrentRoom(castello.getMainRoom());
         context.getEventManager().subscribe(new ScoreListener());
     }
 }
@@ -323,14 +579,15 @@ public class Game {
     public void start() {
         DefaultGameInitializer.initialize(context);
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Benvenuto in Dungeon Explorer!");
-
-        while (true) {
-            System.out.print("\n> ");
-            String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("exit")) break;
-            processor.processCommand(input);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Benvenuto in Dungeon Explorer!");
+            
+            while (true) {
+                System.out.print("\n> ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("exit")) break;
+                processor.processCommand(input);
+            }
         }
     }
 }
@@ -356,11 +613,7 @@ public class GameContext implements Serializable {
     private GameContext() {
         // usato solo dal singleton
     }
-
-    private GameContext(boolean dummy) {
-        // costruttore privato per uso interno (clone)
-    }
-
+    
     public static GameContext getInstance() {
         return instance;
     }
@@ -401,7 +654,7 @@ public class GameContext implements Serializable {
     }
 
     public GameContext cloneContext() {
-        GameContext clone = new GameContext(false); // passaggio interno
+        GameContext clone = new GameContext();
         clone.copyFrom(this);
         return clone;
     }
@@ -444,23 +697,33 @@ public class GameStateMemento {
 //entities/aggressivestrategy.java
 package manfrinmarco.entities;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class AggressiveStrategy implements EnemyStrategy {
     @Override
     public void attack(Enemy enemy, Player player) {
-        player.takeDamage(15);
+        int damage = ThreadLocalRandom.current().nextInt(10, 21); // 10–20
+        System.out.println("Il " + enemy.getName() + " attacca con furia causando " + damage + " danni!");
+        player.takeDamage(damage);
     }
 }
 
 //entities/defensivestrategy.java
 package manfrinmarco.entities;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class DefensiveStrategy implements EnemyStrategy {
     @Override
     public void attack(Enemy enemy, Player player) {
         if (enemy.getHealth() < 20) {
-            enemy.takeDamage(-5);
+            int heal = ThreadLocalRandom.current().nextInt(3, 9); // 3–8
+            System.out.println("Il " + enemy.getName() + " si cura di " + heal + " HP!");
+            enemy.takeDamage(-heal);
         } else {
-            player.takeDamage(5);
+            int damage = ThreadLocalRandom.current().nextInt(3, 8); // 3–7
+            System.out.println("Il " + enemy.getName() + " colpisce cautamente causando " + damage + " danni.");
+            player.takeDamage(damage);
         }
     }
 }
@@ -470,11 +733,15 @@ package manfrinmarco.entities;
 import manfrinmarco.items.Item;
 
 public class Enemy extends Entity {
-    private EnemyStrategy strategy;
+    private final EnemyStrategy strategy;
 
     public Enemy(String name, int health, EnemyStrategy strategy) {
         super(name, health);
         this.strategy = strategy;
+    }
+
+    public EnemyStrategy getStrategy() {
+        return strategy;
     }
 
     public void executeStrategy(Player player) {
@@ -490,7 +757,6 @@ public class Enemy extends Entity {
     public Item getDrop() {
       return drop;
     }
-}
 
 //entities/enemyfactory.java
 package manfrinmarco.entities;
@@ -512,6 +778,40 @@ public interface EnemyStrategy {
     void attack(Enemy enemy, Player player);
 }
 
+//entities/entity.java 
+package manfrinmarco.entities;
+
+public abstract class Entity {
+    protected String name;
+    protected int health;
+
+    public Entity(String name, int health) {
+        this.name = name;
+        this.health = health;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public void attack(Entity enemy) {
+        int baseDamage = 0;
+        enemy.takeDamage(baseDamage);
+    }
+
+    public void takeDamage(int damage) {
+        health = Math.max(0, health - damage);
+    }
+}
+
 //entities/player.java
 package manfrinmarco.entities;
 
@@ -528,6 +828,7 @@ public class Player extends Entity {
         this.inventory = new Inventory();
     }
 
+    @Override
     public void attack(Entity enemy) {
         int baseDamage = 10;
         if (equippedWeapon != null) {
@@ -548,18 +849,37 @@ public class Player extends Entity {
         this.inventory = inventory;
     }
 
+    @Override
+    public void takeDamage(int damage) {
+        int mitigated = damage;
+        if (equippedArmor != null) {
+            mitigated = Math.max(0, damage - equippedArmor.getPower());
+        }
+        super.takeDamage(mitigated);
+    }
+
+    public String getStatus() {
+        String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
+        String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
+        return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
+    }
+
     public void equip(Item item) {
-        if (item.getType() == manfrinmarco.items.ItemType.WEAPON) {
-            this.equippedWeapon = item;
-            System.out.println("Hai equipaggiato l'arma: " + item.getName());
-        } else if (item.getType() == manfrinmarco.items.ItemType.ARMOR) {
-            this.equippedArmor = item;
-            System.out.println("Hai indossato l'armatura: " + item.getName());
-        } else {
-            System.out.println("Questo oggetto non può essere equipaggiato.");
+        switch (item.getType()) {
+            case WEAPON -> {
+                this.equippedWeapon = item;
+                System.out.println("Hai equipaggiato l'arma: " + item.getName());
+            }
+            case ARMOR -> {
+                this.equippedArmor = item;
+                System.out.println("Hai indossato l'armatura: " + item.getName());
+            }
+            default -> System.out.println("Questo oggetto non può essere equipaggiato.");
         }
     }
 }
+    
+//entities/customs/... all the classes with @autoload
 
 //events/eventListener.java
 package manfrinmarco.events;
@@ -608,6 +928,7 @@ public class GameEvent {
         return message;
     }
 }
+
 
 //event/ScoreListener
 package manfrinmarco.events;
@@ -679,28 +1000,30 @@ import java.util.List;
 import manfrinmarco.annotations.AutoLoad;
 
 public class ReflectionLoader {
-    public static List<Class<?>> findAnnotatedClasses(String packageName) {
-        List<Class<?>> classes = new ArrayList<>();
-        try {
-            String path = packageName.replace('.', '/');
-            URL root = Thread.currentThread().getContextClassLoader().getResource(path);
-            if (root == null) return classes;
-            File[] files = new File(root.toURI()).listFiles();
-            if (files == null) return classes;
-            for (File file : files) {
-                if (file.getName().endsWith(".class")) {
-                    String className = packageName + '.' + file.getName().replace(".class", "");
-                    Class<?> cls = Class.forName(className);
-                    if (cls.isAnnotationPresent(AutoLoad.class)) {
-                        classes.add(cls);
-                    }
+    public static List<Object> instantiateAnnotated(String packageName) {
+    List<Object> instances = new ArrayList<>();
+    try {
+        String path = packageName.replace('.', '/');
+        URL root = Thread.currentThread().getContextClassLoader().getResource(path);
+        if (root == null) return instances;
+        File[] files = new File(root.toURI()).listFiles();
+        if (files == null) return instances;
+
+        for (File file : files) {
+            if (file.getName().endsWith(".class")) {
+                String className = packageName + '.' + file.getName().replace(".class", "");
+                Class<?> cls = Class.forName(className);
+                if (cls.isAnnotationPresent(AutoLoad.class)) {
+                    Object obj = cls.getDeclaredConstructor().newInstance();
+                    instances.add(obj);
                 }
             }
-        } catch (Exception e) {
-            System.err.println("Errore reflection: " + e.getMessage());
         }
-        return classes;
+    } catch (Exception e) {
+        System.err.println("Errore durante il caricamento dinamico: " + e.getMessage());
     }
+    return instances;
+}
 }
 
 //items/compositeitem.java
@@ -723,6 +1046,10 @@ public class CompositeItem extends Item {
     public List<Item> getComponents() {
         return components;
     }
+
+    public void setPower(int power) {
+    this.power = power;
+}
 }
 
 //items/inventory.java
@@ -743,6 +1070,7 @@ public class Inventory implements Iterable<Item> {
         items.remove(item);
     }
 
+    @Override
     public Iterator<Item> iterator() {
         return items.iterator();
     }
@@ -765,6 +1093,11 @@ public class Item {
         this.name = name;
         this.type = type;
         this.power = power;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + type + (power > 0 ? ", +" + power : "") + ")";
     }
 
     public String getName() {
@@ -815,8 +1148,11 @@ public enum ItemType {
     WEAPON,
     ARMOR,
     POTION,
-    KEY
+    KEY,
+    TOOL
 }
+
+//items/special//... all items with @autoload
 
 //map/compositeroom.java
 package manfrinmarco.map;
@@ -835,12 +1171,22 @@ public class CompositeRoom extends Room {
         subRooms.add(room);
     }
 
+    private Room mainRoom;
+
+    public void setMainRoom(Room room) {
+        this.mainRoom = room;
+    }
+
+    public Room getMainRoom() {
+        return mainRoom;
+    }
+
     public List<Room> getSubRooms() {
         return subRooms;
     }
 }
 
-//map/directions.java
+//map/direction
 package manfrinmarco.map;
 
 public enum Direction {
@@ -934,6 +1280,10 @@ public class RoomFactory {
         return switch (type.toLowerCase()) {
             case "corridoio" -> new Room("Corridoio", "Un lungo corridoio buio.");
             case "cella" -> new Room("Cella", "Una piccola cella abbandonata.");
+            case "entrata" -> new Room("Entrata", "L'ingresso del castello.");
+            case "sala" -> new Room("Sala del Trono", "La grande sala del trono.");
+            case "armeria" -> new Room("Armeria Oscura", "Contiene armi abbandonate.");
+            case "cripta" -> new Room("Cripta", "Una cripta buia e fredda.");
             default -> new Room("Stanza misteriosa", "Non riesci a distinguere nulla.");
         };
     }
@@ -983,3 +1333,314 @@ public class Main {
         game.start();
     }
 }
+
+//readme.md
+# Dungeon Explorer
+
+Dungeon Explorer è un gioco di avventura testuale sviluppato in Java SE, dove il giocatore esplora un dungeon composto da stanze, mostri, oggetti e trappole. L'obiettivo è sopravvivere e uscire vivo dal dungeon.
+
+## ✅ Caratteristiche principali
+- Navigazione libera tra stanze
+- Combattimento con nemici
+- Inventario e oggetti
+- Salvataggio e caricamento del gioco
+- Sicurezza: input sanitizzato, eccezioni gestite, logging
+
+## 🧠 Tecnologie e pattern utilizzati
+| Tecnologia / Pattern | Descrizione |
+|----------------------|-------------|
+| Factory Pattern | Creazione dinamica di entità, stanze, oggetti |
+| Composite Pattern | Struttura gerarchica di stanze e oggetti |
+| Iterator Pattern | Navigazione inventario, stanze |
+| Exception Shielding | Classe `GameException` per gestire errori user-friendly |
+| Singleton | `GameContext` per lo stato globale |
+| Strategy | IA dei nemici configurabile |
+| Observer | Eventi di gioco |
+| Template Method | Comandi eseguiti secondo uno schema |
+| Memento | Salvataggio stato del gioco |
+| Stream API / Lambda | Filtraggio entità |
+| Multithreading | Eventi asincroni |
+| Reflection | Caricamento dinamico nemici/item |
+| Custom Annotations | `@AutoLoad` per classi da riflettere |
+| Inversion of Control | Configurazioni centralizzate in `GameConfig` |
+
+## 📦 Setup e Esecuzione
+1. Clona il repository
+2. Compila con `javac` o usa un IDE (IntelliJ / Eclipse)
+3. Esegui `Main.java`
+
+## 📌 Limitazioni e sviluppi futuri
+- Attualmente la mappa è statica
+- Interfaccia solo testuale
+- AI dei nemici molto semplice
+
+## 📐 Diagrammi (UML + Architettura)
+*(Da aggiungere: Class diagram e Component diagram)*
+# 🧭 Dungeon Explorer
+
+Dungeon Explorer è un gioco di avventura testuale sviluppato in **Java SE**, dove il giocatore esplora un dungeon pieno di nemici, stanze, oggetti e sorprese. Il gioco integra diversi pattern di progettazione, tecnologie Java avanzate e buone pratiche di sicurezza.
+
+## ✅ Caratteristiche principali
+
+- Navigazione tra stanze tramite comandi testuali
+- Combattimenti a turni contro nemici con strategie
+- Equipaggiamento e inventario dinamico
+- Salvataggio/caricamento dello stato di gioco
+- Mappa modulare (Composite Room)
+- Supporto a caricamento dinamico di nemici e oggetti via reflection
+- Eventi asincroni e logging
+- Input sanitizzato e gestione sicura degli errori
+
+---
+
+## 🧠 Tecnologie e Design Pattern utilizzati
+
+| Tecnologia / Pattern     | Descrizione |
+|--------------------------|-------------|
+| **Factory**              | Creazione dinamica di stanze e nemici |
+| **Composite**            | Stanze e oggetti composti |
+| **Iterator**             | Iterazione su stanze e inventario |
+| **Exception Shielding**  | Gestione sicura degli errori con `GameException` |
+| **Singleton**            | Stato globale del gioco con `GameContext` |
+| **Strategy**             | Intelligenza nemici (`AggressiveStrategy`, `DefensiveStrategy`) |
+| **Observer**             | Eventi di gioco come sconfitta nemico |
+| **Template Method**      | Gestione comandi base (`AbstractCommandProcessor`) |
+| **Memento**              | Salvataggio dello stato con `GameStateMemento` |
+| **Builder**              | Costruzione oggetti (`ItemBuilder`) |
+| **Reflection**           | Caricamento classi annotate con `@AutoLoad` |
+| **Custom Annotation**    | `@AutoLoad` per marcare classi dinamiche |
+| **Inversion of Control** | Configurazioni tramite `GameConfig` |
+| **Stream / Lambda**      | Filtri su inventario e oggetti |
+| **Multithreading**       | Eventi asincroni e attacchi automatici |
+| **Java I/O**             | Salvataggio/caricamento file (`GameFileManager`) |
+| **Logging**              | Logging eventi e azioni con `GameLogger` |
+| **Input Sanitization**   | Pulizia input utente (`InputSanitizer`) |
+
+---
+
+## ▶️ Comandi supportati
+
+- `guarda`: mostra la stanza e gli elementi presenti
+- `muovi [direzione]`: spostati tra le stanze
+- `attacca`: attacca il nemico presente
+- `usa [oggetto]`: usa un oggetto dall'inventario
+- `equip [oggetto]`: equipaggia arma/armatura
+- `prendi [oggetto]`: raccogli un oggetto dalla stanza
+- `esplora`: mostra le stanze collegate o contenute
+- `combina [oggetto1] [oggetto2]`: crea oggetto composto
+- `stato`: mostra HP e oggetti equipaggiati
+- `salva`: salva lo stato di gioco
+- `carica`: carica una partita salvata
+- `exit`: esce dal gioco
+
+---
+
+## ⚙️ Setup e Avvio
+
+1. Clona il repository
+2. Compila il progetto:
+   ```bash
+   javac -d bin src/**/*.java
+   ```
+3. Esegui:
+   ```bash
+   java -cp bin manfrinmarco.Main
+   ```
+
+---
+
+## 📌 Limitazioni e sviluppi futuri
+
+- La mappa attualmente è statica (ma estendibile via file)
+- Nessuna interfaccia grafica (solo CLI)
+- Nemici con intelligenza semplice (ma strategica)
+- Nessuna validazione incrociata su oggetti compositi
+
+---
+
+## 📐 Diagrammi UML e Architettura
+
+🧩 Includere:
+- Class Diagram (struttura delle entità)
+- Component Diagram (pacchetti e flussi)
+
+---
+
+## 🧪 Test e copertura
+
+- Unit test presenti per `Player`, `Enemy`, `Inventory`
+- Test eseguibili via JUnit
+- Mockito usato per `EventManager` e `Logger`
+
+//classdiagram.puml
+@startuml ClassDiagram
+' CLASS DIAGRAM — Dungeon Explorer
+
+package core {
+  class GameContext {
+    - player: Player
+    - currentRoom: Room
+    - score: int
+    - eventManager: EventManager
+    + getInstance(): GameContext
+    + setPlayer(Player): void
+    + setCurrentRoom(Room): void
+  }
+
+  class Game {}
+  class CommandProcessor {}
+  class GameLogger {}
+  class GameFileManager {}
+  class GameStateMemento {}
+}
+
+package entities {
+  abstract class Entity {
+    - name: String
+    - health: int
+    + takeDamage(int): void
+  }
+
+  class Player {
+    - inventory: Inventory
+    - equippedWeapon: Item
+    - equippedArmor: Item
+    + attack(Entity): void
+  }
+
+  class Enemy {
+    - strategy: EnemyStrategy
+    + executeStrategy(Player): void
+  }
+
+  interface EnemyStrategy {
+    + attack(Enemy, Player): void
+  }
+
+  class AggressiveStrategy
+  class DefensiveStrategy
+}
+
+package items {
+  class Item {
+    - name: String
+    - type: ItemType
+    - power: int
+  }
+
+  class CompositeItem
+  class Inventory
+  class ItemBuilder
+  enum ItemType
+}
+
+package map {
+  class Room {
+    - name: String
+    - description: String
+    - exits: Map<Direction, Room>
+    - items: List<Item>
+    - enemy: Enemy
+  }
+
+  class CompositeRoom
+  class RoomIterator
+  class RoomFactory
+  enum Direction
+}
+
+package events {
+  class EventManager
+  interface EventListener
+  class GameEvent
+  class ScoreListener
+}
+
+GameContext --> Player
+GameContext --> Room
+GameContext --> EventManager
+Game --> CommandProcessor
+Game --> GameContext
+Game --> GameLogger
+Game --> GameFileManager
+Game --> GameStateMemento
+
+Player --> Inventory
+Player --> Item
+Enemy --> EnemyStrategy
+AggressiveStrategy ..|> EnemyStrategy
+DefensiveStrategy ..|> EnemyStrategy
+
+Inventory --> Item
+CompositeItem --> Item
+Room --> Item
+Room --> Enemy
+Room --> Room : exits
+CompositeRoom --> Room
+
+EventManager --> EventListener
+EventManager --> GameEvent
+ScoreListener ..|> EventListener
+@enduml
+
+
+//componentdiagram.UML
+@startuml ComponentDiagram
+' COMPONENT DIAGRAM — Dungeon Explorer
+
+package "Application" {
+  [Main] --> [Game]
+}
+
+package "Core" {
+  [Game] --> [GameContext]
+  [Game] --> [CommandProcessor]
+  [GameContext] --> [EventManager]
+  [Game] --> [GameLogger]
+  [Game] --> [GameFileManager]
+  [Game] --> [GameStateMemento]
+}
+
+package "Entities" {
+  [GameContext] --> [Player]
+  [Room] --> [Enemy]
+  [Enemy] --> [EnemyStrategy]
+  [Player] --> [Inventory]
+  [Inventory] --> [Item]
+}
+
+package "Items" {
+  [Item] --> [ItemType]
+  [CompositeItem] --> [Item]
+  [ItemBuilder] --> [Item]
+}
+
+package "Map" {
+  [Room] --> [Item]
+  [Room] --> [Enemy]
+  [Room] --> [Room] : exits
+  [CompositeRoom] --> [Room]
+  [RoomIterator] --> [Room]
+}
+
+package "Events" {
+  [EventManager] --> [GameEvent]
+  [EventManager] --> [EventListener]
+  [ScoreListener] ..> [EventListener]
+}
+
+package "IO & Config" {
+  [GameFileManager] --> [GameContext]
+  [InputSanitizer] --> [CommandProcessor]
+  [ReflectionLoader] --> [@AutoLoad]
+  [GameConfig] --> [DefaultGameInitializer]
+  [GameLogger] --> [game.log]
+}
+@enduml
+
+manca:
+- unit tests (JUnit)
+- enemyfactory da rendere dinamico
+- integrare game config
+- usare il logger nel codice
+- optional: caricamento mappa da file

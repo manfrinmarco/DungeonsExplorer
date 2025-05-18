@@ -1,0 +1,109 @@
+@startuml ClassDiagram
+' CLASS DIAGRAM — Dungeon Explorer
+
+package core {
+  class GameContext {
+    - player: Player
+    - currentRoom: Room
+    - score: int
+    - eventManager: EventManager
+    + getInstance(): GameContext
+    + setPlayer(Player): void
+    + setCurrentRoom(Room): void
+  }
+
+  class Game {}
+  class CommandProcessor {}
+  class GameLogger {}
+  class GameFileManager {}
+  class GameStateMemento {}
+}
+
+package entities {
+  abstract class Entity {
+    - name: String
+    - health: int
+    + takeDamage(int): void
+  }
+
+  class Player {
+    - inventory: Inventory
+    - equippedWeapon: Item
+    - equippedArmor: Item
+    + attack(Entity): void
+  }
+
+  class Enemy {
+    - strategy: EnemyStrategy
+    + executeStrategy(Player): void
+  }
+
+  interface EnemyStrategy {
+    + attack(Enemy, Player): void
+  }
+
+  class AggressiveStrategy
+  class DefensiveStrategy
+}
+
+package items {
+  class Item {
+    - name: String
+    - type: ItemType
+    - power: int
+  }
+
+  class CompositeItem
+  class Inventory
+  class ItemBuilder
+  enum ItemType
+}
+
+package map {
+  class Room {
+    - name: String
+    - description: String
+    - exits: Map<Direction, Room>
+    - items: List<Item>
+    - enemy: Enemy
+  }
+
+  class CompositeRoom
+  class RoomIterator
+  class RoomFactory
+  enum Direction
+}
+
+package events {
+  class EventManager
+  interface EventListener
+  class GameEvent
+  class ScoreListener
+}
+
+GameContext --> Player
+GameContext --> Room
+GameContext --> EventManager
+Game --> CommandProcessor
+Game --> GameContext
+Game --> GameLogger
+Game --> GameFileManager
+Game --> GameStateMemento
+
+Player --> Inventory
+Player --> Item
+Enemy --> EnemyStrategy
+AggressiveStrategy ..|> EnemyStrategy
+DefensiveStrategy ..|> EnemyStrategy
+
+Inventory --> Item
+CompositeItem --> Item
+Room --> Item
+Room --> Enemy
+Room --> Room : exits
+CompositeRoom --> Room
+
+EventManager --> EventListener
+EventManager --> GameEvent
+ScoreListener ..|> EventListener
+@enduml

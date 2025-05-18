@@ -1,0 +1,52 @@
+@startuml ComponentDiagram
+' COMPONENT DIAGRAM — Dungeon Explorer
+
+package "Application" {
+  [Main] --> [Game]
+}
+
+package "Core" {
+  [Game] --> [GameContext]
+  [Game] --> [CommandProcessor]
+  [GameContext] --> [EventManager]
+  [Game] --> [GameLogger]
+  [Game] --> [GameFileManager]
+  [Game] --> [GameStateMemento]
+}
+
+package "Entities" {
+  [GameContext] --> [Player]
+  [Room] --> [Enemy]
+  [Enemy] --> [EnemyStrategy]
+  [Player] --> [Inventory]
+  [Inventory] --> [Item]
+}
+
+package "Items" {
+  [Item] --> [ItemType]
+  [CompositeItem] --> [Item]
+  [ItemBuilder] --> [Item]
+}
+
+package "Map" {
+  [Room] --> [Item]
+  [Room] --> [Enemy]
+  [Room] --> [Room] : exits
+  [CompositeRoom] --> [Room]
+  [RoomIterator] --> [Room]
+}
+
+package "Events" {
+  [EventManager] --> [GameEvent]
+  [EventManager] --> [EventListener]
+  [ScoreListener] ..> [EventListener]
+}
+
+package "IO & Config" {
+  [GameFileManager] --> [GameContext]
+  [InputSanitizer] --> [CommandProcessor]
+  [ReflectionLoader] --> [@AutoLoad]
+  [GameConfig] --> [DefaultGameInitializer]
+  [GameLogger] --> [game.log]
+}
+@enduml

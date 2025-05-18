@@ -51,17 +51,15 @@ public class Player extends Entity {
 
     public void equip(Item item) {
         switch (item.getType()) {
-            case WEAPON:
+            case WEAPON -> {
                 this.equippedWeapon = item;
                 System.out.println("Hai equipaggiato l'arma: " + item.getName());
-                break;
-            case ARMOR:
+            }
+            case ARMOR -> {
                 this.equippedArmor = item;
                 System.out.println("Hai indossato l'armatura: " + item.getName());
-                break;
-            default:
-                System.out.println("Questo oggetto non può essere equipaggiato.");
-                break;
+            }
+            default -> System.out.println("Questo oggetto non può essere equipaggiato.");
         }
     }
 }

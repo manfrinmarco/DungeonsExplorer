@@ -9,15 +9,15 @@ public class Game {
     public void start() {
         DefaultGameInitializer.initialize(context);
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Benvenuto in Dungeon Explorer!");
-
-        while (true) {
-            System.out.print("\n> ");
-            String input = scanner.nextLine();
-            if (input.equalsIgnoreCase("exit")) break;
-            processor.processCommand(input);
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Benvenuto in Dungeon Explorer!");
+            
+            while (true) {
+                System.out.print("\n> ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("exit")) break;
+                processor.processCommand(input);
+            }
         }
-        scanner.close();
     }
 }

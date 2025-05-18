@@ -18,11 +18,7 @@ public class GameContext implements Serializable {
     private GameContext() {
         // usato solo dal singleton
     }
-
-    private GameContext(boolean dummy) {
-        // costruttore privato per uso interno (clone)
-    }
-
+    
     public static GameContext getInstance() {
         return instance;
     }
@@ -63,7 +59,7 @@ public class GameContext implements Serializable {
     }
 
     public GameContext cloneContext() {
-        GameContext clone = new GameContext(false); // passaggio interno
+        GameContext clone = new GameContext();
         clone.copyFrom(this);
         return clone;
     }

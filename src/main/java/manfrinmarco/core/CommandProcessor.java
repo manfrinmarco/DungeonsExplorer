@@ -233,11 +233,15 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
             } else {
                 System.out.println("Stanze collegate:");
-                for (Direction dir : Direction.values()) {
-                    Room adjacent = current.getExit(dir);
-                    if (adjacent != null) {
-                        System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+                if (current != null) {
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = current.getExit(dir);
+                        if (adjacent != null) {
+                            System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+                        }
                     }
+                } else {
+                    System.out.println("Errore: stanza corrente non trovata.");
                 }
             }
         }

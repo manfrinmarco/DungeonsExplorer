@@ -1,11 +1,15 @@
 package manfrinmarco.entities;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import manfrinmarco.config.GameConfig;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 
 public class Player extends Entity{
     private static final long serialVersionUID = 1L;
+    private static final Logger log = Logger.getLogger(Player.class.getName());
     private Inventory inventory;
     private Item equippedWeapon;
     private Item equippedArmor;
@@ -16,13 +20,15 @@ public class Player extends Entity{
         try {
             this.health = Integer.parseInt(GameConfig.get("player.hp"));
         } catch (NumberFormatException e) {
-            System.err.println("Valore di player.hp non valido, uso fallback a 100.");
+            log.warning("Valore di player.hp non valido, uso fallback a 100.");
             this.health = 100;
         }
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
     }
 
     @Override
     public void attack(Entity enemy) {
+        log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
         int baseDamage;
         try {
             baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
@@ -33,11 +39,15 @@ public class Player extends Entity{
         if (equippedWeapon != null) {
             baseDamage += equippedWeapon.getPower();
         }
+        log.log(Level.FINE, "Player.attack: danno totale calcolato = {0}", baseDamage);
         enemy.takeDamage(baseDamage);
+        log.log(Level.INFO, "Player.attack: inflitti {0} danni a {1}", new Object[]{baseDamage, enemy.getName()});
     }
 
     public void heal(int amount) {
+        log.log(Level.FINE, "Player.heal: tentativo di guarigione di {0} HP", amount);
         this.health = Math.min(100, this.health + amount);
+        log.log(Level.INFO, "Player.heal: HP attuali = {0}", this.health);
     }
 
     public Inventory getInventory() {
@@ -50,11 +60,14 @@ public class Player extends Entity{
 
     @Override
     public void takeDamage(int damage) {
+        log.fine("Player.takeDamage: danno in ingresso = " + damage);
         int mitigated = damage;
         if (equippedArmor != null) {
             mitigated = Math.max(0, damage - equippedArmor.getPower());
         }
+        log.fine("Player.takeDamage: danno dopo armatura = " + mitigated);
         super.takeDamage(mitigated);
+        log.info("Player.takeDamage: HP rimanenti = " + this.health);
     }
 
     public String getStatus() {
@@ -68,12 +81,17 @@ public class Player extends Entity{
             case WEAPON -> {
                 this.equippedWeapon = item;
                 System.out.println("Hai equipaggiato l'arma: " + item.getName());
+                log.info("Player.equip: equipaggiato weapon = " + item.getName());
             }
             case ARMOR -> {
                 this.equippedArmor = item;
                 System.out.println("Hai indossato l'armatura: " + item.getName());
+                log.info("Player.equip: equipaggiato armor = " + item.getName());
             }
-            default -> System.out.println("Questo oggetto non può essere equipaggiato.");
+            default -> {
+                log.warning("Player.equip: tentativo di equipaggiare oggetto non valido = " + item.getName());
+                System.out.println("Questo oggetto non può essere equipaggiato.");
+            }
         }
     }
 }

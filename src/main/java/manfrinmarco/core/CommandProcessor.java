@@ -1,5 +1,8 @@
 package manfrinmarco.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.EventManager;
@@ -16,26 +19,38 @@ import manfrinmarco.map.Room;
 
 public class CommandProcessor extends AbstractCommandProcessor {
     private final GameContext context = GameContext.getInstance();
+    private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
 
     @Override
     protected void executeCommand(String[] tokens) {
         if (tokens.length == 0) return;
         String command = tokens[0].toLowerCase();
+        log.log(Level.FINE, "Esecuzione comando: {0}", command);
 
         switch (command) {
-            case "guarda" -> lookAround();
-            case "muovi" -> {
+            case "look" -> lookAround();
+            case "go" -> {
                 if (tokens.length < 2) {
+                    log.warning("Comando muovi senza direzione");
                     System.out.println("Dove vuoi andare?");
                 } else {
                     moveTo(tokens[1]);
                 }
             }
-            case "attacca" -> attack();
-            case "stato" -> showStatus();
-            case "inventario" -> showInventory();
-            case "usa" -> {
+            case "attack" -> {
+                Enemy enemy = context.getCurrentRoom().getEnemy();
+                if (enemy == null || !enemy.isAlive()) {
+                    log.info("Comando attacca invocato ma nessun nemico presente");
+                    System.out.println("Non c'è nessun nemico da attaccare.");
+                    return;
+                }
+                attack();
+            }
+            case "status" -> showStatus();
+            case "i" -> showInventory();
+            case "use" -> {
                 if (tokens.length < 2) {
+                    log.warning("Comando usa invocato senza specificare oggetto");
                     System.out.println("Specifica l'oggetto da usare.");
                 } else {
                     useItem(tokens[1]);
@@ -43,23 +58,26 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
             case "equip" -> {
                 if (tokens.length < 2) {
+                    log.warning("Comando equip invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi equipaggiare.");
                 } else {
                     equipItem(tokens[1]);
                 }
             }
-            case "prendi" -> {
+            case "take" -> {
                 if (tokens.length < 2) {
+                    log.warning("Comando prendi invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi prendere.");
                 } else {
                     pickItem(tokens[1]);
                 }
             }
-            case "salva" -> {
+            case "save" -> {
                 GameStateMemento snapshot = new GameStateMemento(context);
                 GameFileManager.saveMemento(snapshot);
+                log.info("Stato di gioco salvato.");
             }
-            case "carica" -> {
+            case "load" -> {
                 GameStateMemento loaded = GameFileManager.loadMemento();
                 if (loaded != null) {
                     context.copyFrom(loaded.getSnapshot());
@@ -67,18 +85,22 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     GameContext.getInstance().setEventManager(new EventManager());
                     GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
                     System.out.println("Partita caricata.");
+                    log.info("Stato di gioco caricato.");
                     lookAround();
                 }
             }
-            case "esplora" -> exploreRooms();
-            case "combina" -> {
+            case "explore" -> exploreRooms();
+            case "combine" -> {
                 if (tokens.length < 3) {
                     System.out.println("Specifica due oggetti da combinare.");
                 } else {
                     combineItems(tokens[1], tokens[2]);
                 }
 }
-            default -> System.out.println("Comando sconosciuto.");
+            default -> {
+                log.warning("Comando sconosciuto: " + command);
+                System.out.println("Comando sconosciuto.");
+            }
         }
     }
 
@@ -130,6 +152,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 System.out.println("Non c'è nulla in quella direzione.");
             }
         } catch (IllegalArgumentException e) {
+            log.log(Level.WARNING, "Direzione non valida: {0}", dirString);
             System.out.println("Direzione non valida.");
         }
     }
@@ -202,6 +225,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 return;
             }
         }
+        log.log(Level.INFO, "Oggetto non trovato in inventario: {0}", itemName);
         System.out.println("Oggetto non trovato.");
     }
 
@@ -226,6 +250,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 return;
             }
         }
+        log.log(Level.INFO, "Tentativo di prendere oggetto non presente: {0}", itemName);
         System.out.println("Oggetto non trovato nella stanza.");
     }
 
@@ -296,6 +321,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
         inventory.removeItem(item2);
         inventory.addItem(armaCombinata);
 
+        log.log(Level.FINE, "Oggetti combinati: {0} + {1}", new Object[]{name1, name2});
         System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
     }
 

@@ -3,15 +3,22 @@ package manfrinmarco.config;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.core.CommandProcessor;
 
 public class GameConfig {
     private static final Properties config = new Properties();
+    private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
 
     static {
         try (FileInputStream fis = new FileInputStream("game.properties")) {
+            log.log(Level.INFO, "Caricamento configurazione da file: {0}", "game.properties");
             config.load(fis);
+            
         } catch (IOException e) {
-            System.err.println("Errore caricamento configurazione: " + e.getMessage());
+            log.log(Level.SEVERE, "Errore caricamento configurazione: {0}", e.getMessage());
         }
     }
 

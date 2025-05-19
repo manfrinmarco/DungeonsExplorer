@@ -1,6 +1,8 @@
 package manfrinmarco.core;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.EventManager;
@@ -9,6 +11,7 @@ import manfrinmarco.map.Room;
 public class GameContext implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final GameContext instance = new GameContext();
+    private static final Logger log = Logger.getLogger(GameContext.class.getName());
 
     private Player player;
     private Room currentRoom;
@@ -41,6 +44,7 @@ public class GameContext implements Serializable {
 
     public EventManager getEventManager() {
         if (eventManager == null) {
+            log.fine("Reinizializzazione dell'EventManager dopo deserializzazione");
             eventManager = new EventManager();
         }
         return eventManager;
@@ -51,11 +55,13 @@ public class GameContext implements Serializable {
      * utile per riallacciare i listener dopo il load.
      */
     public void setEventManager(EventManager manager) {
+        log.fine("EventManager sostituito tramite setEventManager");
         this.eventManager = manager;
     }
     
 
     public void increaseScore(int amount) {
+        log.log(Level.INFO, "Incremento punteggio di {0} punti; nuovo punteggio: {1}{2}", new Object[]{amount, this.score, amount});
         this.score += amount;
         System.out.println("+" + amount + " punti! Punteggio attuale: " + this.score);
     }

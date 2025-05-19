@@ -1,5 +1,8 @@
 package manfrinmarco.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
@@ -14,11 +17,15 @@ import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
 
 public class DefaultGameInitializer {
+    private static final Logger log = Logger.getLogger(DefaultGameInitializer.class.getName());
+
     public static void initialize(GameContext context) {
+        log.info("Inizializzazione del gioco predefinito");
         Player player = new Player("Eroe", Integer.parseInt(GameConfig.get("player.hp")));
         Inventory inventory = new Inventory();
         player.setInventory(inventory);
         context.setPlayer(player);
+        log.log(Level.FINE, "Giocatore creato: {0} con HP={1}", new Object[]{player.getName(), player.getHealth()});
 
         // Zona 1: Costa
         Room nave = new Room("Nave", "Una vecchia nave attraccata.");
@@ -26,6 +33,7 @@ public class DefaultGameInitializer {
         nave.setExit(Direction.NORTH, porto);
         porto.setExit(Direction.SOUTH, nave);
         porto.addItem(new Item("Ascia", ItemType.WEAPON, 5));
+        log.fine("Zona 'Costa' configurata con stanze Nave e Porto");
 
         // Zona 2: Giardino
         Room giardino = new Room("Giardino", "Un giardino pieno di vegetazione.");
@@ -37,6 +45,7 @@ public class DefaultGameInitializer {
         Item torcia = ItemFactory.create("Torcia");
         giardinoEnemy.setDrop(torcia);
         giardino.setEnemy(giardinoEnemy);
+        log.log(Level.FINE, "Zona ''Giardino'' configurata con nemico: {0}", giardinoEnemy.getName());
 
         // Zona 3: Castello
         Room entrata = new Room("Entrata", "Una stanza buia, serve una torcia per esplorare.");
@@ -94,6 +103,7 @@ public class DefaultGameInitializer {
         castello.addRoom(boss);
         castello.addRoom(uscita);
         castello.setMainRoom(entrata);
+        log.log(Level.INFO, "Castello configurato con stanza principale: {0}", entrata.getName());
 
         // Composizione isola
         CompositeRoom isola = new CompositeRoom("Isola", "Un luogo remoto e pericoloso.");
@@ -102,8 +112,11 @@ public class DefaultGameInitializer {
         isola.addRoom(giardino);
         isola.addRoom(castello);
         isola.setMainRoom(nave);
+        log.log(Level.INFO, "Mappa ''Isola'' pronta. Punto di spawn: {0}", nave.getName());
 
         context.setCurrentRoom(isola.getMainRoom());
+        log.fine("Sottoscrizione ScoreListener al GameContext");
         context.getEventManager().subscribe(new ScoreListener());
+        log.info("DefaultGameInitializer completato");
     }
 }

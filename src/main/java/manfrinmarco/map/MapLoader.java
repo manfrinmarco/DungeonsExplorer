@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,10 +29,13 @@ import manfrinmarco.items.ItemType;
  * }
  */
 public class MapLoader {
+    private static final Logger log = Logger.getLogger(MapLoader.class.getName());
     public static CompositeRoom load(String jsonFile) throws Exception {
+        log.log(Level.INFO, "MapLoader: loading map from {0}", jsonFile);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(new File(jsonFile));
         JsonNode roomsNode = root.get("rooms");
+        log.fine("MapLoader: first pass - creating rooms");
         // prima pass: crea tutte le stanze
         Map<String, Room> registry = new HashMap<>();
         Iterator<JsonNode> it = roomsNode.elements();
@@ -42,13 +47,16 @@ public class MapLoader {
             boolean composite = r.has("subRooms");
             Room room = composite ? new CompositeRoom(name, desc) : new Room(name, desc);
             registry.put(id, room);
+            log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{id, name});
         }
+        log.fine("MapLoader: second pass - configuring rooms");
         // seconda pass: imposta uscite, items, nemici e composizione
         it = roomsNode.elements();
         while (it.hasNext()) {
             JsonNode r = it.next();
             String id = r.get("id").asText();
             Room room = registry.get(id);
+            log.log(Level.FINE, "MapLoader: configuring room id={0}", id);
             // exits
             JsonNode exits = r.get("exits");
             if (exits != null) {
@@ -57,6 +65,7 @@ public class MapLoader {
                     Room target = registry.get(field.getValue().asText());
                     if (target != null) room.setExit(dir, target);
                 });
+                log.log(Level.FINE, "MapLoader: exits set for room id={0}", id);
             }
             // items
             JsonNode items = r.get("items");
@@ -73,6 +82,7 @@ public class MapLoader {
                         item = new Item(name, type, power);
                     }
                     room.addItem(item);
+                    log.log(Level.FINE, "MapLoader: added item {0} to room id={1}", new Object[]{item.getName(), id});
                 });
             }
             // enemy
@@ -85,6 +95,7 @@ public class MapLoader {
                     enemy.setDrop(ItemFactory.create(drop.get("id").asText()));
                 }
                 room.setEnemy(enemy);
+                log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{etype, id});
             }
             // composite
             if (room instanceof CompositeRoom && r.has("subRooms")) {
@@ -92,8 +103,10 @@ public class MapLoader {
                 if (r.has("mainRoom")) {
                     ((CompositeRoom) room).setMainRoom(registry.get(r.get("mainRoom").asText()));
                 }
+                log.log(Level.FINE, "MapLoader: configured CompositeRoom id={0} with subRooms {1}", new Object[]{id, r.get("subRooms")});
             }
         }
+        log.log(Level.INFO, "MapLoader: finished loading map root={0}", root.get("root").asText());
         // assume il root composite ha id "root"
         return (CompositeRoom) registry.get(root.get("root").asText());
     }

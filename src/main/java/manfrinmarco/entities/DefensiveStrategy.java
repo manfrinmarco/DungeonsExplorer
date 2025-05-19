@@ -1,8 +1,11 @@
 package manfrinmarco.entities;
 
+import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class DefensiveStrategy implements EnemyStrategy {
+public class DefensiveStrategy implements EnemyStrategy, Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Override
     public void attack(Enemy enemy, Player player) {
         if (enemy.getHealth() < 20) {

@@ -1,10 +1,13 @@
 package manfrinmarco.entities;
 
+import java.io.Serializable;
+
 import manfrinmarco.config.GameConfig;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 
-public class Player extends Entity {
+public class Player extends Entity implements Serializable{
+    private static final long serialVersionUID = 1L;
     private Inventory inventory;
     private Item equippedWeapon;
     private Item equippedArmor;

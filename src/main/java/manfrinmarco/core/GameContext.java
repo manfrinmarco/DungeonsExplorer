@@ -13,7 +13,7 @@ public class GameContext implements Serializable {
     private Player player;
     private Room currentRoom;
     private int score;
-    private final EventManager eventManager = new EventManager();
+    private transient final EventManager eventManager = new EventManager();
 
     private GameContext() {
         // usato solo dal singleton

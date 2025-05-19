@@ -3,6 +3,7 @@ package manfrinmarco.core;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.GameEvent;
+import manfrinmarco.io.GameFileManager;
 import manfrinmarco.items.CompositeItem;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
@@ -52,15 +53,21 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     pickItem(tokens[1]);
                 }
             }
-            // case "salva" -> manfrinmarco.io.GameFileManager.saveContext(context);
-            // case "carica" -> {
-            //     GameContext loaded = manfrinmarco.io.GameFileManager.loadContext();
-            //     if (loaded != null) {
-            //         context.copyFrom(loaded);
-            //         System.out.println("Partita caricata.");
-            //         lookAround();
-            //     }
-            // }
+            case "salva" -> {
+                GameStateMemento snapshot = new GameStateMemento(context);
+                GameFileManager.saveMemento(snapshot);
+            }
+            case "carica" -> {
+                GameStateMemento loaded = GameFileManager.loadMemento();
+                if (loaded != null) {
+                    context.copyFrom(loaded.getSnapshot());
+                    // Ripristina il EventManager e i suoi listener
+                    // TODO: GameContext.getInstance().setEventManager(new EventManager());
+                    // TODO: GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                    System.out.println("Partita caricata.");
+                    lookAround();
+                }
+            }
             case "esplora" -> exploreRooms();
             case "combina" -> {
                 if (tokens.length < 3) {

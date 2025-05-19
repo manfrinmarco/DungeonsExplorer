@@ -13,7 +13,7 @@ public class GameContext implements Serializable {
     private Player player;
     private Room currentRoom;
     private int score;
-    private transient final EventManager eventManager = new EventManager();
+    private transient EventManager eventManager = new EventManager();
 
     private GameContext() {
         // usato solo dal singleton
@@ -40,8 +40,20 @@ public class GameContext implements Serializable {
     }
 
     public EventManager getEventManager() {
+        if (eventManager == null) {
+            eventManager = new EventManager();
+        }
         return eventManager;
     }
+    
+    /**
+     * Permette di sostituire l'EventManager,
+     * utile per riallacciare i listener dopo il load.
+     */
+    public void setEventManager(EventManager manager) {
+        this.eventManager = manager;
+    }
+    
 
     public void increaseScore(int amount) {
         this.score += amount;

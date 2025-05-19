@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: CommandProcessorTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.349 s <<< FAILURE! -- in CommandProcessorTest
-CommandProcessorTest.testPickItemCommand -- Time elapsed: 0.316 s <<< ERROR!
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.376 s <<< FAILURE! -- in CommandProcessorTest
+CommandProcessorTest.testPickItemCommand -- Time elapsed: 0.344 s <<< ERROR!
 org.mockito.exceptions.base.MockitoException: 
 
 Mockito cannot mock this class: class manfrinmarco.core.GameContext.
@@ -72,7 +72,7 @@ Caused by: java.lang.IllegalArgumentException: Java 24 (68) is not supported by 
 	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.triggerRetransformation(InlineBytecodeGenerator.java:281)
 	... 19 more
 
-CommandProcessorTest.testShowStatusCommand -- Time elapsed: 0.006 s <<< ERROR!
+CommandProcessorTest.testShowStatusCommand -- Time elapsed: 0.007 s <<< ERROR!
 org.mockito.exceptions.base.MockitoException: 
 
 Mockito cannot mock this class: class manfrinmarco.core.GameContext.
@@ -212,7 +212,7 @@ Caused by: java.lang.IllegalArgumentException: Java 24 (68) is not supported by 
 	at org.mockito.internal.creation.bytebuddy.InlineBytecodeGenerator.triggerRetransformation(InlineBytecodeGenerator.java:281)
 	... 19 more
 
-CommandProcessorTest.testUsePotionCommand -- Time elapsed: 0.005 s <<< ERROR!
+CommandProcessorTest.testUsePotionCommand -- Time elapsed: 0.006 s <<< ERROR!
 org.mockito.exceptions.base.MockitoException: 
 
 Mockito cannot mock this class: class manfrinmarco.core.GameContext.

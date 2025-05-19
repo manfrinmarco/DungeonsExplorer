@@ -1,9 +1,8 @@
 package manfrinmarco.entities;
-import java.io.Serializable;
 
 import manfrinmarco.items.Item;
 
-public class Enemy extends Entity implements Serializable{
+public class Enemy extends Entity {
     private static final long serialVersionUID = 1L;
     private final EnemyStrategy strategy;
 

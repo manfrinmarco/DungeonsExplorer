@@ -2,7 +2,9 @@ package manfrinmarco.core;
 
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
+import manfrinmarco.events.EventManager;
 import manfrinmarco.events.GameEvent;
+import manfrinmarco.events.ScoreListener;
 import manfrinmarco.io.GameFileManager;
 import manfrinmarco.items.CompositeItem;
 import manfrinmarco.items.Inventory;
@@ -62,8 +64,8 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 if (loaded != null) {
                     context.copyFrom(loaded.getSnapshot());
                     // Ripristina il EventManager e i suoi listener
-                    // TODO: GameContext.getInstance().setEventManager(new EventManager());
-                    // TODO: GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                    GameContext.getInstance().setEventManager(new EventManager());
+                    GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
                     System.out.println("Partita caricata.");
                     lookAround();
                 }

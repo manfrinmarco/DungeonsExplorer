@@ -11,7 +11,7 @@ public class PozioneCurativa implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Pozione Max")
+                .setName("Pozione Curativa")
                 .setType(ItemType.POTION)
                 .setPower(0)
                 .build();

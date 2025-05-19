@@ -16,8 +16,10 @@
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/Entity.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/Player.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Demone.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Goblin.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Mummia.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Orco.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Skeleton.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/entities/custom/Spettro.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/events/EventListener.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/events/EventManager.java
@@ -30,10 +32,12 @@
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/Inventory.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/Item.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/ItemBuilder.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/ItemFactory.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/ItemTemplate.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/ItemType.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/AnelloDelFuoco.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/ChiaveDorata.java
-/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/PozioneMax.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/PozioneCurativa.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/TorciaMagica.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/CompositeRoom.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/Direction.java

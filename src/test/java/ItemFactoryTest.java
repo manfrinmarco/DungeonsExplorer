@@ -12,10 +12,10 @@ public class ItemFactoryTest {
 
     @Test
     void testCreateValidItem() {
-        Item item = ItemFactory.create("torciam");
+        Item item = ItemFactory.create("pozione");
         assertNotNull(item);
-        assertEquals("Torcia Magica", item.getName());
-        assertEquals(ItemType.TOOL, item.getType());
+        assertEquals("Pozione Curativa", item.getName());
+        assertEquals(ItemType.POTION, item.getType());
     }
 
     @Test

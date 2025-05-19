@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: ItemFactoryTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.017 s <<< FAILURE! -- in ItemFactoryTest
+ItemFactoryTest.testCreateValidItem -- Time elapsed: 0.010 s <<< ERROR!
+java.lang.IllegalArgumentException: Item non trovato: pozione
+	at manfrinmarco.items.ItemFactory.create(ItemFactory.java:24)
+	at ItemFactoryTest.testCreateValidItem(ItemFactoryTest.java:15)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+

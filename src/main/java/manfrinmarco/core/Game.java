@@ -1,6 +1,7 @@
 package manfrinmarco.core;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.io.GameFileManager;
@@ -12,7 +13,9 @@ public class Game {
     private final CommandProcessor processor = new CommandProcessor();
 
     public void start() {
-
+        GameLogger.configure();
+        Logger logger = Logger.getLogger(Game.class.getName());
+        logger.info("Avvio del gioco");
 
         System.out.println("Benvenuto in Dungeon Explorer!");
 
@@ -63,9 +66,3 @@ public class Game {
         }
     }
 }
-
-// 1. avvio del gioco -> benvenuto...
-// 2. vuoi iniziare una nuova partita (a) o caricare una partita esistente (b)?
-// 3. se (a) -> inizializza il gioco, se (b) -> carica partia salvata (.dat)
-//4. se (a) -> segli la mappa da caricare (ad es piu json files in una cartella), se non scegli una mappa, 
-//   o non esiste carica la mappa di default (defaultGameInitializer)

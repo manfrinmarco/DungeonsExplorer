@@ -1,4 +1,3 @@
-// core/LoggingConfig.java
 package manfrinmarco.core;
 
 import java.io.IOException;

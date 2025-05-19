@@ -1,4 +1,41 @@
 la mappa è cosi strutturata:
+Isola 
+├── zona 1 - a nord zona 4 - a ovest zona 2 : nemico DefensiveStrategy
+├── zona 2 - a nord zona 3 - a est zona 1 : nemico DefensiveStrategy + arma da prendere
+├── zona 3 - a sud zona 2 - e est zona 4 : nemico AggressiveStrategy che droppa torcia
+├── zona 4 - a sud zona 1 - a ovest zona 3 : albero + scala per salire 
+│   ├── Albero : sali sulla scala (nella zona 4) e arrivi al castello
+|   │   ├── Castello
+|   |   |   ├── piano 1
+|   |   |   |   ├── 1.1 "entrata" - a nord vai a 1.2
+|   |   |   |   ├── 1.2 "corridoio 1" - a nord vai a 1.3 - e est vai a 1.4 - a ovest vai a 1.6 - a sud vai a 1.1
+|   |   |   |   ├── 1.3 "corridoio 2" - a est vai a 1.8 - a ovest vai a 1.7 - a sud vai a 1.2
+|   |   |   |   ├── 1.4 "stanza 1" - a est vai a 1.5 - a ovest vai a 1.2 : 1 nemico AggressiveStrategy + 1 nemico DefensiveStrategy
+|   |   |   |   ├── 1.5 "armeria" - a ovest vai a 1.4 : spada + armatura da raccogliere 
+|   |   |   |   ├── 1.6 "cucina" - a est vai a 1.2 : nemico DefensiveStrategy + cibo da raccogliere
+|   |   |   |   ├── 1.7 "scale" (puoi solo salire) - a est vai a 1.3
+|   |   |   |   └── 1.8 "stanza 2" - a ovest vai a 1.3 : nemico DefensiveStrategy + nemico DefensiveStrategy (droppa chiave) + nemico AggressiveStrategy (droppa armatura)
+|   |   |   ├── piano 2
+|   |   |   |   ├── 2.1 "scale" (sali e scendi) - a est vai a 2.2 - a sud vai a 2.7
+|   |   |   |   ├── 2.2 "stanza 3" - a est vai a 2.3 - a sud vai a 2.4 : 1 nemico AggressiveStrategy
+|   |   |   |   ├── 2.3 "stanza 4" - a sud vai a 2.4 - a est vai a 2.2 : armatura da raccogliere
+|   |   |   |   ├── 2.4 "stanza 5" - a ovest vai a 2.5 - a nord vai a 2.3 : pozione cura da raccogliere
+|   |   |   |   ├── 2.5 "stanza 6" - a ovest vai a 2.6  a est vai a 2.4 : elsa da raccogliere (si combina con lama)
+|   |   |   |   ├── 2.6 "stanza 7" - a nord vai a 2.2 - a est vai a 2.5 : pozione aumenta forza da raccogliere
+|   |   |   |   └── 2.7 "stanza 8" - a nord vai a 2.1 : stanza buia (se usi torcia vedi easter egg: nome sviluppatore)
+|   |   |   ├── piano 3
+|   |   |   |   ├── 3.1 "scale" (sali e scendi) - a sud vai a 3.2
+|   |   |   |   ├── 3.2 "corridoio" - a est vai a 3.3 - a ovest vai a 3.4
+|   |   |   |   ├── 3.3 "stanza 9" - a ovest vai a 3.2 : nemico DefensiveStrategy droppa lama da combinare con elsa
+|   |   |   |   └── 3.4 "stanza 10" - a est vai a 3.2 : incantesmo da raccogliere per spada combinata che aumeta forza spada
+|   |   |   └── piano 4
+|   |   |   |   └── 4.1 "scale" (solo scendere) - a sud vai a 4.3 
+|   |   |   |   ├── 4.2 "stanza del boss" - a nord vai a 4.1 a sud vai a 4.2 : boss finale (si sconfigge solo con spada combinata)
+├── └── └── └── └── 4.2 exit (puoi spostarti da 4.2 a 4.3 solo se hai sconfitto il boss) -> se arrivi qui HAI VINTO!
+├── porto - a nord vai a zona 1 - a sud vai a nave
+└── └── nave (punto partenza player) - a nord vai a porto
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 struttura della mappa:
 Isola 

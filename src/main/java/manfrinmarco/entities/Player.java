@@ -1,5 +1,6 @@
 package manfrinmarco.entities;
 
+import manfrinmarco.config.GameConfig;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 
@@ -11,11 +12,23 @@ public class Player extends Entity {
     public Player(String name, int health) {
         super(name, health);
         this.inventory = new Inventory();
+        try {
+            this.health = Integer.parseInt(GameConfig.get("player.hp"));
+        } catch (NumberFormatException e) {
+            System.err.println("Valore di player.hp non valido, uso fallback a 100.");
+            this.health = 100;
+        }
     }
 
     @Override
     public void attack(Entity enemy) {
-        int baseDamage = 10;
+        int baseDamage;
+        try {
+            baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
+        } catch (NumberFormatException e) {
+            System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
+            baseDamage = 10;
+        }
         if (equippedWeapon != null) {
             baseDamage += equippedWeapon.getPower();
         }
@@ -63,4 +76,3 @@ public class Player extends Entity {
         }
     }
 }
-    

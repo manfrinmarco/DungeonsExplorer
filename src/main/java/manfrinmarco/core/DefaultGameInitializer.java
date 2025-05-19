@@ -2,6 +2,7 @@ package manfrinmarco.core;
 
 import java.util.List;
 
+import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
@@ -18,7 +19,9 @@ import manfrinmarco.map.RoomFactory;
 
 public class DefaultGameInitializer {
     public static void initialize(GameContext context) {
-        Player player = new Player("Eroe", 100);
+        String playerName = GameConfig.get("player.name");
+        int playerHealth = Integer.parseInt(GameConfig.get("player.health"));
+        Player player = new Player(playerName != null ? playerName : "Eroe", playerHealth > 0 ? playerHealth : 100);
         Inventory inventory = new Inventory();
 
         Item pozione = new ItemBuilder().setName("Pozione")
@@ -30,7 +33,8 @@ public class DefaultGameInitializer {
         context.setPlayer(player);
 
         // Dungeon composto (CompositeRoom)
-        Room entrata = RoomFactory.createRoom("corridoio");
+        String startRoom = GameConfig.get("start.room");
+        Room entrata = RoomFactory.createRoom(startRoom != null ? startRoom : "corridoio");
         Room sala = RoomFactory.createRoom("corridoio");
         Room armeria = RoomFactory.createRoom("armeria");
         Room cripta = RoomFactory.createRoom("cripta");
@@ -87,7 +91,7 @@ public class DefaultGameInitializer {
 
 
         context.setCurrentRoom(castello);
-        context.setCurrentRoom(castello.getMainRoom());
+        context.setCurrentRoom(castello.getMainRoom() != null ? castello.getMainRoom() : entrata);
         context.getEventManager().subscribe(new ScoreListener());
     }
 }

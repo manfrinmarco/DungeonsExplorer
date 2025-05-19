@@ -164,8 +164,14 @@ public class CommandProcessor extends AbstractCommandProcessor {
         for (Item item : inventory) {
             if (item.getName().equalsIgnoreCase(itemName.trim())) {
                 if (item.getType() == ItemType.POTION) {
-                    context.getPlayer().heal(20);
-                    System.out.println("Hai usato " + item.getName() + " e recuperato 20 HP.");
+                    int healAmount = 20;
+                    try {
+                        healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
+                    } catch (Exception e) {
+                        System.err.println("Valore di healAmount non valido, uso 20 di default.");
+                    }
+                    context.getPlayer().heal(healAmount);
+                    System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
                     inventory.removeItem(item);
                     return;
                 }

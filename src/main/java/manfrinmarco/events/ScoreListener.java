@@ -6,7 +6,8 @@ public class ScoreListener implements EventListener {
     @Override
     public void onEvent(GameEvent event) {
         if (event.getType().equals("enemy_defeated")) {
-            GameContext.getInstance().increaseScore(100);
+            int score = Integer.parseInt(manfrinmarco.config.GameConfig.get("score.enemy.defeated"));
+            GameContext.getInstance().increaseScore(score);
         }
     }
 }

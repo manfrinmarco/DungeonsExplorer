@@ -16,6 +16,26 @@ public class GameConfig {
     }
 
     public static String get(String key) {
-        return config.getProperty(key);
+        String value = config.getProperty(key);
+        if (value == null) {
+            throw new manfrinmarco.security.GameException("Chiave di configurazione mancante: " + key);
+        }
+        return value;
     }
-}
+
+    public static int getInt(String key) {
+        return Integer.parseInt(get(key));
+    }
+
+    public static boolean getBoolean(String key) {
+        return Boolean.parseBoolean(get(key));
+    }
+
+    public static double getDouble(String key) {
+        return Double.parseDouble(get(key));
+    }
+
+    public static String getOrDefault(String key, String defaultValue) {
+        return config.getProperty(key, defaultValue);
+    }
+} 

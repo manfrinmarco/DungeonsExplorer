@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class GameLogger {
-    private static final String LOG_FILE = "game.log";
+    private static final String LOG_FILE = manfrinmarco.config.GameConfig.get("log.file");
 
     public static void log(String message) {
         try (FileWriter writer = new FileWriter(LOG_FILE, true)) {

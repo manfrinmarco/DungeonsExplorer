@@ -7,18 +7,18 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class ChiaveDorata implements ItemTemplate {
+public class PozioneCurativa implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Chiave Dorata")
-                .setType(ItemType.KEY)
+                .setName("Pozione Max")
+                .setType(ItemType.POTION)
                 .setPower(0)
                 .build();
     }
 
     @Override
     public String getId() {
-        return "chiavedorata";
+        return "pozione";
     }
 }

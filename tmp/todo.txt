@@ -1,0 +1,10 @@
+manca in ordine di priorità:
+
+- Rendere EnemyFactory e ItemFactory dinamiche -> done 
+- integrare game config ->done 
+- Junit test (mockito se serve) -> done 
+- mappa demo -> done
+- save / reload status
+- aggiungere logs
+- import map from file (json)
+- mappa finale

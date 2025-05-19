@@ -7,11 +7,11 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class TorciaMagica implements ItemTemplate {
+public class Torcia implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Torcia Magica")
+                .setName("Torcia")
                 .setType(ItemType.TOOL)
                 .setPower(0)
                 .build();
@@ -19,6 +19,6 @@ public class TorciaMagica implements ItemTemplate {
 
     @Override
     public String getId() {
-        return "torciam";
+        return "Torcia";
     }
 }

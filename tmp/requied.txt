@@ -1,0 +1,126 @@
+# Project Overview
+
+### Project theme
+
+Students are free to **select any project scenario or application domain** of their choice. This could be a utility, a simulation, a personal productivity tool, a data processing tool, or anything else that fits the criteria.
+
+> **The minimum required features must be implemented as specified.**
+> 
+
+Students may integrate **any number of advanced technologies** or design patterns from the optional list to improve their score.
+
+Projects will be evaluated not just on what is included, but how well technologies are integrated, justified, and secured.
+
+**Develop** a well-architected, secure, and maintainable Java SE **application** showcasing object-oriented design, use of patterns, and **core Java technologies**.
+
+### Minimum requirements
+
+- **4 Required Design Patterns:** Factory, Composite, Iterator, Exception Shielding
+- **Core Technologies:** Collections, Generics, Java I/O, Logging, JUnit Testing
+- **Secure Programming:** Input Sanitization, No Hardcoded Secrets, Controlled Exception Propagation
+
+### Additional requirements
+
+**Beyond Minimum**
+
+- Additional patterns and technologies from a defined list.
+- Correct integration and critical-path usage of optional components.
+- Additional points do not raise the grade beyond 50, but allow varied strategy.
+
+**Security Penalties**
+
+- Crashes, stack traces, insecure data handling will subtract points.
+
+**Documentation and Justification**
+
+- README must include project overview, design decisions, diagrams,
+- tech/pattern justifications, limitations.
+- Expect interview questions on alternatives and rationale.
+
+### deliverables
+
+1. Complete Java project source code
+2. README.md with:
+    1. Application overview and functionality
+    2. Technologies and patterns used, with justification
+    3. Setup and execution instructions
+    4. UML diagrams (class + architectural)
+    5. Known limitations and future work
+3. Test suite
+
+### interview
+
+During the evaluation, you will:
+
+1. Demo your application live
+2. Walk through random parts of the code
+3. Justify your design decisions
+
+Expect questions on why specific technologies and patterns were used over alternatives. Your understanding and rationale are part of your grade.
+
+## Evaluation
+
+### Required feature
+
+| Design Patterns  | 16 pt |
+| --- | --- |
+| Factory  | 3 pt |
+| Composite  | 3 pt |
+| Iterator | 3 pt |
+| Exception Shielding  | 5 pt |
+
+| Technologies | 14 pt |
+| --- | --- |
+| Collections Framework  | 3 pt |
+| Generics | 3 pt |
+| Java I/O  | 3 pt |
+| Logging | 2 pt |
+| Logging | 3 pt |
+
+All these items are required: (you must include all of them in your project)
+
+Each item coding and usage will be evaluated from 0 to N points.
+
+You must obtain a minimum of 25 points from these items. (not everything must be perfect)
+
+### Optional Advanced Features
+
+| Technologies |  |
+| --- | --- |
+| Multithreading | 8 pt |
+| Stream API & Lambdas  | 5 pt |
+| Reflection | 4 pt  |
+| Inversion of Control | 5 pt |
+| Custom Annotations  | 2 pt |
+| Custom Annotations  | 3 pt |
+
+| Design Patterns |  |
+| --- | --- |
+| Abstract Factory  | 3 pt |
+| Builder | 3 pt |
+| Strategy | 4 pt |
+| Observer | 5 pt |
+| Chain of Responsibility  | 4 pt |
+| Adapter/Bridge/Proxy/Decorator  | 2 pt each |
+| Singleton  | 2 pt |
+| Memento | 3 pt |
+| Template Method | 3 pt |
+
+### Security Penalties
+
+- Stack traces visible to users: -5 pts
+- Application crashes on invalid input: -5 pts
+- Hardcoded credentials: -3 pts
+- No input sanitization: -3 pts
+Exception propagation leaks: -3 pts
+- Poor logging practices: -2 pts
+- Minor issues: -1 pt each
+
+### Final grade
+
+Final grade will be calculated as follow:
+
+requied features + optional feature - security penalties
+
+**Minimum grade to approve the project is 25 points.
+Maximum grade obtained with at least 50 points.

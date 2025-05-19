@@ -1,131 +1,3 @@
-# Project Overview
-
-### Project theme
-
-Students are free to **select any project scenario or application domain** of their choice. This could be a utility, a simulation, a personal productivity tool, a data processing tool, or anything else that fits the criteria.
-
-> **The minimum required features must be implemented as specified.**
-> 
-
-Students may integrate **any number of advanced technologies** or design patterns from the optional list to improve their score.
-
-Projects will be evaluated not just on what is included, but how well technologies are integrated, justified, and secured.
-
-**Develop** a well-architected, secure, and maintainable Java SE **application** showcasing object-oriented design, use of patterns, and **core Java technologies**.
-
-### Minimum requirements
-
-- **4 Required Design Patterns:** Factory, Composite, Iterator, Exception Shielding
-- **Core Technologies:** Collections, Generics, Java I/O, Logging, JUnit Testing
-- **Secure Programming:** Input Sanitization, No Hardcoded Secrets, Controlled Exception Propagation
-
-### Additional requirements
-
-**Beyond Minimum**
-
-- Additional patterns and technologies from a defined list.
-- Correct integration and critical-path usage of optional components.
-- Additional points do not raise the grade beyond 50, but allow varied strategy.
-
-**Security Penalties**
-
-- Crashes, stack traces, insecure data handling will subtract points.
-
-**Documentation and Justification**
-
-- README must include project overview, design decisions, diagrams,
-- tech/pattern justifications, limitations.
-- Expect interview questions on alternatives and rationale.
-
-### deliverables
-
-1. Complete Java project source code
-2. README.md with:
-    1. Application overview and functionality
-    2. Technologies and patterns used, with justification
-    3. Setup and execution instructions
-    4. UML diagrams (class + architectural)
-    5. Known limitations and future work
-3. Test suite
-
-### interview
-
-During the evaluation, you will:
-
-1. Demo your application live
-2. Walk through random parts of the code
-3. Justify your design decisions
-
-Expect questions on why specific technologies and patterns were used over alternatives. Your understanding and rationale are part of your grade.
-
-## Evaluation
-
-### Required feature
-
-| Design Patterns  | 16 pt |
-| --- | --- |
-| Factory  | 3 pt |
-| Composite  | 3 pt |
-| Iterator | 3 pt |
-| Exception Shielding  | 5 pt |
-
-| Technologies | 14 pt |
-| --- | --- |
-| Collections Framework  | 3 pt |
-| Generics | 3 pt |
-| Java I/O  | 3 pt |
-| Logging | 2 pt |
-| Logging | 3 pt |
-
-All these items are required: (you must include all of them in your project)
-
-Each item coding and usage will be evaluated from 0 to N points.
-
-You must obtain a minimum of 25 points from these items. (not everything must be perfect)
-
-### Optional Advanced Features
-
-| Technologies |  |
-| --- | --- |
-| Multithreading | 8 pt |
-| Stream API & Lambdas  | 5 pt |
-| Reflection | 4 pt  |
-| Inversion of Control | 5 pt |
-| Custom Annotations  | 2 pt |
-| Custom Annotations  | 3 pt |
-
-| Design Patterns |  |
-| --- | --- |
-| Abstract Factory  | 3 pt |
-| Builder | 3 pt |
-| Strategy | 4 pt |
-| Observer | 5 pt |
-| Chain of Responsibility  | 4 pt |
-| Adapter/Bridge/Proxy/Decorator  | 2 pt each |
-| Singleton  | 2 pt |
-| Memento | 3 pt |
-| Template Method | 3 pt |
-
-### Security Penalties
-
-- Stack traces visible to users: -5 pts
-- Application crashes on invalid input: -5 pts
-- Hardcoded credentials: -3 pts
-- No input sanitization: -3 pts
-Exception propagation leaks: -3 pts
-- Poor logging practices: -2 pts
-- Minor issues: -1 pt each
-
-### Final grade
-
-Final grade will be calculated as follow:
-
-requied features + optional feature - security penalties
-
-**Minimum grade to approve the project is 25 points.
-Maximum grade obtained with at least 50 points.**
-
-
 my code untill now:
 
 //annotations/autoload.java
@@ -501,101 +373,115 @@ public class CommandProcessor extends AbstractCommandProcessor {
 //core/defultgameinitializer
 package manfrinmarco.core;
 
-import java.util.List;
-
 import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.ScoreListener;
-import manfrinmarco.io.ReflectionLoader;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
-import manfrinmarco.items.ItemBuilder;
+import manfrinmarco.items.ItemFactory;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
-import manfrinmarco.map.RoomFactory;
 
 public class DefaultGameInitializer {
     public static void initialize(GameContext context) {
-        String playerName = GameConfig.get("player.name");
-        int playerHealth = Integer.parseInt(GameConfig.get("player.health"));
-        Player player = new Player(playerName != null ? playerName : "Eroe", playerHealth > 0 ? playerHealth : 100);
+        Player player = new Player("Eroe", Integer.parseInt(GameConfig.get("player.hp")));
         Inventory inventory = new Inventory();
-
-        Item pozione = new ItemBuilder().setName("Pozione")
-                                        .setType(ItemType.POTION)
-                                        .setPower(0)
-                                        .build();
-        inventory.addItem(pozione);
         player.setInventory(inventory);
         context.setPlayer(player);
 
-        // Dungeon composto (CompositeRoom)
-        String startRoom = GameConfig.get("start.room");
-        Room entrata = RoomFactory.createRoom(startRoom != null ? startRoom : "corridoio");
-        Room sala = RoomFactory.createRoom("corridoio");
-        Room armeria = RoomFactory.createRoom("armeria");
-        Room cripta = RoomFactory.createRoom("cripta");
+        // Zona 1: Costa
+        Room nave = new Room("Nave", "Una vecchia nave attraccata.");
+        Room porto = new Room("Porto", "Un porto di legno, bagnato dalle onde.");
+        nave.setExit(Direction.NORTH, porto);
+        porto.setExit(Direction.SOUTH, nave);
+        porto.addItem(new Item("Ascia", ItemType.WEAPON, 5));
 
-        entrata.setExit(Direction.NORTH, sala);
-        sala.setExit(Direction.SOUTH, entrata);
-        sala.setExit(Direction.EAST, armeria);
-        armeria.setExit(Direction.WEST, sala);
-        sala.setExit(Direction.WEST, cripta);
-        cripta.setExit(Direction.EAST, sala);
+        // Zona 2: Giardino
+        Room giardino = new Room("Giardino", "Un giardino pieno di vegetazione.");
+        porto.setExit(Direction.NORTH, giardino);
+        giardino.setExit(Direction.SOUTH, porto);
+        giardino.addItem(new Item("Elsa", ItemType.WEAPON, 25));
 
-        CompositeRoom castello = new CompositeRoom("Castello Maledetto", "Un'antica fortezza infestata.");
+        Enemy giardinoEnemy = EnemyFactory.createEnemy("demone");
+        Item torcia = ItemFactory.create("Torcia");
+        giardinoEnemy.setDrop(torcia);
+        giardino.setEnemy(giardinoEnemy);
+
+        // Zona 3: Castello
+        Room entrata = new Room("Entrata", "Una stanza buia, serve una torcia per esplorare.");
+        giardino.setExit(Direction.NORTH, entrata);
+        entrata.setExit(Direction.SOUTH, giardino);
+
+        Room guardie = new Room("Stanza delle Guardie", "Una stanza sorvegliata da un nemico.");
+        Room armeria = new Room("Armeria", "Contiene armi e armature abbandonate.");
+        Room cucina = new Room("Cucina", "Odore di stufato e tre pozioni dimenticate.");
+        Room boss = new Room("Stanza del Boss", "Un potente nemico ti aspetta qui.");
+        Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
+
+        entrata.setExit(Direction.NORTH, armeria);
+        armeria.setExit(Direction.SOUTH, entrata);
+
+        guardie.setExit(Direction.SOUTH, entrata);
+        entrata.setExit(Direction.NORTH, guardie);
+
+        armeria.setExit(Direction.SOUTH, guardie);
+        guardie.setExit(Direction.EAST, armeria);
+
+        // Blocco accesso cucina con chiave
+        Item chiave = new Item("Chiave della Cucina", ItemType.KEY);
+        cucina.setLocked(true, chiave);
+        armeria.setExit(Direction.EAST, cucina);
+        cucina.setExit(Direction.WEST, armeria);
+
+        // Pozioni nella cucina
+        cucina.addItem(new Item("Pozione Curativa 1", ItemType.POTION));
+        cucina.addItem(new Item("Pozione Curativa 2", ItemType.POTION));
+        cucina.addItem(new Item("Pozione Curativa 3", ItemType.POTION));
+
+        // Accesso boss e uscita
+        cucina.setExit(Direction.SOUTH, boss);
+        boss.setExit(Direction.NORTH, cucina);
+        boss.setExit(Direction.EAST, uscita);
+
+        // Drop torcia già previsto in giardino
+        Enemy guardia = EnemyFactory.createEnemy("scheletro");
+        guardia.setDrop(chiave);
+        guardie.setEnemy(guardia);
+
+        armeria.addItem(new Item("Lama", ItemType.WEAPON, 25));
+        armeria.addItem(new Item("Armatura", ItemType.ARMOR, 20));
+
+        Enemy bossEnemy = EnemyFactory.createEnemy("demone");
+        boss.setEnemy(bossEnemy);
+
+        // Composizione castello
+        CompositeRoom castello = new CompositeRoom("Castello sull'Isola", "Un castello antico e misterioso.");
         castello.addRoom(entrata);
-        castello.addRoom(sala);
+        castello.addRoom(guardie);
         castello.addRoom(armeria);
-        castello.addRoom(cripta);
+        castello.addRoom(cucina);
+        castello.addRoom(boss);
+        castello.addRoom(uscita);
         castello.setMainRoom(entrata);
-        
-        // Nemici
-        Enemy goblin = EnemyFactory.createEnemy("goblin");
-        goblin.setDrop(new Item("Chiave della Cripta", ItemType.KEY));
-        //entrata.setEnemy(goblin);
 
-        Enemy scheletro = EnemyFactory.createEnemy("skeleton");
-        scheletro.setDrop(new Item("Spada Rugginosa", ItemType.WEAPON, 10));
-        sala.setEnemy(scheletro);
+        // Composizione isola
+        CompositeRoom isola = new CompositeRoom("Isola", "Un luogo remoto e pericoloso.");
+        isola.addRoom(nave);
+        isola.addRoom(porto);
+        isola.addRoom(giardino);
+        isola.addRoom(castello);
+        isola.setMainRoom(nave);
 
-        Enemy guardiano = EnemyFactory.createEnemy("goblin");
-        guardiano.setDrop(new Item("Elmo del Guardiano", ItemType.ARMOR, 8));
-        cripta.setEnemy(guardiano);
-
-        System.out.println("Caricamento dinamico di oggetti e nemici...");
-
-        List<Object> itemInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
-        for (Object obj : itemInstances) {
-            if (obj instanceof Item item) {
-                System.out.println("Oggetto caricato: " + item.getName());
-                inventory.addItem(item);
-            }
-        }
-
-        List<Object> enemyInstances = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
-        for (Object obj : enemyInstances) {
-            if (obj instanceof Enemy enemy) {
-                System.out.println("Nemico caricato: " + enemy.getName());
-                // Facoltativo: usarne uno in gioco
-                // entrata.setEnemy(enemy); // se vuoi metterlo nella prima stanza
-            }
-        }
-
-        armeria.addItem(new Item("Scudo di Ferro", ItemType.ARMOR, 6));
-        entrata.addItem(new Item("Armatura", ItemType.ARMOR, 10));
-        entrata.addItem(new Item("Spada", ItemType.WEAPON, 5));
-
-
-        context.setCurrentRoom(castello);
-        context.setCurrentRoom(castello.getMainRoom() != null ? castello.getMainRoom() : entrata);
+        context.setCurrentRoom(isola.getMainRoom());
         context.getEventManager().subscribe(new ScoreListener());
     }
 }
+
+
 
 //core/game.java
 package manfrinmarco.core;
@@ -1245,18 +1131,22 @@ import manfrinmarco.io.ReflectionLoader;
 
 public class ItemFactory {
     private static final Map<String, ItemTemplate> registry = new HashMap<>();
+    private static boolean initialized = false;
 
-    static {
-        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.templates");
+    private static void initIfNeeded() {
+        if (initialized) return;
+        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
         for (Object obj : templates) {
             if (obj instanceof ItemTemplate template) {
                 registry.put(template.getId().toLowerCase(), template);
                 System.out.println("Item registrato: " + template.getId());
             }
         }
+        initialized = true;
     }
 
     public static Item create(String id) {
+        initIfNeeded();
         ItemTemplate template = registry.get(id.toLowerCase());
         if (template == null) throw new IllegalArgumentException("Item non trovato: " + id);
         return template.create();
@@ -1500,16 +1390,3 @@ log.file=game.log
 # Punteggio
 # --------------------------
 score.enemy.defeated=100
-
-
-
-manca in ordine di priorità:
-
-- Rendere EnemyFactory e ItemFactory dinamiche -> done 
-- integrare game config -> done
-- Junit test (mockito se serve)
-- save / reload status
-- mappa demo
-- aggiungere logs
-- import map from file (json)
-- mappa finale

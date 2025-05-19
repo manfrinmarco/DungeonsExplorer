@@ -3,6 +3,7 @@ package manfrinmarco.core;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.io.GameFileManager;
 import manfrinmarco.map.CompositeRoom;
@@ -28,6 +29,7 @@ public class Game {
                 if (m != null) {
                     context.copyFrom(m.getSnapshot());
                     context.getEventManager().subscribe(new ScoreListener());
+                    context.getEventManager().subscribe(new DropListener());
                     System.out.println("Partita caricata.");
                 } else {
                     System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");

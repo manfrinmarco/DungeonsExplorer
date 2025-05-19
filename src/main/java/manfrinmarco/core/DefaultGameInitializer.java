@@ -7,6 +7,7 @@ import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
+import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
@@ -117,6 +118,7 @@ public class DefaultGameInitializer {
         context.setCurrentRoom(isola.getMainRoom());
         log.fine("Sottoscrizione ScoreListener al GameContext");
         context.getEventManager().subscribe(new ScoreListener());
+        context.getEventManager().subscribe(new DropListener());
         log.info("DefaultGameInitializer completato");
     }
 }

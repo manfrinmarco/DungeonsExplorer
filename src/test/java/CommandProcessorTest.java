@@ -1,3 +1,11 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import manfrinmarco.core.CommandProcessor;
 import manfrinmarco.core.GameContext;
 import manfrinmarco.entities.Player;
@@ -5,10 +13,6 @@ import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.Room;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.mockito.Mockito.*;
 
 public class CommandProcessorTest {
 

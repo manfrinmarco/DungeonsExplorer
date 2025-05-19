@@ -1,122 +1,1867 @@
 my code untill now:
 
 //annotations/autoload.java
+package manfrinmarco.annotations;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AutoLoad {}
 
 
 //config/gameconfig.java
+package manfrinmarco.config;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.core.CommandProcessor;
+
+public class GameConfig {
+    private static final Properties config = new Properties();
+    private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
+
+    static {
+        try (FileInputStream fis = new FileInputStream("game.properties")) {
+            log.log(Level.INFO, "Caricamento configurazione da file: {0}", "game.properties");
+            config.load(fis);
+            
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Errore caricamento configurazione: {0}", e.getMessage());
+        }
+    }
+
+    public static String get(String key) {
+        String value = config.getProperty(key);
+        if (value == null) {
+            throw new manfrinmarco.security.GameException("Chiave di configurazione mancante: " + key);
+        }
+        return value;
+    }
+
+    public static int getInt(String key) {
+        return Integer.parseInt(get(key));
+    }
+
+    public static boolean getBoolean(String key) {
+        return Boolean.parseBoolean(get(key));
+    }
+
+    public static double getDouble(String key) {
+        return Double.parseDouble(get(key));
+    }
+
+    public static String getOrDefault(String key, String defaultValue) {
+        return config.getProperty(key, defaultValue);
+    }
+} 
 
 //core/abstractcommandprocessor.java
+package manfrinmarco.core;
 
+import manfrinmarco.io.InputSanitizer;
+
+public abstract class AbstractCommandProcessor {
+    public final void processCommand(String input) {
+        String sanitized = sanitizeInput(input);
+        String[] tokens = parseCommand(sanitized);
+        executeCommand(tokens);
+    }
+
+    protected String sanitizeInput(String input) {
+        return InputSanitizer.clean(input);
+    }
+
+    protected String[] parseCommand(String input) {
+        return input.trim().split("\\s+");
+    }
+
+    protected abstract void executeCommand(String[] tokens);
+}
 
 //core/commandprocessor.java
+package manfrinmarco.core;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.EventManager;
+import manfrinmarco.events.GameEvent;
+import manfrinmarco.events.ScoreListener;
+import manfrinmarco.io.GameFileManager;
+import manfrinmarco.items.CompositeItem;
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemType;
+import manfrinmarco.map.CompositeRoom;
+import manfrinmarco.map.Direction;
+import manfrinmarco.map.Room;
+import manfrinmarco.security.GameException;
+
+public class CommandProcessor extends AbstractCommandProcessor {
+    private final GameContext context = GameContext.getInstance();
+    private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
+
+    @Override
+    protected void executeCommand(String[] tokens) {
+        if (tokens.length == 0) return;
+        String command = tokens[0].toLowerCase();
+        log.log(Level.FINE, "Esecuzione comando: {0}", command);
+
+        switch (command) {
+            case "look" -> lookAround();
+            case "go" -> {
+                if (tokens.length < 2) {
+                    log.warning("Comando muovi senza direzione");
+                    System.out.println("Dove vuoi andare?");
+                } else {
+                    moveTo(tokens[1]);
+                }
+            }
+            case "attack" -> {
+                Enemy enemy = context.getCurrentRoom().getEnemy();
+                if (enemy == null || !enemy.isAlive()) {
+                    log.info("Comando attacca invocato ma nessun nemico presente");
+                    System.out.println("Non c'è nessun nemico da attaccare.");
+                    return;
+                }
+                attack();
+            }
+            case "status" -> showStatus();
+            case "i" -> showInventory();
+            case "use" -> {
+                if (tokens.length < 2) {
+                    log.warning("Comando usa invocato senza specificare oggetto");
+                    System.out.println("Specifica l'oggetto da usare.");
+                } else {
+                    useItem(tokens[1]);
+                }
+            }
+            case "equip" -> {
+                if (tokens.length < 2) {
+                    log.warning("Comando equip invocato senza specificare oggetto");
+                    System.out.println("Specifica cosa vuoi equipaggiare.");
+                } else {
+                    equipItem(tokens[1]);
+                }
+            }
+            case "take" -> {
+                if (tokens.length < 2) {
+                    log.warning("Comando prendi invocato senza specificare oggetto");
+                    System.out.println("Specifica cosa vuoi prendere.");
+                } else {
+                    pickItem(tokens[1]);
+                }
+            }
+            case "save" -> {
+                try {
+                    GameStateMemento snapshot = new GameStateMemento(context);
+                    GameFileManager.saveMemento(snapshot);
+                    log.info("Stato di gioco salvato.");
+                } catch (GameException ge) {
+                    log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
+                }
+            }
+            case "load" -> {
+                GameStateMemento loaded = GameFileManager.loadMemento();
+                if (loaded != null) {
+                    try {
+                        context.copyFrom(loaded.getSnapshot());
+                        // Ripristina il EventManager e i suoi listener
+                        GameContext.getInstance().setEventManager(new EventManager());
+                        GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                        System.out.println("Partita caricata.");
+                        log.info("Stato di gioco caricato.");
+                    } catch (GameException ge) {
+                        log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
+                    } finally {
+                        lookAround();
+                    }
+                }
+            }
+            case "explore" -> exploreRooms();
+            case "combine" -> {
+                if (tokens.length < 3) {
+                    System.out.println("Specifica due oggetti da combinare.");
+                } else {
+                    combineItems(tokens[1], tokens[2]);
+                }
+}
+            default -> {
+                log.log(Level.WARNING, "Comando sconosciuto: {0}", command);
+                System.out.println("Comando sconosciuto.");
+            }
+        }
+    }
+
+    private void lookAround() {
+        Room room = context.getCurrentRoom();
+        System.out.println("Ti trovi in: " + room.getName());
+        System.out.println(room.getDescription());
+        for (Direction dir : Direction.values()) {
+            if (room.getExit(dir) != null) {
+                System.out.println("C'è un passaggio a " + dir.name().toLowerCase());
+            }
+        }
+        if (room.getEnemy() != null && room.getEnemy().isAlive()) {
+            System.out.println("Un nemico è qui: " + room.getEnemy().getName());
+            if (room.getEnemy().getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                System.out.println("Il " + room.getEnemy().getName() + " ti coglie di sorpresa!");
+                room.getEnemy().executeStrategy(context.getPlayer());
+                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+            }
+        }
+        if (!room.getItems().isEmpty()) {
+            System.out.println("Oggetti nella stanza:");
+            for (Item item : room.getItems()) {
+                System.out.println("- " + item.getName());
+            }
+        }
+    }
+
+    private void moveTo(String dirString) {
+        try {
+            Direction dir = Direction.valueOf(dirString.toUpperCase());
+            Room current = context.getCurrentRoom();
+            Room next = current.getExit(dir);
+            if (next == null) {
+                System.out.println("Non c'è nulla in quella direzione.");
+                return;
+            }
+            if (next.isLocked()) {
+                System.out.println("La porta verso " + dir.name().toLowerCase() + " è chiusa. Usa una chiave per sbloccarla.");
+                return;
+            }
+            context.setCurrentRoom(next);
+            Enemy enemy = next.getEnemy();
+            if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
+                enemy.executeStrategy(context.getPlayer());
+                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+                if (!context.getPlayer().isAlive()) {
+                    System.out.println("Sei morto! Game Over.");
+                    System.exit(0);
+                }
+            }
+            System.out.println("Ti muovi verso " + dir.name().toLowerCase());
+            lookAround();
+        } catch (IllegalArgumentException e) {
+            log.log(Level.WARNING, "Direzione non valida: {0}", dirString);
+            System.out.println("Direzione non valida.");
+        }
+    }
+
+    private void attack() {
+        Enemy enemy = context.getCurrentRoom().getEnemy();
+        Player player = context.getPlayer();
+        if (enemy == null || !enemy.isAlive()) {
+            System.out.println("Non c'è nessun nemico da attaccare.");
+            return;
+        }
+        player.attack(enemy);
+        System.out.println("Hai attaccato il " + enemy.getName() + ". HP rimanenti: " + enemy.getHealth());
+        if (enemy.isAlive()) {
+            enemy.executeStrategy(player);
+            System.out.println("Il " + enemy.getName() + " ti attacca! HP rimanenti: " + player.getHealth());
+            if (!player.isAlive()) {
+                System.out.println("Sei morto! Game Over.");
+                System.exit(0);
+            }
+        } else {
+            System.out.println("Hai sconfitto il " + enemy.getName() + "!");
+            context.getEventManager().notify(new GameEvent("enemy_defeated", "Hai sconfitto un nemico!", enemy));
+        }
+    }
+
+    private void showStatus() {
+        Player player = context.getPlayer();
+        System.out.println("HP: " + player.getHealth());
+    }
+
+    private void showInventory() {
+        System.out.println("Inventario:");
+        for (Item item : context.getPlayer().getInventory()) {
+            System.out.println("- " + item.getName());
+        }
+    }
+
+    private void useItem(String itemName) {
+        Inventory inventory = context.getPlayer().getInventory();
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName.trim())) {
+                if (item.getType() == ItemType.POTION) {
+                    int healAmount = 20;
+                    try {
+                        healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
+                    } catch (NumberFormatException e) {
+                        System.err.println("Valore di healAmount non valido, uso 20 di default.");
+                    }
+                    context.getPlayer().heal(healAmount);
+                    System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
+                    inventory.removeItem(item);
+                    return;
+                }
+                if (item.getType() == ItemType.KEY) {
+                    Room room = context.getCurrentRoom();
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = room.getExit(dir);
+                        if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
+                            System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
+                            inventory.removeItem(item);
+                            return;
+                        }
+                    }
+                    System.out.println("Nessuna porta è stata sbloccata.");
+                    return;
+                }
+                System.out.println("Hai usato " + item.getName() + ".");
+                inventory.removeItem(item);
+                return;
+            }
+        }
+        log.log(Level.INFO, "Oggetto non trovato in inventario: {0}", itemName);
+        System.out.println("Oggetto non trovato.");
+    }
+
+    private void equipItem(String itemName) {
+        Inventory inventory = context.getPlayer().getInventory();
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                context.getPlayer().equip(item);
+                return;
+            }
+        }
+        System.out.println("Oggetto non trovato o non equipaggiabile.");
+    }
+
+    private void pickItem(String itemName) {
+        Room room = context.getCurrentRoom();
+        for (Item item : room.getItems()) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                context.getPlayer().getInventory().addItem(item);
+                room.removeItem(item);
+                System.out.println("Hai raccolto: " + item.getName());
+                return;
+            }
+        }
+        log.log(Level.INFO, "Tentativo di prendere oggetto non presente: {0}", itemName);
+        System.out.println("Oggetto non trovato nella stanza.");
+    }
+
+    private void exploreRooms() {
+        Room current = context.getCurrentRoom();
+
+        // Se ci troviamo nella stanza principale di una CompositeRoom
+        if (current instanceof CompositeRoom composite) {
+            System.out.println("Stanze interne di " + composite.getName() + ":");
+            for (Room room : composite.getSubRooms()) {
+                System.out.println("- " + room.getName());
+            }
+        } else {
+            // Proviamo a vedere se la stanza corrente appartiene a una CompositeRoom
+            CompositeRoom parent = findParentComposite(current);
+            if (parent != null) {
+                System.out.println("Stanze interne di " + parent.getName() + ":");
+                for (Room room : parent.getSubRooms()) {
+                    System.out.println("- " + room.getName());
+                }
+            } else {
+                System.out.println("Stanze collegate:");
+                if (current != null) {
+                    for (Direction dir : Direction.values()) {
+                        Room adjacent = current.getExit(dir);
+                        if (adjacent != null) {
+                            System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
+                        }
+                    }
+                } else {
+                    System.out.println("Errore: stanza corrente non trovata.");
+                }
+            }
+        }
+    }
+
+    private CompositeRoom findParentComposite(Room room) {
+        // Se GameContext contiene una CompositeRoom come mappa principale
+        Room parent = GameContext.getInstance().getCurrentRoom();
+        if (parent instanceof CompositeRoom composite) {
+            for (Room sub : composite.getSubRooms()) {
+                if (sub == room) return composite;
+            }
+        }
+        return null;
+    }
+    
+    private void combineItems(String name1, String name2) {
+        Inventory inventory = context.getPlayer().getInventory();
+        Item item1 = null, item2 = null;
+
+        for (Item item : inventory) {
+            if (item.getName().equalsIgnoreCase(name1)) item1 = item;
+            else if (item.getName().equalsIgnoreCase(name2)) item2 = item;
+        }
+
+        if (item1 == null || item2 == null) {
+            System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");
+            return;
+        }
+
+        CompositeItem armaCombinata = new CompositeItem("Arma Combinata");
+        armaCombinata.addItem(item1);
+        armaCombinata.addItem(item2);
+        armaCombinata.setPower(item1.getPower() + item2.getPower());
+
+        inventory.removeItem(item1);
+        inventory.removeItem(item2);
+        inventory.addItem(armaCombinata);
+
+        log.log(Level.FINE, "Oggetti combinati: {0} + {1}", new Object[]{name1, name2});
+        System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
+    }
+
+}
 
 //core/defultgameinitializer
+package manfrinmarco.core;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.config.GameConfig;
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.EnemyFactory;
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.DropListener;
+import manfrinmarco.events.ScoreListener;
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemFactory;
+import manfrinmarco.items.ItemType;
+import manfrinmarco.map.CompositeRoom;
+import manfrinmarco.map.Direction;
+import manfrinmarco.map.Room;
+
+public class DefaultGameInitializer {
+    private static final Logger log = Logger.getLogger(DefaultGameInitializer.class.getName());
+
+    public static void initialize(GameContext context) {
+        log.info("Inizializzazione del gioco predefinito");
+        Player player = new Player("Eroe", Integer.parseInt(GameConfig.get("player.hp")));
+        Inventory inventory = new Inventory();
+        player.setInventory(inventory);
+        context.setPlayer(player);
+        log.log(Level.FINE, "Giocatore creato: {0} con HP={1}", new Object[]{player.getName(), player.getHealth()});
+
+        // Zona 1: Costa
+        Room nave = new Room("Nave", "Una vecchia nave attraccata.");
+        Room porto = new Room("Porto", "Un porto di legno, bagnato dalle onde.");
+        nave.setExit(Direction.NORTH, porto);
+        porto.setExit(Direction.SOUTH, nave);
+        porto.addItem(new Item("Ascia", ItemType.WEAPON, 5));
+        log.fine("Zona 'Costa' configurata con stanze Nave e Porto");
+
+        // Zona 2: Giardino
+        Room giardino = new Room("Giardino", "Un giardino pieno di vegetazione.");
+        porto.setExit(Direction.NORTH, giardino);
+        giardino.setExit(Direction.SOUTH, porto);
+        giardino.addItem(new Item("Elsa", ItemType.WEAPON, 25));
+
+        Enemy giardinoEnemy = EnemyFactory.createEnemy("demone");
+        Item torcia = ItemFactory.create("Torcia");
+        giardinoEnemy.setDrop(torcia);
+        giardino.setEnemy(giardinoEnemy);
+        log.log(Level.FINE, "Zona ''Giardino'' configurata con nemico: {0}", giardinoEnemy.getName());
+
+        // Zona 3: Castello
+        Room entrata = new Room("Entrata", "Una stanza buia, serve una torcia per esplorare.");
+        giardino.setExit(Direction.NORTH, entrata);
+        entrata.setExit(Direction.SOUTH, giardino);
+
+        Room guardie = new Room("Stanza delle Guardie", "Una stanza sorvegliata da un nemico.");
+        Room armeria = new Room("Armeria", "Contiene armi e armature abbandonate.");
+        Room cucina = new Room("Cucina", "Odore di stufato e tre pozioni dimenticate.");
+        Room boss = new Room("Stanza del Boss", "Un potente nemico ti aspetta qui.");
+        Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
+
+        entrata.setExit(Direction.NORTH, armeria);
+        armeria.setExit(Direction.SOUTH, entrata);
+
+        guardie.setExit(Direction.SOUTH, entrata);
+        entrata.setExit(Direction.NORTH, guardie);
+
+        armeria.setExit(Direction.SOUTH, guardie);
+        guardie.setExit(Direction.EAST, armeria);
+
+        // Blocco accesso cucina con chiave
+        Item chiave = new Item("Chiave della Cucina", ItemType.KEY);
+        cucina.setLocked(true, chiave);
+        armeria.setExit(Direction.EAST, cucina);
+        cucina.setExit(Direction.WEST, armeria);
+
+        // Pozioni nella cucina
+        cucina.addItem(new Item("Pozione Curativa 1", ItemType.POTION));
+        cucina.addItem(new Item("Pozione Curativa 2", ItemType.POTION));
+        cucina.addItem(new Item("Pozione Curativa 3", ItemType.POTION));
+
+        // Accesso boss e uscita
+        cucina.setExit(Direction.SOUTH, boss);
+        boss.setExit(Direction.NORTH, cucina);
+        boss.setExit(Direction.EAST, uscita);
+
+        // Drop torcia già previsto in giardino
+        Enemy guardia = EnemyFactory.createEnemy("scheletro");
+        guardia.setDrop(chiave);
+        guardie.setEnemy(guardia);
+
+        armeria.addItem(new Item("Lama", ItemType.WEAPON, 25));
+        armeria.addItem(new Item("Armatura", ItemType.ARMOR, 20));
+
+        Enemy bossEnemy = EnemyFactory.createEnemy("demone");
+        boss.setEnemy(bossEnemy);
+
+        // Composizione castello
+        CompositeRoom castello = new CompositeRoom("Castello sull'Isola", "Un castello antico e misterioso.");
+        castello.addRoom(entrata);
+        castello.addRoom(guardie);
+        castello.addRoom(armeria);
+        castello.addRoom(cucina);
+        castello.addRoom(boss);
+        castello.addRoom(uscita);
+        castello.setMainRoom(entrata);
+        log.log(Level.INFO, "Castello configurato con stanza principale: {0}", entrata.getName());
+
+        // Composizione isola
+        CompositeRoom isola = new CompositeRoom("Isola", "Un luogo remoto e pericoloso.");
+        isola.addRoom(nave);
+        isola.addRoom(porto);
+        isola.addRoom(giardino);
+        isola.addRoom(castello);
+        isola.setMainRoom(nave);
+        log.log(Level.INFO, "Mappa ''Isola'' pronta. Punto di spawn: {0}", nave.getName());
+
+        context.setCurrentRoom(isola.getMainRoom());
+        log.fine("Sottoscrizione ScoreListener al GameContext");
+        context.getEventManager().subscribe(new ScoreListener());
+        context.getEventManager().subscribe(new DropListener());
+        log.info("DefaultGameInitializer completato");
+    }
+}
 
 
 //core/game.java
+package manfrinmarco.core;
+
+import java.util.Scanner;
+import java.util.logging.Logger;
+
+import manfrinmarco.events.DropListener;
+import manfrinmarco.events.ScoreListener;
+import manfrinmarco.io.GameFileManager;
+import manfrinmarco.map.CompositeRoom;
+import manfrinmarco.map.MapLoader;
+
+public class Game {
+    private final GameContext context = GameContext.getInstance();
+    private final CommandProcessor processor = new CommandProcessor();
+
+    public void start() {
+        GameLogger.configure();
+        Logger logger = Logger.getLogger(Game.class.getName());
+        logger.info("Avvio del gioco");
+
+        System.out.println("Benvenuto in Dungeon Explorer!");
+
+        try (Scanner scanner = new Scanner(System.in)) {
+            // scegli se iniziare nuova partita o caricare
+            System.out.println("Nuova partita (a) o carica partita esistente (b)?");
+            String choice = scanner.nextLine().trim();
+            if ("b".equalsIgnoreCase(choice)) {
+                GameStateMemento m = GameFileManager.loadMemento();
+                if (m != null) {
+                    context.copyFrom(m.getSnapshot());
+                    context.getEventManager().subscribe(new ScoreListener());
+                    context.getEventManager().subscribe(new DropListener());
+                    System.out.println("Partita caricata.");
+                } else {
+                    System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");
+                    DefaultGameInitializerDebug.initialize(context);
+                    System.out.println("Scegli file mappa JSON (invio per default):");
+                    String mapFile = scanner.nextLine().trim();
+                    if (!mapFile.isEmpty()) {
+                        try {
+                            CompositeRoom map = MapLoader.load(mapFile);
+                            context.setCurrentRoom(map.getMainRoom());
+                        } catch (Exception e) {
+                            System.err.println("Errore caricamento mappa, uso configurazione di default.");
+                        }
+                    }
+                }
+            } else {
+                DefaultGameInitializerDebug.initialize(context);
+                System.out.println("Scegli file mappa JSON (invio per default):");
+                String mapFile = scanner.nextLine().trim();
+                if (!mapFile.isEmpty()) {
+                    try {
+                        CompositeRoom map = MapLoader.load(mapFile);
+                        context.setCurrentRoom(map.getMainRoom());
+                    } catch (Exception e) {
+                        System.err.println("Errore caricamento mappa, uso configurazione di default.");
+                    }
+                }
+            }
+            
+            while (true) {
+                System.out.print("\n> ");
+                String input = scanner.nextLine();
+                if (input.equalsIgnoreCase("exit")) break;
+                processor.processCommand(input);
+            }
+        }
+    }
+}
 
 
 //core/gamecontext.java
+package manfrinmarco.core;
 
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.entities.Player;
+import manfrinmarco.events.EventManager;
+import manfrinmarco.map.Room;
+
+public class GameContext implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final GameContext instance = new GameContext();
+    private static final Logger log = Logger.getLogger(GameContext.class.getName());
+
+    private Player player;
+    private Room currentRoom;
+    private int score;
+    private transient EventManager eventManager = new EventManager();
+
+    private GameContext() {
+        // usato solo dal singleton
+    }
+    
+    public static GameContext getInstance() {
+        return instance;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+
+    public EventManager getEventManager() {
+        if (eventManager == null) {
+            log.fine("Reinizializzazione dell'EventManager dopo deserializzazione");
+            eventManager = new EventManager();
+        }
+        return eventManager;
+    }
+    
+    /**
+     * Permette di sostituire l'EventManager,
+     * utile per riallacciare i listener dopo il load.
+     */
+    public void setEventManager(EventManager manager) {
+        log.fine("EventManager sostituito tramite setEventManager");
+        this.eventManager = manager;
+    }
+    
+
+    public void increaseScore(int amount) {
+        log.log(Level.INFO, "Incremento punteggio di {0} punti; nuovo punteggio: {1}{2}", new Object[]{amount, this.score, amount});
+        this.score += amount;
+        System.out.println("+" + amount + " punti! Punteggio attuale: " + this.score);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void copyFrom(GameContext other) {
+        this.player = other.player;
+        this.currentRoom = other.currentRoom;
+        this.score = other.score;
+    }
+
+    public GameContext cloneContext() {
+        GameContext clone = new GameContext();
+        clone.copyFrom(this);
+        return clone;
+    }
+}
 
 //core/gamelogger.java
+package manfrinmarco.core;
 
+import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+public class GameLogger {
+    public static void configure() {
+        Logger root = Logger.getLogger("");
+        // rimuovi handler di default
+        for (Handler h : root.getHandlers()) {
+            root.removeHandler(h);
+        }
+
+        // Console -> to see logs in console uncomment the next lines (20-23)
+        // ConsoleHandler console = new ConsoleHandler();
+        // console.setLevel(Level.INFO);
+        // console.setFormatter(new SimpleFormatter());
+        // root.addHandler(console);
+
+        // File rotating
+        try {
+            // 1 file da 1MB, 3 copie
+            FileHandler file = new FileHandler("game.log", 1_000_000, 3, true);
+            file.setLevel(Level.FINE);
+            file.setFormatter(new SimpleFormatter());
+            root.addHandler(file);
+        } catch (IOException e) {
+            root.log(Level.SEVERE, "Failed to setup file handler", e);
+        }
+
+        root.setLevel(Level.FINE);  // imposta livello minimo globale
+    }
+}
 
 //core/gameStateMemento.java
+package manfrinmarco.core;
 
+import java.io.Serializable;
+
+public class GameStateMemento implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final GameContext snapshot;
+
+    public GameStateMemento(GameContext current) {
+        this.snapshot = current.cloneContext();
+    }
+
+    public GameContext getSnapshot() {
+        return snapshot;
+    }
+}
 
 //entities/aggressivestrategy.java
+package manfrinmarco.entities;
 
+import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class AggressiveStrategy implements EnemyStrategy, Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final Logger log = Logger.getLogger(AggressiveStrategy.class.getName());
+
+    @Override
+    public void attack(Enemy enemy, Player player) {
+        log.log(Level.FINE, "AggressiveStrategy: {0} is attacking", enemy.getName());
+        int damage = ThreadLocalRandom.current().nextInt(10, 21); // 10–20
+        log.log(Level.FINE, "AggressiveStrategy: computed damage = {0}", damage);
+        System.out.println("Il " + enemy.getName() + " attacca con furia causando " + damage + " danni!");
+        player.takeDamage(damage);
+        log.log(Level.FINE, "AggressiveStrategy: applied damage to player, player''s HP now {0}", player.getHealth());
+    }
+}
 
 //entities/defensivestrategy.java
+package manfrinmarco.entities;
 
+import java.io.Serializable;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class DefensiveStrategy implements EnemyStrategy, Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final Logger log = Logger.getLogger(DefensiveStrategy.class.getName());
+
+    @Override
+    public void attack(Enemy enemy, Player player) {
+        log.log(Level.FINE, "DefensiveStrategy: attacco iniziato da {0}", enemy.getName());
+        if (enemy.getHealth() < 20) {
+            log.fine("DefensiveStrategy: health < 20, preparazione a curare");
+            int heal = ThreadLocalRandom.current().nextInt(3, 9); // 3–8
+            log.log(Level.FINE, "DefensiveStrategy: calcolato heal = {0}", heal);
+            System.out.println("Il " + enemy.getName() + " si cura di " + heal + " HP!");
+            enemy.takeDamage(-heal);
+            log.log(Level.FINE, "DefensiveStrategy: applicato heal, HP nemico ora {0}", enemy.getHealth());
+        } else {
+            log.fine("DefensiveStrategy: health >= 20, preparazione a infliggere danni");
+            int damage = ThreadLocalRandom.current().nextInt(3, 8); // 3–7
+            log.log(Level.FINE, "DefensiveStrategy: calcolato damage = {0}", damage);
+            System.out.println("Il " + enemy.getName() + " colpisce cautamente causando " + damage + " danni.");
+            player.takeDamage(damage);
+            log.log(Level.FINE, "DefensiveStrategy: danni applicati, HP giocatore ora {0}", player.getHealth());
+        }
+    }
+}
 
 //entities/enemy.java
+package manfrinmarco.entities;
 
+import manfrinmarco.items.Item;
+
+public class Enemy extends Entity {
+    private static final long serialVersionUID = 1L;
+    private final EnemyStrategy strategy;
+
+    public Enemy(String name, int health, EnemyStrategy strategy) {
+        super(name, health);
+        this.strategy = strategy;
+    }
+
+    public EnemyStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void executeStrategy(Player player) {
+        strategy.attack(this, player);
+    }
+
+    private Item drop;
+
+    public void setDrop(Item drop) {
+        this.drop = drop;
+    }
+
+    public Item getDrop() {
+      return drop;
+    }
+}
+    
 
 //entities/enemyfactory.java
+// EnemyFactory.java — versione dinamica
+package manfrinmarco.entities;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.io.ReflectionLoader;
+import manfrinmarco.security.GameException;
+
+public class EnemyFactory {
+    private static final Logger log = Logger.getLogger(EnemyFactory.class.getName());
+    private static final Map<String, Enemy> registry = new HashMap<>();
+
+    static {
+        log.info("EnemyFactory: caricamento dinamico dei nemici custom");
+        List<Object> loaded = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
+        for (Object obj : loaded) {
+            if (obj instanceof Enemy enemy) {
+                String key = enemy.getName().toLowerCase();
+                registry.put(key, enemy);
+                log.log(Level.FINE, "EnemyFactory: registrato custom enemy: {0}", key);
+            }
+        }
+
+        // fallback statici
+        registry.put("goblin", new Enemy("Goblin", 30, new AggressiveStrategy()));
+        log.fine("EnemyFactory: registrato fallback nemico: goblin");
+        registry.put("skeleton", new Enemy("Scheletro", 25, new DefensiveStrategy()));
+        log.fine("EnemyFactory: registrato fallback nemico: skeleton");
+        registry.put("ratto", new Enemy("Ratto", 15, new AggressiveStrategy()));
+        log.fine("EnemyFactory: registrato fallback nemico: ratto");
+    }
+
+    public static Enemy createEnemy(String type) {
+        log.log(Level.FINE, "EnemyFactory.createEnemy: richiesta nemico di tipo ''{0}''", type);
+        Enemy base = registry.get(type.toLowerCase());
+        if (base == null) {
+            log.log(Level.WARNING, "EnemyFactory: nemico non trovato: {0}", type);
+            throw new GameException("Nemico non trovato: " + type);
+        }
+        log.log(Level.FINE, "EnemyFactory.createEnemy: creato nemico: {0}", base.getName());
+        return new Enemy(base.getName(), base.getHealth(), base.getStrategy());
+    }
+} 
 
 //entities/enemystategy.java
+package manfrinmarco.entities;
 
+public interface EnemyStrategy {
+    void attack(Enemy enemy, Player player);
+}
 
 //entities/entity.java 
+package manfrinmarco.entities;
 
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable{
+    private static final long serialVersionUID = 1L;
+    protected String name;
+    protected int health;
+
+    public Entity(String name, int health) {
+        this.name = name;
+        this.health = health;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
+    public void attack(Entity enemy) {
+        int baseDamage = 0;
+        enemy.takeDamage(baseDamage);
+    }
+
+    public void takeDamage(int damage) {
+        health = Math.max(0, health - damage);
+    }
+}
 
 //entities/player.java
+package manfrinmarco.entities;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.config.GameConfig;
+import manfrinmarco.items.Inventory;
+import manfrinmarco.items.Item;
+
+public class Player extends Entity{
+    private static final long serialVersionUID = 1L;
+    private static final Logger log = Logger.getLogger(Player.class.getName());
+    private Inventory inventory;
+    private Item equippedWeapon;
+    private Item equippedArmor;
+
+    public Player(String name, int health) {
+        super(name, health);
+        this.inventory = new Inventory();
+        try {
+            this.health = Integer.parseInt(GameConfig.get("player.hp"));
+        } catch (NumberFormatException e) {
+            log.warning("Valore di player.hp non valido, uso fallback a 100.");
+            this.health = 100;
+        }
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
+    }
+
+    @Override
+    public void attack(Entity enemy) {
+        log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
+        int baseDamage;
+        try {
+            baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
+        } catch (NumberFormatException e) {
+            System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
+            baseDamage = 10;
+        }
+        if (equippedWeapon != null) {
+            baseDamage += equippedWeapon.getPower();
+        }
+        log.log(Level.FINE, "Player.attack: danno totale calcolato = {0}", baseDamage);
+        enemy.takeDamage(baseDamage);
+        log.log(Level.INFO, "Player.attack: inflitti {0} danni a {1}", new Object[]{baseDamage, enemy.getName()});
+    }
+
+    public void heal(int amount) {
+        log.log(Level.FINE, "Player.heal: tentativo di guarigione di {0} HP", amount);
+        this.health = Math.min(100, this.health + amount);
+        log.log(Level.INFO, "Player.heal: HP attuali = {0}", this.health);
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        log.log(Level.FINE, "Player.takeDamage: danno in ingresso = {0}", damage);
+        int mitigated = damage;
+        if (equippedArmor != null) {
+            mitigated = Math.max(0, damage - equippedArmor.getPower());
+        }
+        log.log(Level.FINE, "Player.takeDamage: danno dopo armatura = {0}", mitigated);
+        super.takeDamage(mitigated);
+        log.log(Level.INFO, "Player.takeDamage: HP rimanenti = {0}", this.health);
+    }
+
+    public String getStatus() {
+        String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
+        String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
+        return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
+    }
+
+    public void equip(Item item) {
+        switch (item.getType()) {
+            case WEAPON -> {
+                this.equippedWeapon = item;
+                System.out.println("Hai equipaggiato l'arma: " + item.getName());
+                log.log(Level.INFO, "Player.equip: equipaggiato weapon = {0}", item.getName());
+            }
+            case ARMOR -> {
+                this.equippedArmor = item;
+                System.out.println("Hai indossato l'armatura: " + item.getName());
+                log.log(Level.INFO, "Player.equip: equipaggiato armor = {0}", item.getName());
+            }
+            default -> {
+                log.log(Level.WARNING, "Player.equip: tentativo di equipaggiare oggetto non valido = {0}", item.getName());
+                System.out.println("Questo oggetto non può essere equipaggiato.");
+            }
+        }
+    }
+}
     
-//entities/customs/... all the classes with @autoload
+//entities/custom/... all the classes with @autoload -> 1 example
+package manfrinmarco.entities.custom;
 
+import manfrinmarco.annotations.AutoLoad;
+import manfrinmarco.entities.AggressiveStrategy;
+import manfrinmarco.entities.Enemy;
+
+@AutoLoad
+public class Demone extends Enemy {
+    public Demone() {
+        super("Demone", 60, new AggressiveStrategy());
+    }
+}
+
+
+//enents/dropListener.java
+
+package manfrinmarco.events;
+
+import manfrinmarco.core.GameContext;
+import manfrinmarco.map.Room;
+import manfrinmarco.items.Item;
+import manfrinmarco.entities.Enemy;
+
+public class DropListener implements EventListener {
+    @Override
+    public void onEvent(GameEvent event) {
+        if (!"enemy_defeated".equals(event.getType())) return;
+        Object p = event.getPayload();
+        if (p instanceof Enemy enemy) {
+            Item drop = enemy.getDrop();
+            if (drop != null) {
+                Room room = GameContext.getInstance().getCurrentRoom();
+                room.addItem(drop);
+                System.out.println("Il " + enemy.getName() + " lascia cadere: " + drop.getName());
+            }
+        }
+    }
+}
 
 //events/eventListener.java
+package manfrinmarco.events;
 
+public interface EventListener {
+    void onEvent(GameEvent event);
+}
 
 //event/eventManager.java
+package manfrinmarco.events;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class EventManager {
+    private static final Logger log = Logger.getLogger(EventManager.class.getName());
+    private final List<EventListener> listeners = new ArrayList<>();
+
+    public void subscribe(EventListener listener) {
+        listeners.add(listener);
+        log.log(Level.INFO, "EventManager: listener sottoscritto: {0}", listener.getClass().getName());
+    }
+
+    public void notify(GameEvent event) {
+        log.log(Level.FINE, "EventManager: invio evento ''{0}'' a {1} listener", new Object[]{event.getType(), listeners.size()});
+        for (EventListener listener : listeners) {
+            log.log(Level.FINE, "EventManager: notifico listener: {0}", listener.getClass().getName());
+            listener.onEvent(event);
+        }
+    }
+}
 
 //event/gameevent.java
+package manfrinmarco.events;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class GameEvent {
+    private static final Logger log = Logger.getLogger(GameEvent.class.getName());
+    private final String type;
+    private final String message;
+    private final Object payload;
+
+    public GameEvent(String type, String message) {
+        log.log(Level.FINE, "GameEvent creato: type={0}, message={1}", new Object[]{type, message});
+        this.type = type;
+        this.message = message;
+        this.payload = null;
+    }
+
+    public GameEvent(String type, String message, Object payload) {
+        log.log(Level.FINE, "GameEvent creato: type={0}, message={1}, payload={2}", new Object[]{type, message, payload});
+        this.type = type;
+        this.message = message;
+        this.payload = payload;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Object getPayload() {
+        return payload;
+    }
+}
 
 
 //event/ScoreListener
+package manfrinmarco.events;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.core.GameContext;
+
+public class ScoreListener implements EventListener {
+    private static final Logger log = Logger.getLogger(ScoreListener.class.getName());
+    @Override
+    public void onEvent(GameEvent event) {
+        log.log(Level.FINE, "ScoreListener: ricevuto evento di tipo {0}", event.getType());
+        if (event.getType().equals("enemy_defeated")) {
+            log.info("ScoreListener: nemico sconfitto, incremento punteggio");
+            int score = Integer.parseInt(manfrinmarco.config.GameConfig.get("score.enemy.defeated"));
+            GameContext.getInstance().increaseScore(score);
+        }
+    }
+}
 
 //io/GameFileManager.java
+package manfrinmarco.io;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.core.GameStateMemento;
+import manfrinmarco.security.GameException;
+
+public class GameFileManager {
+    private static final Logger log = Logger.getLogger(GameFileManager.class.getName());
+    private static final String SAVE_FILE = "savegame.dat";
+
+    public static void saveMemento(GameStateMemento memento) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SAVE_FILE))) {
+            oos.writeObject(memento);
+            log.info("Partita salvata.");
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Errore salvataggio: {0}", e.toString());
+            throw new GameException("Errore salvataggio: " + e.getMessage());
+        }
+    }
+
+    public static GameStateMemento loadMemento() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SAVE_FILE))) {
+            GameStateMemento memento = (GameStateMemento) ois.readObject();
+            log.info("Partita caricata.");
+            return memento;
+        } catch (IOException | ClassNotFoundException e) {
+            log.log(Level.SEVERE, "Errore caricamento: {0}", e.toString());
+            throw new GameException("Errore caricamento: " + e.getMessage());
+        }
+    }
+}
 
 //io/InputSanitizer.java
+package manfrinmarco.io;
 
+public class InputSanitizer {
+    public static String clean(String input) {
+        return input.replaceAll("[^a-zA-Z0-9\\s]", "");
+    }
+}
 
 //io/reflectionloader.java
+package manfrinmarco.io;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.annotations.AutoLoad;
+import manfrinmarco.security.GameException;
+
+public class ReflectionLoader {
+    private static final Logger log = Logger.getLogger(ReflectionLoader.class.getName());
+    @SuppressWarnings("UseSpecificCatch")
+    public static List<Object> instantiateAnnotated(String packageName) {
+        List<Object> instances = new ArrayList<>();
+        log.log(Level.INFO, "ReflectionLoader: caricamento classi annotate in package {0}", packageName);
+        try {
+            String path = packageName.replace('.', '/');
+            URL root = Thread.currentThread().getContextClassLoader().getResource(path);
+            if (root == null) return instances;
+            File[] files = new File(root.toURI()).listFiles();
+            if (files == null) return instances;
+
+            for (File file : files) {
+                if (file.getName().endsWith(".class")) {
+                    String className = packageName + '.' + file.getName().replace(".class", "");
+                    Class<?> cls = Class.forName(className);
+                    if (cls.isAnnotationPresent(AutoLoad.class)) {
+                        Object obj = cls.getDeclaredConstructor().newInstance();
+                        instances.add(obj);
+                        log.log(Level.FINE, "ReflectionLoader: istanziata classe {0}", className);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "ReflectionLoader: errore caricamento dinamico: {0}", e.getMessage());
+            throw new GameException("ReflectionLoader failed: " + e.getMessage());
+        }
+        return instances;
+    }
+}
 
 //items/compositeitem.java
+package manfrinmarco.items;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompositeItem extends Item {
+    private final List<Item> components = new ArrayList<>();
+
+    public CompositeItem(String name) {
+        super(name, ItemType.WEAPON);
+    }
+
+    public void addItem(Item item) {
+        components.add(item);
+    }
+
+    public List<Item> getComponents() {
+        return components;
+    }
+
+    public void setPower(int power) {
+    this.power = power;
+}
+}
 
 //items/inventory.java
+package manfrinmarco.items;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Inventory implements Iterable<Item>, Serializable{
+    private static final Logger log = Logger.getLogger(Inventory.class.getName());
+    private static final long serialVersionUID = 1L;
+    private final List<Item> items = new ArrayList<>();
+
+    public void addItem(Item item) {
+        items.add(item);
+        log.log(Level.INFO, "Inventory: aggiunto oggetto {0}", item.getName());
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+        log.log(Level.INFO, "Inventory: rimosso oggetto {0}", item.getName());
+    }
+
+    @Override
+    public Iterator<Item> iterator() {
+        return items.iterator();
+    }
+}
 
 //items/item.java
+package manfrinmarco.items;
 
+import java.io.Serializable;
+
+public class Item implements Serializable{
+    private static final long serialVersionUID = 1L;
+    protected String name;
+    protected ItemType type;
+    protected int power;
+
+    public Item(String name, ItemType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public Item(String name, ItemType type, int power) {
+        this.name = name;
+        this.type = type;
+        this.power = power;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + type + (power > 0 ? ", +" + power : "") + ")";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public int getPower() {
+        return power;
+    }
+}
 
 //items/itembuilder.java
+package manfrinmarco.items;
 
+public class ItemBuilder {
+    private String name;
+    private ItemType type;
+    private int power;
+
+    public ItemBuilder setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public ItemBuilder setType(ItemType type) {
+        this.type = type;
+        return this;
+    }
+
+    public ItemBuilder setPower(int power) {
+        this.power = power;
+        return this;
+    }
+
+    public Item build() {
+        return new Item(name, type, power);
+    }
+}
 
 //items/itemtype.java
+package manfrinmarco.items;
 
+public enum ItemType {
+    WEAPON,
+    ARMOR,
+    POTION,
+    KEY,
+    TOOL
+}
 
 //items/itemfacory.java
+package manfrinmarco.items;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.io.ReflectionLoader;
+import manfrinmarco.security.GameException;
+public class ItemFactory {
+    private static final Logger log = Logger.getLogger(ItemFactory.class.getName());
+    private static final Map<String, ItemTemplate> registry = new HashMap<>();
+    private static boolean initialized = false;
+
+    private static void initIfNeeded() {
+        log.info("ItemFactory: inizializzazione dinamica dei template");
+        if (initialized) return;
+        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
+        for (Object obj : templates) {
+            if (obj instanceof ItemTemplate template) {
+                registry.put(template.getId().toLowerCase(), template);
+                log.log(Level.FINE, "ItemFactory: registrato template item: {0}", template.getId());
+                System.out.println("Item registrato: " + template.getId());
+            }
+        }
+        initialized = true;
+    }
+
+    public static Item create(String id) {
+        log.log(Level.FINE, "ItemFactory.create: richiesta item id=''{0}''", id);
+        initIfNeeded();
+        ItemTemplate template = registry.get(id.toLowerCase());
+        if (template == null) {
+            log.log(Level.WARNING, "ItemFactory: item non trovato: {0}", id);
+            throw new GameException("Item non trovato: " + id);
+        }
+        log.log(Level.INFO, "ItemFactory.create: creato item: {0}", id);
+        return template.create();
+    }
+}
 
 //items/itemtemplate.java
+package manfrinmarco.items;
 
+public interface ItemTemplate {
+    Item create();
+    String getId(); // es: "spada", "pozione", ecc.
+}
 
-//items/special/... all items with @autoload
+//items/special/... all items with @autoload -> 1 example
+package manfrinmarco.items.special;
+
+import manfrinmarco.annotations.AutoLoad;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemBuilder;
+import manfrinmarco.items.ItemTemplate;
+import manfrinmarco.items.ItemType;
+
+@AutoLoad
+public class ChiaveDorata implements ItemTemplate {
+    @Override
+    public Item create() {
+        return new ItemBuilder()
+                .setName("Chiave Dorata")
+                .setType(ItemType.KEY)
+                .setPower(0)
+                .build();
+    }
+
+    @Override
+    public String getId() {
+        return "chiavedorata";
+    }
+}
 
 
 //map/compositeroom.java
+package manfrinmarco.map;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CompositeRoom extends Room {
+    private final List<Room> subRooms = new ArrayList<>();
+
+    public CompositeRoom(String name, String description) {
+        super(name, description);
+    }
+
+    public void addRoom(Room room) {
+        subRooms.add(room);
+    }
+
+    private Room mainRoom;
+
+    public void setMainRoom(Room room) {
+        this.mainRoom = room;
+    }
+
+    public Room getMainRoom() {
+        return mainRoom;
+    }
+
+    public List<Room> getSubRooms() {
+        return subRooms;
+    }
+}
 
 
 //map/direction
+package manfrinmarco.map;
+
+public enum Direction {
+    NORTH, SOUTH, EAST, WEST;
+}
 
 //map/maploader
+package manfrinmarco.map;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.EnemyFactory;
+import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemFactory;
+import manfrinmarco.items.ItemType;
+import manfrinmarco.security.GameException;
+
+/**
+ * Carica la definizione di mappa da un file JSON.
+ * Il JSON deve avere un array "rooms" dove ogni stanza è:
+ * {
+ *   "id": "entrata",
+ *   "name": "Entrata",
+ *   "description": "Una stanza buia...",
+ *   "exits": { "north": "armeria", ... },
+ *   "items": [ {"id":"PozioneCurativa","type":"POTION","power":0}, ... ],
+ *   "enemy": { "type": "goblin", "drop": { "id":"Chiave","type":"KEY" } }
+ * }
+ */
+public class MapLoader {
+    private static final Logger log = Logger.getLogger(MapLoader.class.getName());
+
+    public static CompositeRoom load(String jsonFile) {
+        try {
+            log.log(Level.INFO, "MapLoader: loading map from {0}", jsonFile);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(new File(jsonFile));
+            JsonNode roomsNode = root.get("rooms");
+            log.fine("MapLoader: first pass - creating rooms");
+            // prima pass: crea tutte le stanze
+            Map<String, Room> registry = new HashMap<>();
+            Iterator<JsonNode> it = roomsNode.elements();
+            while (it.hasNext()) {
+                JsonNode r = it.next();
+                String id = r.get("id").asText();
+                String name = r.get("name").asText();
+                String desc = r.get("description").asText();
+                boolean composite = r.has("subRooms");
+                Room room = composite ? new CompositeRoom(name, desc) : new Room(name, desc);
+                registry.put(id, room);
+                log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{id, name});
+            }
+            log.fine("MapLoader: second pass - configuring rooms");
+            // seconda pass: imposta uscite, items, nemici e composizione
+            it = roomsNode.elements();
+            while (it.hasNext()) {
+                JsonNode r = it.next();
+                String id = r.get("id").asText();
+                Room room = registry.get(id);
+                log.log(Level.FINE, "MapLoader: configuring room id={0}", id);
+                // exits
+                JsonNode exits = r.get("exits");
+                if (exits != null) {
+                    exits.fields().forEachRemaining(field -> {
+                        Direction dir = Direction.valueOf(field.getKey().toUpperCase());
+                        Room target = registry.get(field.getValue().asText());
+                        if (target != null) room.setExit(dir, target);
+                    });
+                    log.log(Level.FINE, "MapLoader: exits set for room id={0}", id);
+                }
+                // items
+                JsonNode items = r.get("items");
+                if (items != null) {
+                    items.forEach(itemNode -> {
+                        String iid = itemNode.has("id") ? itemNode.get("id").asText() : null;
+                        Item item;
+                        if (iid != null) {
+                            item = ItemFactory.create(iid);
+                        } else {
+                            String name = itemNode.get("name").asText();
+                            ItemType type = ItemType.valueOf(itemNode.get("type").asText());
+                            int power = itemNode.has("power") ? itemNode.get("power").asInt() : 0;
+                            item = new Item(name, type, power);
+                        }
+                        room.addItem(item);
+                        log.log(Level.FINE, "MapLoader: added item {0} to room id={1}", new Object[]{item.getName(), id});
+                    });
+                }
+                // enemy
+                JsonNode e = r.get("enemy");
+                if (e != null) {
+                    String etype = e.get("type").asText();
+                    Enemy enemy = EnemyFactory.createEnemy(etype);
+                    JsonNode drop = e.get("drop");
+                    if (drop != null && drop.has("id")) {
+                        enemy.setDrop(ItemFactory.create(drop.get("id").asText()));
+                    }
+                    room.setEnemy(enemy);
+                    log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{etype, id});
+                }
+                // composite
+                if (room instanceof CompositeRoom && r.has("subRooms")) {
+                    r.get("subRooms").forEach(sr -> ((CompositeRoom) room).addRoom(registry.get(sr.asText())));
+                    if (r.has("mainRoom")) {
+                        ((CompositeRoom) room).setMainRoom(registry.get(r.get("mainRoom").asText()));
+                    }
+                    log.log(Level.FINE, "MapLoader: configured CompositeRoom id={0} with subRooms {1}", new Object[]{id, r.get("subRooms")});
+                }
+            }
+            log.log(Level.INFO, "MapLoader: finished loading map root={0}", root.get("root").asText());
+            // assume il root composite ha id "root"
+            return (CompositeRoom) registry.get(root.get("root").asText());
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "MapLoader I/O error loading map file " + jsonFile, e);
+            throw new GameException("Errore I/O durante il caricamento della mappa: " + e.getMessage());
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "MapLoader unexpected error", e);
+            throw new GameException("Errore parsing mappa: " + e.getMessage());
+        }
+    }
+}
 
 
 //map/room.java
+package manfrinmarco.map;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
+import manfrinmarco.entities.Enemy;
+import manfrinmarco.items.Item;
+
+public class Room implements Serializable {
+    private static final long serialVersionUID = 1L;
+    protected String name;
+    protected String description;
+    protected Map<Direction, Room> exits = new EnumMap<>(Direction.class);
+    protected Enemy enemy;
+    protected List<Item> items = new ArrayList<>();
+    protected boolean locked = false;
+    protected Item keyRequired;
+
+    public Room(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public void setExit(Direction direction, Room room) {
+        exits.put(direction, room);
+    }
+
+    public Room getExit(Direction direction) {
+        return exits.get(direction);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(Enemy enemy) {
+        this.enemy = enemy;
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked, Item keyRequired) {
+        this.locked = locked;
+        this.keyRequired = keyRequired;
+    }
+
+    public boolean unlock(Item key) {
+        if (locked && keyRequired != null && key.getName().equalsIgnoreCase(keyRequired.getName())) {
+            locked = false;
+            return true;
+        }
+        return false;
+    }
+}
 
 //map/roomfactory.java
+package manfrinmarco.map;
 
+public class RoomFactory {
+    public static Room createRoom(String type) {
+        return switch (type.toLowerCase()) {
+            case "corridoio" -> new Room("Corridoio", "Un lungo corridoio buio.");
+            case "cella" -> new Room("Cella", "Una piccola cella abbandonata.");
+            case "entrata" -> new Room("Entrata", "L'ingresso del castello.");
+            case "sala" -> new Room("Sala del Trono", "La grande sala del trono.");
+            case "armeria" -> new Room("Armeria Oscura", "Contiene armi abbandonate.");
+            case "cripta" -> new Room("Cripta", "Una cripta buia e fredda.");
+            default -> new Room("Stanza misteriosa", "Non riesci a distinguere nulla.");
+        };
+    }
+}
 
 //map/roomiterator.java
+package manfrinmarco.map;
 
+import java.util.Iterator;
+import java.util.List;
+
+public class RoomIterator implements Iterator<Room> {
+    private final Iterator<Room> iterator;
+
+    public RoomIterator(List<Room> rooms) {
+        this.iterator = rooms.iterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return iterator.hasNext();
+    }
+
+    @Override
+    public Room next() {
+        return iterator.next();
+    }
+}
 
 //security/gameException.java
+package manfrinmarco.security;
 
+public class GameException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+    private final String errorCode;
+
+    public GameException(String message) {
+        super(message);
+        this.errorCode = null;
+    }
+
+    /** 
+     * Creates a GameException with a specific error code.
+     */
+    public GameException(String errorCode, String message) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+    /**
+     * Creates a GameException with a cause.
+     */
+    public GameException(String message, Throwable cause) {
+        super(message, cause);
+        this.errorCode = null;
+    }
+
+    /**
+     * Creates a GameException with an error code and cause.
+     */
+    public GameException(String errorCode, String message, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    @Override
+    public String toString() {
+        String prefix = (errorCode != null) ? "[" + errorCode + "] " : "";
+        return prefix + getClass().getSimpleName() + ": " + getMessage();
+    }
+}
 
 //main.java
+package manfrinmarco;
 
+import manfrinmarco.core.Game;
+
+public class Main {
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.start();
+    }
+}
 
 //game.properties
+# --------------------------
+# Configurazione Giocatore
+# --------------------------
+player.hp=100
+player.baseDamage=10
+player.basedamage=10
+
+# --------------------------
+# Oggetti
+# --------------------------
+item.potion.healAmount=20
+
+# --------------------------
+# Logging
+# --------------------------
+log.file=game.log
+
+# --------------------------
+# Punteggio
+# --------------------------
+score.enemy.defeated=100

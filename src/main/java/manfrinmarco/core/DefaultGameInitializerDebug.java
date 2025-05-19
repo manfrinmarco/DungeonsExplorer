@@ -4,9 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.config.GameConfig;
+import manfrinmarco.entities.AggressiveStrategy;
 import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
+import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
@@ -30,31 +32,33 @@ public class DefaultGameInitializerDebug {
         Room stanza1 = new Room("stanza1", "prima stanza");
         Room stanza2 = new Room("stanza2", "seconda stanza");
         Room stanza3 = new Room("stanza3", "terza stanza");
+        Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
 
         //uscite
         stanza1.setExit(Direction.NORTH, stanza2);
         stanza2.setExit(Direction.SOUTH, stanza1);
         stanza2.setExit(Direction.NORTH, stanza3);
         stanza3.setExit(Direction.SOUTH, stanza2);
-        log.fine("Stanze create e collegate: stanza1, stanza2, stanza3");
+        stanza3.setExit(Direction.NORTH, uscita);
+        log.fine("Stanze create e collegate: stanza1, stanza2, stanza3, uscita");
 
+        //potion
+        Item pozione = new Item("Pozione", ItemType.POTION, 10);
+        stanza1.addItem(pozione);
 
         //chiave
         Item chiave = new Item("Chiave", ItemType.KEY, 0);
-        stanza1.addItem(chiave);
-        stanza2.setLocked(true, chiave);
-        log.log(Level.FINE, "Chiave creata e stanza2 bloccata con chiave: {0}", chiave.getName());
+        uscita.setLocked(true, chiave);
 
-        //chiave2
-        Item chiave2 = new Item("Chiave2", ItemType.KEY, 0);
-        stanza1.addItem(chiave2);
-
-        //nemico
-        Item spada = new Item("Spada", ItemType.WEAPON, 5);
-        Enemy nemico = new Enemy("Nemico", 10, new DefensiveStrategy());
+        //nemici
+        Item spada = new Item("Spada", ItemType.WEAPON, 50);
+        Enemy nemico = new Enemy("Zombie", 30, new DefensiveStrategy());
         stanza2.setEnemy(nemico);
         nemico.setDrop(spada);
-        log.log(Level.FINE, "Nemico creato: {0} con HP={1} e drop={2}", new Object[]{nemico.getName(), nemico.getHealth(), spada.getName()});
+
+        Enemy boss = new Enemy("Boss", 150, new AggressiveStrategy());
+        boss.setDrop(chiave);
+        stanza3.setEnemy(boss);
 
         // Composizione castello
         CompositeRoom castello = new CompositeRoom("Castello", "Un castello antico e misterioso.");
@@ -67,6 +71,7 @@ public class DefaultGameInitializerDebug {
         context.setCurrentRoom(castello.getMainRoom());
         log.info("Sottoscrizione ScoreListener completata");
         context.getEventManager().subscribe(new ScoreListener());
+        context.getEventManager().subscribe(new DropListener());
         log.info("DefaultGameInitializerDebug: inizializzazione completata");
     }
 }

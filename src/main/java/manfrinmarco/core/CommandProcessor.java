@@ -171,6 +171,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
         }
     }
 
+    
     private void attack() {
         Enemy enemy = context.getCurrentRoom().getEnemy();
         Player player = context.getPlayer();
@@ -189,7 +190,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
         } else {
             System.out.println("Hai sconfitto il " + enemy.getName() + "!");
-            context.getEventManager().notify(new GameEvent("enemy_defeated", "Hai sconfitto un nemico!"));
+            context.getEventManager().notify(new GameEvent("enemy_defeated", "Hai sconfitto un nemico!", enemy));
         }
     }
 

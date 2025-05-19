@@ -144,23 +144,27 @@ public class CommandProcessor extends AbstractCommandProcessor {
             Direction dir = Direction.valueOf(dirString.toUpperCase());
             Room current = context.getCurrentRoom();
             Room next = current.getExit(dir);
-            if (next != null) {
-                context.setCurrentRoom(next);
-                Enemy enemy = next.getEnemy();
-                if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
-                    System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
-                    enemy.executeStrategy(context.getPlayer());
-                    System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
-                    if (!context.getPlayer().isAlive()) {
-                        System.out.println("Sei morto! Game Over.");
-                        System.exit(0);
-                    }
-                }
-                System.out.println("Ti muovi verso " + dir.name().toLowerCase());
-                lookAround();
-            } else {
+            if (next == null) {
                 System.out.println("Non c'è nulla in quella direzione.");
+                return;
             }
+            if (next.isLocked()) {
+                System.out.println("La porta verso " + dir.name().toLowerCase() + " è chiusa. Usa una chiave per sbloccarla.");
+                return;
+            }
+            context.setCurrentRoom(next);
+            Enemy enemy = next.getEnemy();
+            if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
+                System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
+                enemy.executeStrategy(context.getPlayer());
+                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
+                if (!context.getPlayer().isAlive()) {
+                    System.out.println("Sei morto! Game Over.");
+                    System.exit(0);
+                }
+            }
+            System.out.println("Ti muovi verso " + dir.name().toLowerCase());
+            lookAround();
         } catch (IllegalArgumentException e) {
             log.log(Level.WARNING, "Direzione non valida: {0}", dirString);
             System.out.println("Direzione non valida.");

@@ -38,11 +38,16 @@ public class DefaultGameInitializerDebug {
         stanza3.setExit(Direction.SOUTH, stanza2);
         log.fine("Stanze create e collegate: stanza1, stanza2, stanza3");
 
+
         //chiave
         Item chiave = new Item("Chiave", ItemType.KEY, 0);
         stanza1.addItem(chiave);
         stanza2.setLocked(true, chiave);
         log.log(Level.FINE, "Chiave creata e stanza2 bloccata con chiave: {0}", chiave.getName());
+
+        //chiave2
+        Item chiave2 = new Item("Chiave2", ItemType.KEY, 0);
+        stanza1.addItem(chiave2);
 
         //nemico
         Item spada = new Item("Spada", ItemType.WEAPON, 5);

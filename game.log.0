@@ -232,3 +232,141 @@ java.lang.Throwable: Runtime.exit(143)
 	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
 	at java.base/java.lang.Thread.run(Thread.java:1447)
 
+mag 19, 2025 6:19:02 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 19, 2025 6:19:03 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 19, 2025 6:19:03 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Chiave creata e stanza2 bloccata con chiave: Chiave
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Nemico creato: Nemico con HP=10 e drop=Spada
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 19, 2025 6:19:03 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 19, 2025 6:19:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 19, 2025 6:19:08 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: guarda
+mag 19, 2025 6:19:08 PM manfrinmarco.core.CommandProcessor executeCommand
+WARNING: Comando sconosciuto: guarda
+mag 19, 2025 6:19:10 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 19, 2025 6:19:18 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 19, 2025 6:19:28 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 19, 2025 6:19:28 PM manfrinmarco.core.CommandProcessor pickItem
+INFO: Tentativo di prendere oggetto non presente: chiaver
+mag 19, 2025 6:19:32 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 19, 2025 6:19:32 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Chiave
+mag 19, 2025 6:19:37 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use
+mag 19, 2025 6:19:37 PM manfrinmarco.items.Inventory removeItem
+INFO: Inventory: rimosso oggetto Chiave
+mag 19, 2025 6:19:45 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 19, 2025 6:19:49 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 19, 2025 6:19:50 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 19, 2025 6:19:52 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 19, 2025 6:19:52 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Chiave creata e stanza2 bloccata con chiave: Chiave
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Nemico creato: Nemico con HP=10 e drop=Spada
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 19, 2025 6:19:52 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 19, 2025 6:19:52 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 19, 2025 6:20:00 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 19, 2025 6:20:09 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 19, 2025 6:20:09 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Chiave
+mag 19, 2025 6:20:13 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: move
+mag 19, 2025 6:20:13 PM manfrinmarco.core.CommandProcessor executeCommand
+WARNING: Comando sconosciuto: move
+mag 19, 2025 6:20:17 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 19, 2025 6:20:26 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use
+mag 19, 2025 6:20:26 PM manfrinmarco.items.Inventory removeItem
+INFO: Inventory: rimosso oggetto Chiave
+mag 19, 2025 6:20:31 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: i
+mag 19, 2025 6:21:15 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 130
+java.lang.Throwable: Runtime.exit(130)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 19, 2025 6:21:22 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 19, 2025 6:21:25 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 19, 2025 6:21:25 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Chiave creata e stanza2 bloccata con chiave: Chiave
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Nemico creato: Nemico con HP=10 e drop=Spada
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 19, 2025 6:21:25 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 19, 2025 6:21:25 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 19, 2025 6:21:30 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 19, 2025 6:21:36 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 19, 2025 6:21:36 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Chiave2
+mag 19, 2025 6:21:39 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use

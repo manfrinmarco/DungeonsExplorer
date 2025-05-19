@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.io.ReflectionLoader;
+import manfrinmarco.security.GameException;
 
 public class EnemyFactory {
     private static final Logger log = Logger.getLogger(EnemyFactory.class.getName());
@@ -38,9 +39,9 @@ public class EnemyFactory {
         Enemy base = registry.get(type.toLowerCase());
         if (base == null) {
             log.log(Level.WARNING, "EnemyFactory: nemico non trovato: {0}", type);
-            throw new IllegalArgumentException("Nemico non trovato: " + type);
+            throw new GameException("Nemico non trovato: " + type);
         }
-        log.fine("EnemyFactory.createEnemy: creato nemico: " + base.getName());
+        log.log(Level.FINE, "EnemyFactory.createEnemy: creato nemico: {0}", base.getName());
         return new Enemy(base.getName(), base.getHealth(), base.getStrategy());
     }
 } 

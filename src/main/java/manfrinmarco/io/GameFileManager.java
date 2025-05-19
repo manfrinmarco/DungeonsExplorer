@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.core.GameStateMemento;
+import manfrinmarco.security.GameException;
 
 public class GameFileManager {
     private static final Logger log = Logger.getLogger(GameFileManager.class.getName());
@@ -20,6 +21,7 @@ public class GameFileManager {
             log.info("Partita salvata.");
         } catch (IOException e) {
             log.log(Level.SEVERE, "Errore salvataggio: {0}", e.toString());
+            throw new GameException("Errore salvataggio: " + e.getMessage());
         }
     }
 
@@ -30,7 +32,7 @@ public class GameFileManager {
             return memento;
         } catch (IOException | ClassNotFoundException e) {
             log.log(Level.SEVERE, "Errore caricamento: {0}", e.toString());
-            return null;
+            throw new GameException("Errore caricamento: " + e.getMessage());
         }
     }
 }

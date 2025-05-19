@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.io.ReflectionLoader;
-
+import manfrinmarco.security.GameException;
 public class ItemFactory {
     private static final Logger log = Logger.getLogger(ItemFactory.class.getName());
     private static final Map<String, ItemTemplate> registry = new HashMap<>();
@@ -33,7 +33,7 @@ public class ItemFactory {
         ItemTemplate template = registry.get(id.toLowerCase());
         if (template == null) {
             log.log(Level.WARNING, "ItemFactory: item non trovato: {0}", id);
-            throw new IllegalArgumentException("Item non trovato: " + id);
+            throw new GameException("Item non trovato: " + id);
         }
         log.log(Level.INFO, "ItemFactory.create: creato item: {0}", id);
         return template.create();

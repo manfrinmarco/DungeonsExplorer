@@ -60,14 +60,14 @@ public class Player extends Entity{
 
     @Override
     public void takeDamage(int damage) {
-        log.fine("Player.takeDamage: danno in ingresso = " + damage);
+        log.log(Level.FINE, "Player.takeDamage: danno in ingresso = {0}", damage);
         int mitigated = damage;
         if (equippedArmor != null) {
             mitigated = Math.max(0, damage - equippedArmor.getPower());
         }
-        log.fine("Player.takeDamage: danno dopo armatura = " + mitigated);
+        log.log(Level.FINE, "Player.takeDamage: danno dopo armatura = {0}", mitigated);
         super.takeDamage(mitigated);
-        log.info("Player.takeDamage: HP rimanenti = " + this.health);
+        log.log(Level.INFO, "Player.takeDamage: HP rimanenti = {0}", this.health);
     }
 
     public String getStatus() {
@@ -81,15 +81,15 @@ public class Player extends Entity{
             case WEAPON -> {
                 this.equippedWeapon = item;
                 System.out.println("Hai equipaggiato l'arma: " + item.getName());
-                log.info("Player.equip: equipaggiato weapon = " + item.getName());
+                log.log(Level.INFO, "Player.equip: equipaggiato weapon = {0}", item.getName());
             }
             case ARMOR -> {
                 this.equippedArmor = item;
                 System.out.println("Hai indossato l'armatura: " + item.getName());
-                log.info("Player.equip: equipaggiato armor = " + item.getName());
+                log.log(Level.INFO, "Player.equip: equipaggiato armor = {0}", item.getName());
             }
             default -> {
-                log.warning("Player.equip: tentativo di equipaggiare oggetto non valido = " + item.getName());
+                log.log(Level.WARNING, "Player.equip: tentativo di equipaggiare oggetto non valido = {0}", item.getName());
                 System.out.println("Questo oggetto non può essere equipaggiato.");
             }
         }

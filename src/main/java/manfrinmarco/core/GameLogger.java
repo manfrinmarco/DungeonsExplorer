@@ -1,7 +1,6 @@
 package manfrinmarco.core;
 
 import java.io.IOException;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -16,11 +15,11 @@ public class GameLogger {
             root.removeHandler(h);
         }
 
-        // Console
-        ConsoleHandler console = new ConsoleHandler();
-        console.setLevel(Level.INFO);
-        console.setFormatter(new SimpleFormatter());
-        root.addHandler(console);
+        // Console -> to see logs in console uncomment the next lines (20-23)
+        // ConsoleHandler console = new ConsoleHandler();
+        // console.setLevel(Level.INFO);
+        // console.setFormatter(new SimpleFormatter());
+        // root.addHandler(console);
 
         // File rotating
         try {

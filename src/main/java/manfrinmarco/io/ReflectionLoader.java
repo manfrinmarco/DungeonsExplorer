@@ -8,9 +8,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.annotations.AutoLoad;
+import manfrinmarco.security.GameException;
 
 public class ReflectionLoader {
     private static final Logger log = Logger.getLogger(ReflectionLoader.class.getName());
+    @SuppressWarnings("UseSpecificCatch")
     public static List<Object> instantiateAnnotated(String packageName) {
         List<Object> instances = new ArrayList<>();
         log.log(Level.INFO, "ReflectionLoader: caricamento classi annotate in package {0}", packageName);
@@ -32,8 +34,9 @@ public class ReflectionLoader {
                     }
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | java.lang.reflect.InvocationTargetException | java.net.URISyntaxException e) {
+        } catch (Exception e) {
             log.log(Level.SEVERE, "ReflectionLoader: errore caricamento dinamico: {0}", e.getMessage());
+            throw new GameException("ReflectionLoader failed: " + e.getMessage());
         }
         return instances;
     }

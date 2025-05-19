@@ -16,6 +16,7 @@ import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
+import manfrinmarco.security.GameException;
 
 public class CommandProcessor extends AbstractCommandProcessor {
     private final GameContext context = GameContext.getInstance();
@@ -73,20 +74,29 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
             }
             case "save" -> {
-                GameStateMemento snapshot = new GameStateMemento(context);
-                GameFileManager.saveMemento(snapshot);
-                log.info("Stato di gioco salvato.");
+                try {
+                    GameStateMemento snapshot = new GameStateMemento(context);
+                    GameFileManager.saveMemento(snapshot);
+                    log.info("Stato di gioco salvato.");
+                } catch (GameException ge) {
+                    log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
+                }
             }
             case "load" -> {
                 GameStateMemento loaded = GameFileManager.loadMemento();
                 if (loaded != null) {
-                    context.copyFrom(loaded.getSnapshot());
-                    // Ripristina il EventManager e i suoi listener
-                    GameContext.getInstance().setEventManager(new EventManager());
-                    GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
-                    System.out.println("Partita caricata.");
-                    log.info("Stato di gioco caricato.");
-                    lookAround();
+                    try {
+                        context.copyFrom(loaded.getSnapshot());
+                        // Ripristina il EventManager e i suoi listener
+                        GameContext.getInstance().setEventManager(new EventManager());
+                        GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                        System.out.println("Partita caricata.");
+                        log.info("Stato di gioco caricato.");
+                    } catch (GameException ge) {
+                        log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
+                    } finally {
+                        lookAround();
+                    }
                 }
             }
             case "explore" -> exploreRooms();
@@ -98,7 +108,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
 }
             default -> {
-                log.warning("Comando sconosciuto: " + command);
+                log.log(Level.WARNING, "Comando sconosciuto: {0}", command);
                 System.out.println("Comando sconosciuto.");
             }
         }

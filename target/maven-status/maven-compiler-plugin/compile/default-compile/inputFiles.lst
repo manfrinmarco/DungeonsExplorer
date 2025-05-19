@@ -41,6 +41,7 @@
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/items/special/Torcia.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/CompositeRoom.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/Direction.java
+/Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/MapLoader.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/Room.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/RoomFactory.java
 /Users/marco/Documents/repos/dangeon_explorer/src/main/java/manfrinmarco/map/RoomIterator.java

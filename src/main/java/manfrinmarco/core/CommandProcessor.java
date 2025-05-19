@@ -176,7 +176,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     int healAmount = 20;
                     try {
                         healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
-                    } catch (Exception e) {
+                    } catch (NumberFormatException e) {
                         System.err.println("Valore di healAmount non valido, uso 20 di default.");
                     }
                     context.getPlayer().heal(healAmount);

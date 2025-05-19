@@ -4,7 +4,8 @@ manca in ordine di priorità:
 - integrare game config ->done 
 - Junit test (mockito se serve) -> done 
 - mappa demo -> done
-- save / reload status
-- aggiungere logs
+- save / reload status -> done 
+
 - import map from file (json)
+- aggiungere logs
 - mappa finale

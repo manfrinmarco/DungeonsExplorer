@@ -5,7 +5,8 @@ manca in ordine di priorità:
 - Junit test (mockito se serve) -> done 
 - mappa demo -> done
 - save / reload status -> done 
+- import map from file (json) -> done 
 
-- import map from file (json)
-- aggiungere logs
+- aggiungere logs + gameException
+- eseguire gli unit test
 - mappa finale

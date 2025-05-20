@@ -1251,3 +1251,531 @@ mag 19, 2025 8:41:53 PM manfrinmarco.core.GameContext increaseScore
 INFO: Incremento punteggio di 100 punti; nuovo punteggio: 100100
 mag 19, 2025 8:41:53 PM manfrinmarco.events.EventManager notify
 FINE: EventManager: notifico listener: manfrinmarco.events.DropListener
+mag 20, 2025 2:00:21 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 20, 2025 2:00:45 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 20, 2025 2:00:45 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 20, 2025 2:00:45 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 20, 2025 2:00:45 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 20, 2025 2:00:45 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 20, 2025 2:01:29 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 20, 2025 2:02:10 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 20, 2025 2:02:10 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Pozione
+mag 20, 2025 2:02:20 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:02:33 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health >= 20, preparazione a infliggere danni
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato damage = 3
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 3
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 3
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 97
+mag 20, 2025 2:02:33 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: danni applicati, HP giocatore ora 97
+mag 20, 2025 2:02:49 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 6
+mag 20, 2025 2:02:49 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 16
+mag 20, 2025 2:03:00 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 3
+mag 20, 2025 2:03:00 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 9
+mag 20, 2025 2:03:08 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:03:08 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:03:08 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:03:08 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:03:08 PM manfrinmarco.events.GameEvent <init>
+FINE: GameEvent creato: type=enemy_defeated, message=Hai sconfitto un nemico!, payload=manfrinmarco.entities.Enemy@506e1b77
+mag 20, 2025 2:03:08 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: invio evento 'enemy_defeated' a 2 listener
+mag 20, 2025 2:03:08 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.ScoreListener
+mag 20, 2025 2:03:08 PM manfrinmarco.events.ScoreListener onEvent
+FINE: ScoreListener: ricevuto evento di tipo enemy_defeated
+mag 20, 2025 2:03:08 PM manfrinmarco.events.ScoreListener onEvent
+INFO: ScoreListener: nemico sconfitto, incremento punteggio
+mag 20, 2025 2:03:08 PM manfrinmarco.core.GameContext increaseScore
+INFO: Incremento punteggio di 100 punti; nuovo punteggio: 0100
+mag 20, 2025 2:03:08 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.DropListener
+mag 20, 2025 2:03:23 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 20, 2025 2:03:23 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Spada
+mag 20, 2025 2:03:30 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:03:38 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:03:43 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 12
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 12
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 12
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 85
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 85
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 19
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 19
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 19
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 66
+mag 20, 2025 2:03:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 66
+mag 20, 2025 2:04:13 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use
+mag 20, 2025 2:04:13 PM manfrinmarco.entities.Player heal
+FINE: Player.heal: tentativo di guarigione di 20 HP
+mag 20, 2025 2:04:13 PM manfrinmarco.entities.Player heal
+INFO: Player.heal: HP attuali = 86
+mag 20, 2025 2:04:13 PM manfrinmarco.items.Inventory removeItem
+INFO: Inventory: rimosso oggetto Pozione
+mag 20, 2025 2:04:22 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 13
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 13
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 13
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 73
+mag 20, 2025 2:04:22 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 73
+mag 20, 2025 2:04:58 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use
+mag 20, 2025 2:04:58 PM manfrinmarco.items.Inventory removeItem
+INFO: Inventory: rimosso oggetto Spada
+mag 20, 2025 2:05:09 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: equ
+mag 20, 2025 2:05:09 PM manfrinmarco.core.CommandProcessor executeCommand
+WARNING: Comando sconosciuto: equ
+mag 20, 2025 2:05:14 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: equip
+mag 20, 2025 2:05:37 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 17
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 17
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 17
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 56
+mag 20, 2025 2:05:37 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 56
+mag 20, 2025 2:05:40 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 17
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 17
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 17
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 39
+mag 20, 2025 2:05:40 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 39
+mag 20, 2025 2:05:43 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 11
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 11
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 11
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 28
+mag 20, 2025 2:05:43 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 28
+mag 20, 2025 2:05:45 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 20
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 20
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 20
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 8
+mag 20, 2025 2:05:45 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 8
+mag 20, 2025 2:05:48 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Boss
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 16
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 16
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 16
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 0
+mag 20, 2025 2:05:48 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 0
+mag 20, 2025 2:05:48 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 0
+java.lang.Throwable: Runtime.exit(0)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:177)
+	at java.base/java.lang.System.exit(System.java:1518)
+	at manfrinmarco.core.CommandProcessor.attack(CommandProcessor.java:189)
+	at manfrinmarco.core.CommandProcessor.executeCommand(CommandProcessor.java:48)
+	at manfrinmarco.core.AbstractCommandProcessor.processCommand(AbstractCommandProcessor.java:9)
+	at manfrinmarco.core.Game.start(Game.java:66)
+	at manfrinmarco.Main.main(Main.java:8)
+
+mag 20, 2025 2:06:45 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 20, 2025 2:06:50 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 20, 2025 2:06:50 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 20, 2025 2:06:50 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 20, 2025 2:06:50 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 20, 2025 2:06:50 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 20, 2025 2:06:55 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:06:58 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health >= 20, preparazione a infliggere danni
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato damage = 4
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 4
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 4
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 96
+mag 20, 2025 2:06:58 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: danni applicati, HP giocatore ora 96
+mag 20, 2025 2:06:59 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 6
+mag 20, 2025 2:06:59 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 16
+mag 20, 2025 2:07:01 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 7
+mag 20, 2025 2:07:01 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 13
+mag 20, 2025 2:07:03 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 6
+mag 20, 2025 2:07:03 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 9
+mag 20, 2025 2:07:05 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:05 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 20, 2025 2:07:05 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 20, 2025 2:07:05 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 20, 2025 2:07:05 PM manfrinmarco.events.GameEvent <init>
+FINE: GameEvent creato: type=enemy_defeated, message=Hai sconfitto un nemico!, payload=manfrinmarco.entities.Enemy@27bc2616
+mag 20, 2025 2:07:05 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: invio evento 'enemy_defeated' a 2 listener
+mag 20, 2025 2:07:05 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.ScoreListener
+mag 20, 2025 2:07:05 PM manfrinmarco.events.ScoreListener onEvent
+FINE: ScoreListener: ricevuto evento di tipo enemy_defeated
+mag 20, 2025 2:07:05 PM manfrinmarco.events.ScoreListener onEvent
+INFO: ScoreListener: nemico sconfitto, incremento punteggio
+mag 20, 2025 2:07:05 PM manfrinmarco.core.GameContext increaseScore
+INFO: Incremento punteggio di 100 punti; nuovo punteggio: 0100
+mag 20, 2025 2:07:05 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.DropListener
+mag 20, 2025 2:07:09 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 20, 2025 2:07:09 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Spada
+mag 20, 2025 2:07:13 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 12
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 12
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 12
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 84
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 84
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 13
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 13
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 13
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 71
+mag 20, 2025 2:07:13 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 71
+mag 20, 2025 2:07:18 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: equip
+mag 20, 2025 2:07:18 PM manfrinmarco.entities.Player equip
+INFO: Player.equip: equipaggiato weapon = Spada
+mag 20, 2025 2:07:26 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: Spada
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 60
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 60 danni a Boss
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 11
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 11
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 11
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 60
+mag 20, 2025 2:07:26 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 60
+mag 20, 2025 2:07:32 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: Spada
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 60
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 60 danni a Boss
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: Boss is attacking
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: computed damage = 19
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 19
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 19
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 41
+mag 20, 2025 2:07:32 PM manfrinmarco.entities.AggressiveStrategy attack
+FINE: AggressiveStrategy: applied damage to player, player's HP now 41
+mag 20, 2025 2:07:41 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 20, 2025 2:07:41 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: Spada
+mag 20, 2025 2:07:41 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 60
+mag 20, 2025 2:07:41 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 60 danni a Boss
+mag 20, 2025 2:07:41 PM manfrinmarco.events.GameEvent <init>
+FINE: GameEvent creato: type=enemy_defeated, message=Hai sconfitto un nemico!, payload=manfrinmarco.entities.Enemy@9807454
+mag 20, 2025 2:07:41 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: invio evento 'enemy_defeated' a 2 listener
+mag 20, 2025 2:07:41 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.ScoreListener
+mag 20, 2025 2:07:41 PM manfrinmarco.events.ScoreListener onEvent
+FINE: ScoreListener: ricevuto evento di tipo enemy_defeated
+mag 20, 2025 2:07:41 PM manfrinmarco.events.ScoreListener onEvent
+INFO: ScoreListener: nemico sconfitto, incremento punteggio
+mag 20, 2025 2:07:41 PM manfrinmarco.core.GameContext increaseScore
+INFO: Incremento punteggio di 100 punti; nuovo punteggio: 100100
+mag 20, 2025 2:07:41 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.DropListener
+mag 20, 2025 2:07:53 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 20, 2025 2:07:53 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Chiave
+mag 20, 2025 2:08:01 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:08:05 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:08:11 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:08:21 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: use
+mag 20, 2025 2:08:21 PM manfrinmarco.items.Inventory removeItem
+INFO: Inventory: rimosso oggetto Chiave
+mag 20, 2025 2:08:28 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 20, 2025 2:08:38 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+

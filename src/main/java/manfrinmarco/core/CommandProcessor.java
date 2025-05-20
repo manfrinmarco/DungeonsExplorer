@@ -210,6 +210,10 @@ public class CommandProcessor extends AbstractCommandProcessor {
         Inventory inventory = context.getPlayer().getInventory();
         for (Item item : inventory) {
             if (item.getName().equalsIgnoreCase(itemName.trim())) {
+                if (item.getType() == ItemType.WEAPON) {
+                    System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
+                    return;
+                }
                 if (item.getType() == ItemType.POTION) {
                     int healAmount = 20;
                     try {
@@ -247,6 +251,10 @@ public class CommandProcessor extends AbstractCommandProcessor {
     private void equipItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
         for (Item item : inventory) {
+            if (item.getType() != ItemType.WEAPON) {
+                System.out.println("Non puoi equipaggiare questo oggetto.");
+                return;
+            }
             if (item.getName().equalsIgnoreCase(itemName)) {
                 context.getPlayer().equip(item);
                 return;

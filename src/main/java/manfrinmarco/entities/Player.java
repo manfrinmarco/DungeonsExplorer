@@ -79,11 +79,21 @@ public class Player extends Entity{
     public void equip(Item item) {
         switch (item.getType()) {
             case WEAPON -> {
+                if (equippedWeapon != null) {
+                    inventory.addItem(equippedWeapon);
+                    System.out.println("Hai disarmato l'arma: " + equippedWeapon.getName());
+                    log.log(Level.INFO, "Player.equip: disarmato weapon = {0}", equippedWeapon.getName());
+                }
                 this.equippedWeapon = item;
                 System.out.println("Hai equipaggiato l'arma: " + item.getName());
                 log.log(Level.INFO, "Player.equip: equipaggiato weapon = {0}", item.getName());
             }
             case ARMOR -> {
+                if(equippedArmor != null) {
+                    inventory.addItem(equippedArmor);
+                    System.out.println("Ti sei tolto l'armatura: " + equippedArmor.getName());
+                    log.log(Level.INFO, "Player.equip: disarmato armor = {0}", equippedArmor.getName());
+                }
                 this.equippedArmor = item;
                 System.out.println("Hai indossato l'armatura: " + item.getName());
                 log.log(Level.INFO, "Player.equip: equipaggiato armor = {0}", item.getName());

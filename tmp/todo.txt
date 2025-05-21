@@ -8,10 +8,9 @@ manca in ordine di priorità:
 - aggiungere logs + gameException -> done 
 - multi thread per salvare e caricare -> done
 - streams and lambda in cmdProcessor -> done
-
+- equip non funziona -> fixed done
 
 1- roomFactory dinamico
-2- equip non funziona
 3- cmd oggetti nome con piu
 4- eseguire gli unit test e correggere 
 5- map loader da rifare [import from json] (broken)

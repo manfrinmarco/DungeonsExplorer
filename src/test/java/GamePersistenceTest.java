@@ -5,7 +5,8 @@ import java.io.File;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ import manfrinmarco.entities.Player;
 import manfrinmarco.io.GameFileManager;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.map.Room;
+import manfrinmarco.security.GameException;
 
 public class GamePersistenceTest {
 
@@ -67,7 +69,9 @@ public class GamePersistenceTest {
 
     @Test
     public void testLoadMemento_whenNoFile_returnsNull() {
-        GameStateMemento loaded = GameFileManager.loadMemento();
-        assertNull(loaded, "Loading with no save file should return null");
+        Exception exception = assertThrows(GameException.class, () -> {
+            GameFileManager.loadMemento();
+        });
+        assertTrue(exception.getMessage().contains("Errore caricamento"));
     }
 }

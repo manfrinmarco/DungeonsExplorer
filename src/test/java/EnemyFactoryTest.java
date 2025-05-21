@@ -12,10 +12,10 @@ public class EnemyFactoryTest {
 
     @Test
     public void testCreateKnownEnemy() {
-        Enemy goblin = EnemyFactory.createEnemy("goblin");
-        assertNotNull(goblin);
-        assertEquals("Goblin", goblin.getName());
-        assertTrue(goblin.getHealth() > 0);
+        Enemy scheletro = EnemyFactory.createEnemy("scheletro");
+        assertNotNull(scheletro);
+        assertEquals("Scheletro", scheletro.getName());
+        assertTrue(scheletro.getHealth() > 0);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class EnemyFactoryTest {
 
     @Test
     public void testCreateCaseInsensitive() {
-        Enemy enemy = EnemyFactory.createEnemy("SKELETON");
+        Enemy enemy = EnemyFactory.createEnemy("SCHELETRO");
         assertEquals("Scheletro", enemy.getName());
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemFactory;
 import manfrinmarco.items.ItemType;
+import manfrinmarco.security.GameException;
 
 public class ItemFactoryTest {
 
@@ -14,13 +15,13 @@ public class ItemFactoryTest {
     void testCreateValidItem() {
         Item item = ItemFactory.createItem("pozione");
         assertNotNull(item);
-        assertEquals("Pozione Curativa", item.getName());
+        assertEquals("Pozione", item.getName());
         assertEquals(ItemType.POTION, item.getType());
     }
 
     @Test
     void testCreateInvalidItemThrowsException() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(GameException.class, () -> {
             ItemFactory.createItem("non_esiste");
         });
         assertTrue(exception.getMessage().contains("Item non trovato"));

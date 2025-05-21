@@ -17,13 +17,15 @@ public class Player extends Entity{
     public Player(String name, int health) {
         super(name, health);
         this.inventory = new Inventory();
-        try {
-            this.health = Integer.parseInt(GameConfig.get("player.hp"));
-        } catch (NumberFormatException e) {
-            log.warning("Valore di player.hp non valido, uso fallback a 100.");
-            this.health = 100;
+        if (health == 0){
+            try {
+                this.health = GameConfig.getInt("player.hp");
+            } catch (NumberFormatException e) {
+                log.warning("Valore di player.hp non valido, uso fallback a 100.");
+                this.health = 100;
+            }
+            log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
         }
-        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
     }
 
     @Override

@@ -44,7 +44,7 @@ public class CommandProcessorTest {
     @Test
     public void testShowStatusCommand() {
         when(playerMock.getHealth()).thenReturn(80);
-        processor.processCommand("stato");
+        processor.processCommand("status");
 
         verify(playerMock, times(1)).getHealth();
     }
@@ -55,7 +55,7 @@ public class CommandProcessorTest {
         when(mockItem.getName()).thenReturn("Spada");
         when(roomMock.getItems()).thenReturn(java.util.List.of(mockItem));
 
-        processor.processCommand("prendi Spada");
+        processor.processCommand("take Spada");
 
         verify(inventoryMock).addItem(mockItem);
         verify(roomMock).removeItem(mockItem);
@@ -77,7 +77,7 @@ public class CommandProcessorTest {
         Item potion = new Item("Pozione", ItemType.POTION, 0);
         when(inventoryMock.iterator()).thenReturn(java.util.List.of(potion).iterator());
 
-        processor.processCommand("usa Pozione");
+        processor.processCommand("use Pozione");
 
         verify(playerMock).heal(anyInt());
         verify(inventoryMock).removeItem(potion);

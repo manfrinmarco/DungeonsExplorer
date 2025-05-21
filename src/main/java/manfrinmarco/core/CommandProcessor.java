@@ -267,7 +267,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
             .filter(item -> item.getName().equalsIgnoreCase(itemName))
             .findFirst()
             .ifPresentOrElse(item -> {
-                if (item.getType() != ItemType.WEAPON || item.getType() != ItemType.ARMOR) {
+                if (item.getType() != ItemType.WEAPON && item.getType() != ItemType.ARMOR) {
                     System.out.println("Non puoi equipaggiare questo oggetto.");
                 } else {
                     context.getPlayer().equip(item);

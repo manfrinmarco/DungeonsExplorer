@@ -12,8 +12,8 @@ public class Sword implements ItemTemplate {
     public Item create() {
         return new ItemBuilder()
                 .setName("Spada")
-                .setType(ItemType.TOOL)
-                .setPower(20)
+                .setType(ItemType.WEAPON)
+                .setPower(30)
                 .build();
     }
 

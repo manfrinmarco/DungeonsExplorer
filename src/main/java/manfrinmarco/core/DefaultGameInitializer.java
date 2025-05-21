@@ -47,9 +47,11 @@ public class DefaultGameInitializer {
         Item chiave = ItemFactory.createItem("chiave");
         uscita.setLocked(true, chiave);
         Item spada = ItemFactory.createItem("spada");
-        Item elmo = ItemFactory.createItem("Elmo");
+        Item elmo = ItemFactory.createItem("elmo");
+        Item torcia = ItemFactory.createItem("torcia");
         stanza1.addItem(elmo);
         stanza1.addItem(spada);
+        stanza1.addItem(torcia);
 
         //enemyies
         Enemy nemico = EnemyFactory.createEnemy("Scheletro");

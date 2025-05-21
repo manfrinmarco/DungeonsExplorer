@@ -74,30 +74,37 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
             }
             case "save" -> {
-                try {
-                    GameStateMemento snapshot = new GameStateMemento(context);
-                    GameFileManager.saveMemento(snapshot);
-                    log.info("Stato di gioco salvato.");
-                } catch (GameException ge) {
-                    log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
-                }
+                new Thread(() -> {
+                    try {
+                        GameStateMemento snapshot = new GameStateMemento(context);
+                        GameFileManager.saveMemento(snapshot);
+                        System.out.println("Gioco salvato");
+                        log.info("Stato di gioco salvato.");
+                    } catch (GameException ge) {
+                        log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
+                        System.out.println("Errore durante il salvataggio.");
+                    }
+                }).start();
             }
             case "load" -> {
-                GameStateMemento loaded = GameFileManager.loadMemento();
-                if (loaded != null) {
-                    try {
-                        context.copyFrom(loaded.getSnapshot());
-                        // Ripristina il EventManager e i suoi listener
-                        GameContext.getInstance().setEventManager(new EventManager());
-                        GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
-                        System.out.println("Partita caricata.");
-                        log.info("Stato di gioco caricato.");
-                    } catch (GameException ge) {
-                        log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
-                    } finally {
-                        lookAround();
+                new Thread(() -> {
+                    GameStateMemento loaded = GameFileManager.loadMemento();
+                    if (loaded != null) {
+                        try {
+                            context.copyFrom(loaded.getSnapshot());
+                            GameContext.getInstance().setEventManager(new EventManager());
+                            GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                            System.out.println("Partita caricata.");
+                            log.info("Stato di gioco caricato.");
+                            lookAround();
+                        } catch (GameException ge) {
+                            log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
+                            System.out.println("Errore durante il caricamento.");
+                        }
+                    } else {
+                        System.out.println("Nessun salvataggio trovato.");
                     }
-                }
+                }).start();
             }
             case "explore" -> exploreRooms();
             case "combine" -> {

@@ -208,80 +208,86 @@ public class CommandProcessor extends AbstractCommandProcessor {
 
     private void showInventory() {
         System.out.println("Inventario:");
-        for (Item item : context.getPlayer().getInventory()) {
-            System.out.println("- " + item.getName());
-        }
+        context.getPlayer().getInventory().stream()
+            .map(Item::getName)
+            .forEach(name -> System.out.println("- " + name));
     }
 
     private void useItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName.trim())) {
-                if (item.getType() == ItemType.WEAPON) {
-                    System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
-                    return;
-                }
-                if (item.getType() == ItemType.POTION) {
-                    int healAmount = 20;
-                    try {
-                        healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Valore di healAmount non valido, uso 20 di default.");
+        inventory.stream()
+            .filter(item -> item.getName().equalsIgnoreCase(itemName.trim()))
+            .findFirst()
+            .ifPresentOrElse(item -> {
+                switch (item.getType()) {
+                    case WEAPON -> {
+                        System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
                     }
-                    context.getPlayer().heal(healAmount);
-                    System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
-                    inventory.removeItem(item);
-                    return;
-                }
-                if (item.getType() == ItemType.KEY) {
-                    Room room = context.getCurrentRoom();
-                    for (Direction dir : Direction.values()) {
-                        Room adjacent = room.getExit(dir);
-                        if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
-                            System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
-                            inventory.removeItem(item);
-                            return;
+                    case POTION -> {
+                        int healAmount = 20;
+                        try {
+                            healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
+                        } catch (NumberFormatException e) {
+                            System.err.println("Valore di healAmount non valido, uso 20 di default.");
+                        }
+                        context.getPlayer().heal(healAmount);
+                        System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
+                        inventory.removeItem(item);
+                    }
+                    case KEY -> {
+                        Room room = context.getCurrentRoom();
+                        boolean unlocked = false;
+                        for (Direction dir : Direction.values()) {
+                            Room adjacent = room.getExit(dir);
+                            if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
+                                System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
+                                inventory.removeItem(item);
+                                unlocked = true;
+                                break;
+                            }
+                        }
+                        if (!unlocked) {
+                            System.out.println("Nessuna porta è stata sbloccata.");
                         }
                     }
-                    System.out.println("Nessuna porta è stata sbloccata.");
-                    return;
+                    default -> {
+                        System.out.println("Hai usato " + item.getName() + ".");
+                        inventory.removeItem(item);
+                    }
                 }
-                System.out.println("Hai usato " + item.getName() + ".");
-                inventory.removeItem(item);
-                return;
-            }
-        }
-        log.log(Level.INFO, "Oggetto non trovato in inventario: {0}", itemName);
-        System.out.println("Oggetto non trovato.");
+            }, () -> {
+                log.log(Level.INFO, "Oggetto non trovato in inventario: {0}", itemName);
+                System.out.println("Oggetto non trovato.");
+            });
     }
 
     private void equipItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item.getType() != ItemType.WEAPON) {
-                System.out.println("Non puoi equipaggiare questo oggetto.");
-                return;
-            }
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                context.getPlayer().equip(item);
-                return;
-            }
-        }
-        System.out.println("Oggetto non trovato o non equipaggiabile.");
+        inventory.stream()
+            .filter(item -> item.getName().equalsIgnoreCase(itemName))
+            .findFirst()
+            .ifPresentOrElse(item -> {
+                if (item.getType() != ItemType.WEAPON) {
+                    System.out.println("Non puoi equipaggiare questo oggetto.");
+                } else {
+                    context.getPlayer().equip(item);
+                }
+            }, () -> System.out.println("Oggetto non trovato o non equipaggiabile."));
     }
 
     private void pickItem(String itemName) {
         Room room = context.getCurrentRoom();
-        for (Item item : room.getItems()) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
+        room.getItems().stream()
+            .filter(item -> item.getName().equalsIgnoreCase(itemName))
+            .findFirst()
+            .ifPresentOrElse(item -> {
                 context.getPlayer().getInventory().addItem(item);
                 room.removeItem(item);
                 System.out.println("Hai raccolto: " + item.getName());
-                return;
-            }
-        }
-        log.log(Level.INFO, "Tentativo di prendere oggetto non presente: {0}", itemName);
-        System.out.println("Oggetto non trovato nella stanza.");
+            }, () -> {
+                log.log(Level.INFO, "Tentativo di prendere oggetto non presente: {0}", itemName);
+                System.out.println("Oggetto non trovato nella stanza.");
+            });
     }
 
     private void exploreRooms() {
@@ -330,12 +336,12 @@ public class CommandProcessor extends AbstractCommandProcessor {
     
     private void combineItems(String name1, String name2) {
         Inventory inventory = context.getPlayer().getInventory();
-        Item item1 = null, item2 = null;
-
-        for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(name1)) item1 = item;
-            else if (item.getName().equalsIgnoreCase(name2)) item2 = item;
-        }
+        Item item1 = inventory.stream()
+            .filter(item -> item.getName().equalsIgnoreCase(name1))
+            .findFirst().orElse(null);
+        Item item2 = inventory.stream()
+            .filter(item -> item.getName().equalsIgnoreCase(name2))
+            .findFirst().orElse(null);
 
         if (item1 == null || item2 == null) {
             System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");

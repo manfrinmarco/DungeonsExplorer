@@ -1,4 +1,3 @@
-// EnemyFactory.java — versione dinamica
 package manfrinmarco.entities;
 
 import java.util.HashMap;
@@ -12,36 +11,33 @@ import manfrinmarco.security.GameException;
 
 public class EnemyFactory {
     private static final Logger log = Logger.getLogger(EnemyFactory.class.getName());
-    private static final Map<String, Enemy> registry = new HashMap<>();
+    private static final Map<String, EnemyTemplate> registry = new HashMap<>();
+    private static boolean initialized = false;
 
-    static {
-        log.info("EnemyFactory: caricamento dinamico dei nemici custom");
-        List<Object> loaded = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
-        for (Object obj : loaded) {
-            if (obj instanceof Enemy enemy) {
-                String key = enemy.getName().toLowerCase();
-                registry.put(key, enemy);
-                log.log(Level.FINE, "EnemyFactory: registrato custom enemy: {0}", key);
+    private static void initIfNeeded() {
+        log.info("EnemyFactory: inizializzazione dinamica dei template nemici");
+        if (initialized) return;
+        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.entities.custom");
+        for (Object obj : templates) {
+            if (obj instanceof EnemyTemplate template) {
+                String key = template.getName().toLowerCase();
+                registry.put(key, template);
+                log.log(Level.FINE, "EnemyFactory: registrato template nemico: {0}", key);
             }
         }
-
-        // fallback statici
-        registry.put("goblin", new Enemy("Goblin", 30, new AggressiveStrategy()));
-        log.fine("EnemyFactory: registrato fallback nemico: goblin");
-        registry.put("skeleton", new Enemy("Scheletro", 25, new DefensiveStrategy()));
-        log.fine("EnemyFactory: registrato fallback nemico: skeleton");
-        registry.put("ratto", new Enemy("Ratto", 15, new AggressiveStrategy()));
-        log.fine("EnemyFactory: registrato fallback nemico: ratto");
+        initialized = true;
     }
 
     public static Enemy createEnemy(String type) {
         log.log(Level.FINE, "EnemyFactory.createEnemy: richiesta nemico di tipo ''{0}''", type);
-        Enemy base = registry.get(type.toLowerCase());
-        if (base == null) {
+        initIfNeeded();
+        EnemyTemplate template = registry.get(type.toLowerCase());
+        if (template == null) {
             log.log(Level.WARNING, "EnemyFactory: nemico non trovato: {0}", type);
             throw new GameException("Nemico non trovato: " + type);
         }
-        log.log(Level.FINE, "EnemyFactory.createEnemy: creato nemico: {0}", base.getName());
-        return new Enemy(base.getName(), base.getHealth(), base.getStrategy());
+        Enemy enemy = template.create();
+        log.log(Level.INFO, "EnemyFactory.createEnemy: creato nemico: {0}", enemy.getName());
+        return enemy;
     }
-} 
+}

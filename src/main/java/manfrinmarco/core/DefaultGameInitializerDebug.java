@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
+import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
@@ -52,7 +53,7 @@ public class DefaultGameInitializerDebug {
 
         //nemici
         Item spada = new Item("Spada", ItemType.WEAPON, 50);
-        Enemy nemico = new Enemy("Zombie", 30, new DefensiveStrategy());
+        Enemy nemico = EnemyFactory.createEnemy("Orco");
         stanza2.setEnemy(nemico);
         nemico.setDrop(spada);
 

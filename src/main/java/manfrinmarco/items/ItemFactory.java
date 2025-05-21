@@ -16,12 +16,11 @@ public class ItemFactory {
     private static void initIfNeeded() {
         log.info("ItemFactory: inizializzazione dinamica dei template");
         if (initialized) return;
-        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.special");
+        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.items.custom");
         for (Object obj : templates) {
             if (obj instanceof ItemTemplate template) {
-                registry.put(template.getId().toLowerCase(), template);
-                log.log(Level.FINE, "ItemFactory: registrato template item: {0}", template.getId());
-                System.out.println("Item registrato: " + template.getId());
+                registry.put(template.getName().toLowerCase(), template);
+                log.log(Level.FINE, "ItemFactory: registrato template item: {0}", template.getName());
             }
         }
         initialized = true;

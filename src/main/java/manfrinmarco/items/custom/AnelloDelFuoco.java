@@ -1,4 +1,4 @@
-package manfrinmarco.items.special;
+package manfrinmarco.items.custom;
 
 import manfrinmarco.annotations.AutoLoad;
 import manfrinmarco.items.Item;
@@ -18,7 +18,7 @@ public class AnelloDelFuoco implements ItemTemplate {
     }
 
     @Override
-    public String getId() {
+    public String getName() {
         return "anellofuoco";
     }
 }

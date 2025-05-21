@@ -2309,3 +2309,152 @@ java.lang.Throwable: Runtime.exit(143)
 	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
 	at java.base/java.lang.Thread.run(Thread.java:1447)
 
+mag 21, 2025 9:24:52 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 9:24:55 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'Scheletro'
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+INFO: EnemyFactory: inizializzazione dinamica dei template nemici
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.entities.custom
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Demone
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Goblin
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Skeleton
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Spettro
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Orco
+mag 21, 2025 9:24:55 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Mummia
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: scheletro
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: spettro
+mag 21, 2025 9:24:55 PM manfrinmarco.entities.EnemyFactory createEnemy
+INFO: EnemyFactory.createEnemy: creato nemico: Scheletro
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: cucina 
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 9:24:55 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 9:24:55 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 9:24:55 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 9:25:03 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 21, 2025 9:25:07 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 21, 2025 9:25:15 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Scheletro
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Scheletro
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 7
+mag 21, 2025 9:25:15 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 17
+mag 21, 2025 9:25:20 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Scheletro
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Scheletro
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health < 20, preparazione a curare
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato heal = 3
+mag 21, 2025 9:25:20 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: applicato heal, HP nemico ora 10
+mag 21, 2025 9:25:22 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attack
+mag 21, 2025 9:25:22 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 21, 2025 9:25:22 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 21, 2025 9:25:22 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Scheletro
+mag 21, 2025 9:25:22 PM manfrinmarco.events.GameEvent <init>
+FINE: GameEvent creato: type=enemy_defeated, message=Hai sconfitto un nemico!, payload=manfrinmarco.entities.Enemy@579bb367
+mag 21, 2025 9:25:22 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: invio evento 'enemy_defeated' a 2 listener
+mag 21, 2025 9:25:22 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.ScoreListener
+mag 21, 2025 9:25:22 PM manfrinmarco.events.ScoreListener onEvent
+FINE: ScoreListener: ricevuto evento di tipo enemy_defeated
+mag 21, 2025 9:25:22 PM manfrinmarco.events.ScoreListener onEvent
+INFO: ScoreListener: nemico sconfitto, incremento punteggio
+mag 21, 2025 9:25:22 PM manfrinmarco.core.GameContext increaseScore
+INFO: Incremento punteggio di 100 punti; nuovo punteggio: 0100
+mag 21, 2025 9:25:22 PM manfrinmarco.events.EventManager notify
+FINE: EventManager: notifico listener: manfrinmarco.events.DropListener
+mag 21, 2025 9:25:29 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 9:25:50 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 9:25:51 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 9:25:51 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 9:25:51 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 9:25:51 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'Orco'
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+INFO: EnemyFactory: inizializzazione dinamica dei template nemici
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.entities.custom
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Demone
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Goblin
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Skeleton
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Spettro
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Orco
+mag 21, 2025 9:25:51 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Mummia
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: scheletro
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: spettro
+mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory createEnemy
+WARNING: EnemyFactory: nemico non trovato: Orco

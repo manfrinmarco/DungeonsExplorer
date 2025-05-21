@@ -15,6 +15,15 @@ public class GameContext implements Serializable {
 
     private Player player;
     private Room currentRoom;
+    private java.util.Map<String, Room> allRooms = new java.util.HashMap<>();
+
+    public java.util.Map<String, Room> getAllRooms() {
+        return allRooms;
+    }
+
+    public void setAllRooms(java.util.Map<String, Room> allRooms) {
+        this.allRooms = allRooms;
+    }
     private int score;
     private transient EventManager eventManager = new EventManager();
 

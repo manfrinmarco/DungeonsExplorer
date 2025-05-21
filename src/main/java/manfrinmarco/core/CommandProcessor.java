@@ -170,7 +170,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
             System.out.println("Direzione non valida.");
         }
     }
-
     
     private void attack() {
         Enemy enemy = context.getCurrentRoom().getEnemy();
@@ -280,19 +279,17 @@ public class CommandProcessor extends AbstractCommandProcessor {
     private void exploreRooms() {
         Room current = context.getCurrentRoom();
 
-        // Se ci troviamo nella stanza principale di una CompositeRoom
         if (current instanceof CompositeRoom composite) {
             System.out.println("Stanze interne di " + composite.getName() + ":");
-            for (Room room : composite.getSubRooms()) {
-                System.out.println("- " + room.getName());
+            for (Room r : composite.getSubRooms()) {
+                System.out.println("- " + r.getName());
             }
         } else {
-            // Proviamo a vedere se la stanza corrente appartiene a una CompositeRoom
             CompositeRoom parent = findParentComposite(current);
             if (parent != null) {
                 System.out.println("Stanze interne di " + parent.getName() + ":");
-                for (Room room : parent.getSubRooms()) {
-                    System.out.println("- " + room.getName());
+                for (Room r : parent.getSubRooms()) {
+                    System.out.println("- " + r.getName());
                 }
             } else {
                 System.out.println("Stanze collegate:");
@@ -309,18 +306,18 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
         }
     }
-
+    
     private CompositeRoom findParentComposite(Room room) {
-        // Se GameContext contiene una CompositeRoom come mappa principale
-        Room parent = GameContext.getInstance().getCurrentRoom();
-        if (parent instanceof CompositeRoom composite) {
-            for (Room sub : composite.getSubRooms()) {
-                if (sub == room) return composite;
+        for (Room candidate : GameContext.getInstance().getAllRooms().values()) {
+            if (candidate instanceof CompositeRoom composite) {
+                for (Room sub : composite.getSubRooms()) {
+                    if (sub == room) return composite;
+                }
             }
         }
         return null;
     }
-    
+
     private void combineItems(String name1, String name2) {
         Inventory inventory = context.getPlayer().getInventory();
         Item item1 = null, item2 = null;

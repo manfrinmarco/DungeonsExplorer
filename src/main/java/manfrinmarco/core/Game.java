@@ -30,32 +30,36 @@ public class Game {
                     context.copyFrom(m.getSnapshot());
                     context.getEventManager().subscribe(new ScoreListener());
                     context.getEventManager().subscribe(new DropListener());
-                    System.out.println("Partita caricata.");
+                    System.out.println("Partita caricata, inizia il gioco");
                 } else {
-                    System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");
+                    System.out.println("Nessuna salvataggio trovato, avvio una nuova partita.");
                     DefaultGameInitializerDebug.initialize(context);
-                    System.out.println("Scegli file mappa (invio per default):");
-                    String mapFile = scanner.nextLine().trim() + ".json";
-                    System.out.println(mapFile);
+                    System.out.println("Scegli la mappa (invio per demo):");
+                    String mapFile = scanner.nextLine().trim();
+                    String name = mapFile + ".json";
+                    System.out.println(name);
                     if (!mapFile.isEmpty()) {
                         try {
-                            CompositeRoom map = MapLoader.load(mapFile);
+                            CompositeRoom map = MapLoader.load(name);
                             context.setCurrentRoom(map.getMainRoom());
+                            System.err.println("Mappa caricata, inizia il gioco");
                         } catch (Exception e) {
-                            System.err.println("Errore caricamento mappa, uso configurazione di default.");
+                            System.err.println("Errore nel caricamento mappa, uso la demo.");
                         }
                     }
                 }
             } else {
                 DefaultGameInitializerDebug.initialize(context);
-                System.out.println("Scegli file mappa JSON (invio per default):");
+                System.out.println("Scegli la mappa (invio per demo):");
                 String mapFile = scanner.nextLine().trim();
+                String name = mapFile + ".json";
                 if (!mapFile.isEmpty()) {
                     try {
-                        CompositeRoom map = MapLoader.load(mapFile);
+                        CompositeRoom map = MapLoader.load(name);
                         context.setCurrentRoom(map.getMainRoom());
+                        System.err.println("Mappa caricata, inizia il gioco");
                     } catch (Exception e) {
-                        System.err.println("Errore caricamento mappa, uso configurazione di default.");
+                        System.err.println("Errore nel caricamento mappa, uso la demo.");
                     }
                 }
             }

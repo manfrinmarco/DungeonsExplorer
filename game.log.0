@@ -2929,3 +2929,732 @@ mag 21, 2025 3:57:15 PM manfrinmarco.map.MapLoader load
 INFO: MapLoader: finished loading map root=isola
 mag 21, 2025 3:57:19 PM manfrinmarco.core.CommandProcessor executeCommand
 FINE: Esecuzione comando: look
+mag 21, 2025 3:57:42 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 129
+java.lang.Throwable: Runtime.exit(129)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 3:57:44 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 3:57:46 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 3:57:46 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 3:57:46 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 3:57:46 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 3:57:46 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 3:57:47 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: loading map from map
+mag 21, 2025 3:57:48 PM manfrinmarco.map.MapLoader load
+SEVERE: MapLoader I/O error loading map file map
+java.io.FileNotFoundException: map (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
+	at com.fasterxml.jackson.core.TokenStreamFactory._fileInputStream(TokenStreamFactory.java:278)
+	at com.fasterxml.jackson.core.JsonFactory.createParser(JsonFactory.java:1089)
+	at com.fasterxml.jackson.databind.ObjectMapper.readTree(ObjectMapper.java:3252)
+	at manfrinmarco.map.MapLoader.load(MapLoader.java:40)
+	at manfrinmarco.core.Game.start(Game.java:55)
+	at manfrinmarco.Main.main(Main.java:8)
+
+mag 21, 2025 3:57:52 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 21, 2025 3:57:56 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 3:59:45 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 3:59:49 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 3:59:49 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 3:59:49 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 3:59:49 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 3:59:49 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 3:59:50 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: loading map from map
+mag 21, 2025 3:59:50 PM manfrinmarco.map.MapLoader load
+SEVERE: MapLoader I/O error loading map file map
+java.io.FileNotFoundException: map (No such file or directory)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:185)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:139)
+	at com.fasterxml.jackson.core.TokenStreamFactory._fileInputStream(TokenStreamFactory.java:278)
+	at com.fasterxml.jackson.core.JsonFactory.createParser(JsonFactory.java:1089)
+	at com.fasterxml.jackson.databind.ObjectMapper.readTree(ObjectMapper.java:3252)
+	at manfrinmarco.map.MapLoader.load(MapLoader.java:40)
+	at manfrinmarco.core.Game.start(Game.java:56)
+	at manfrinmarco.Main.main(Main.java:8)
+
+mag 21, 2025 4:00:04 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 4:01:00 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 4:01:03 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 4:01:03 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 4:01:03 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 4:01:03 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 4:01:03 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: loading map from map.json
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: first pass - creating rooms
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+INFO: RoomFactory: caricamento dinamico delle stanze custom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.map.custom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Island
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Cell
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.MisteryRoom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Garden
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.GuardRoom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Corridoio
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Cript
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Castello
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Army
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Kitchen
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Ship
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.ThroneRoom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Harbor
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.BossRoom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Exit
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Hall
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: isola
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cella
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: default
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: corridoio
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cripta
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: castello
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: nave
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: sala
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: boss
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: uscita
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: entrata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'nave'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Nave
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=nave name=Nave
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'porto'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=porto name=Porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'giardino'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=giardino name=Giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'entrata'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: entrata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=entrata name=Entrata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'guardie'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=guardie name=Stanza delle Guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'armeria'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=armeria name=Armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'cucina'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=cucina name=Cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'boss'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Boss
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=boss name=Stanza del Boss
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'uscita'
+mag 21, 2025 4:01:05 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Uscita
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=uscita name=Uscita
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=castello name=Castello sull'Isola
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=isola name=Isola
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: second pass - configuring rooms
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=nave
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=nave
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Ascia to room id=porto
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Elsa to room id=giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+INFO: EnemyFactory: caricamento dinamico dei nemici custom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.entities.custom
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Ghost
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Goblin
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Mumy
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Orge
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Skeleton
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Demon
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: spettro
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: goblin
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: mummia
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: orco
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: scheletro
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: demone
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: goblin
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: skeleton
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: ratto
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'demone'
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Demone
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory create
+FINE: ItemFactory.create: richiesta item id='torcia'
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.items.special
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Axe
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Torch
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Key
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Hilt
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Armor
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Blade
+mag 21, 2025 4:01:05 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Potion
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Ascia
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Torcia
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Chiave
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Elsa
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Armatura
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Lama
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Pozione
+mag 21, 2025 4:01:05 PM manfrinmarco.items.ItemFactory create
+INFO: ItemFactory.create: creato item: torcia
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy demone to room id=giardino
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=entrata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=entrata
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'scheletro'
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Scheletro
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy scheletro to room id=guardie
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Lama to room id=armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Armatura to room id=armeria
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 1 to room id=cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 2 to room id=cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 3 to room id=cucina
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=boss
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=boss
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'demone'
+mag 21, 2025 4:01:05 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Demone
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy demone to room id=boss
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=uscita
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=uscita
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=castello
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configured CompositeRoom id=castello with subRooms ["entrata","guardie","armeria","cucina","boss","uscita"]
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=isola
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configured CompositeRoom id=isola with subRooms ["nave","porto","giardino","castello"]
+mag 21, 2025 4:01:05 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: finished loading map root=isola
+mag 21, 2025 4:03:56 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 4:19:32 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 4:19:34 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 4:19:34 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 4:19:34 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 4:19:34 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 4:19:34 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: loading map from map.json
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: first pass - creating rooms
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+INFO: RoomFactory: caricamento dinamico delle stanze custom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.map.custom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Island
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Cell
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.MisteryRoom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Garden
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.GuardRoom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Corridoio
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Cript
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Castello
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Army
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Kitchen
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Ship
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.ThroneRoom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Harbor
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.BossRoom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Exit
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.map.custom.Hall
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: isola
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cella
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: default
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: corridoio
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cripta
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: castello
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: nave
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: sala
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: boss
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: uscita
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory <clinit>
+FINE: RoomFactory: registrata custom room: entrata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'nave'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Nave
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=nave name=Nave
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'porto'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=porto name=Porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'giardino'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=giardino name=Giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'entrata'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: entrata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=entrata name=Entrata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'guardie'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=guardie name=Stanza delle Guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'armeria'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=armeria name=Armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'cucina'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=cucina name=Cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'boss'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Boss
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=boss name=Stanza del Boss
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: richiesta stanza di tipo 'uscita'
+mag 21, 2025 4:19:37 PM manfrinmarco.map.RoomFactory createRoom
+FINE: RoomFactory.createRoom: creata stanza: Uscita
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=uscita name=Uscita
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=castello name=Castello sull'Isola
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: created room id=isola name=Isola
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: second pass - configuring rooms
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=nave
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=nave
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Ascia to room id=porto
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Elsa to room id=giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+INFO: EnemyFactory: caricamento dinamico dei nemici custom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.entities.custom
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Ghost
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Goblin
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Mumy
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Orge
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Skeleton
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Demon
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: spettro
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: goblin
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: mummia
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: orco
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: scheletro
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato custom enemy: demone
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: goblin
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: skeleton
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory <clinit>
+FINE: EnemyFactory: registrato fallback nemico: ratto
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'demone'
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Demone
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory create
+FINE: ItemFactory.create: richiesta item id='torcia'
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.items.special
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Axe
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Torch
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Key
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Hilt
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Armor
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Blade
+mag 21, 2025 4:19:37 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Potion
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Ascia
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Torcia
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Chiave
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Elsa
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Armatura
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Lama
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Pozione
+mag 21, 2025 4:19:37 PM manfrinmarco.items.ItemFactory create
+INFO: ItemFactory.create: creato item: torcia
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy demone to room id=giardino
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=entrata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=entrata
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'scheletro'
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Scheletro
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy scheletro to room id=guardie
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Lama to room id=armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Armatura to room id=armeria
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 1 to room id=cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 2 to room id=cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader lambda$1
+FINE: MapLoader: added item Pozione Curativa 3 to room id=cucina
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=boss
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=boss
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'demone'
+mag 21, 2025 4:19:37 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: creato nemico: Demone
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: added enemy demone to room id=boss
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=uscita
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: exits set for room id=uscita
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=castello
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configured CompositeRoom id=castello with subRooms ["entrata","guardie","armeria","cucina","boss","uscita"]
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configuring room id=isola
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+FINE: MapLoader: configured CompositeRoom id=isola with subRooms ["nave","porto","giardino","castello"]
+mag 21, 2025 4:19:37 PM manfrinmarco.map.MapLoader load
+INFO: MapLoader: finished loading map root=isola
+mag 21, 2025 4:19:47 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: go
+mag 21, 2025 4:19:53 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: explore
+mag 21, 2025 4:20:23 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+

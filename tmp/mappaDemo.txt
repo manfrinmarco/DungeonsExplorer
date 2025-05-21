@@ -10,6 +10,3 @@ Mappa -> "isola" : constiene costa, giardino e castello
 |   ├── 3.4 "cucina" : contiene 3 pozioni curative da raccogliere - a ovest armeria - a sud stanza del boss
 |   ├── 3.5 "stanza del boss" : boss (si sconfigge solo con spada combinata) - a nord cucina - e est exit (puoi uscire solo se sconfiggi boss)
 └── └── 3.6 "exit" : hai vinto il gioco
-
-
-

@@ -5,8 +5,13 @@ manca in ordine di priorità:
 - Junit test (mockito se serve) -> done 
 - mappa demo -> done
 - save / reload status -> done 
-- import map from file (json) -> done 
+- aggiungere logs + gameException -> done 
+- multi thread per salvare e caricare -> done
+- streams and lambda in cmdProcessor -> done
 
-- aggiungere logs + gameException
-- eseguire gli unit test
-- mappa finale
+
+1- roomFactory dinamico
+2- equip non funziona
+3- cmd oggetti nome con piu
+4- eseguire gli unit test e correggere 
+5- map loader da rifare [import from json] (broken)

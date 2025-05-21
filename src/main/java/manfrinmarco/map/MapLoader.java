@@ -94,16 +94,16 @@ public class MapLoader {
                 }
 
                 // Composite room
-                if (room instanceof CompositeRoom) {
+                if (room instanceof CompositeRoom compositeRoom) {
                     JsonNode subRooms = r.get("subRooms");
                     if (subRooms != null) {
                         for (JsonNode sr : subRooms) {
-                            ((CompositeRoom) room).addRoom(registry.get(sr.asText()));
+                            compositeRoom.addRoom(registry.get(sr.asText()));
                         }
                     }
                     JsonNode mainRoom = r.get("mainRoom");
                     if (mainRoom != null) {
-                        ((CompositeRoom) room).setMainRoom(registry.get(mainRoom.asText()));
+                        compositeRoom.setMainRoom(registry.get(mainRoom.asText()));
                     }
                 }
             }

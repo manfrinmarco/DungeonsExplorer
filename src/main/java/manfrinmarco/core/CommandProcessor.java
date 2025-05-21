@@ -31,9 +31,11 @@ public class CommandProcessor extends AbstractCommandProcessor {
 
         switch (command) {
             case "look" -> lookAround();
+            case "status" -> showStatus();
+            case "i" -> showInventory();
+            case "explore" -> exploreRooms();
             case "go" -> {
                 if (tokens.length < 2) {
-                    log.warning("Comando muovi senza direzione");
                     System.out.println("Dove vuoi andare?");
                 } else {
                     moveTo(tokens[1]);
@@ -42,17 +44,14 @@ public class CommandProcessor extends AbstractCommandProcessor {
             case "attack" -> {
                 Enemy enemy = context.getCurrentRoom().getEnemy();
                 if (enemy == null || !enemy.isAlive()) {
-                    log.info("Comando attacca invocato ma nessun nemico presente");
                     System.out.println("Non c'è nessun nemico da attaccare.");
                     return;
                 }
                 attack();
             }
-            case "status" -> showStatus();
-            case "i" -> showInventory();
+            // TODO: gli oggetti possono avere un nome con più parole
             case "use" -> {
                 if (tokens.length < 2) {
-                    log.warning("Comando usa invocato senza specificare oggetto");
                     System.out.println("Specifica l'oggetto da usare.");
                 } else {
                     useItem(tokens[1]);
@@ -60,7 +59,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
             case "equip" -> {
                 if (tokens.length < 2) {
-                    log.warning("Comando equip invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi equipaggiare.");
                 } else {
                     equipItem(tokens[1]);
@@ -68,10 +66,17 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
             case "take" -> {
                 if (tokens.length < 2) {
-                    log.warning("Comando prendi invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi prendere.");
                 } else {
                     pickItem(tokens[1]);
+                }
+            }
+            
+            case "combine" -> {
+                if (tokens.length < 3) {
+                    System.out.println("Specifica due oggetti da combinare.");
+                } else {
+                    combineItems(tokens[1], tokens[2], tokens[3]);
                 }
             }
             case "save" -> {
@@ -107,14 +112,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     }
                 }).start();
             }
-            case "explore" -> exploreRooms();
-            case "combine" -> {
-                if (tokens.length < 3) {
-                    System.out.println("Specifica due oggetti da combinare.");
-                } else {
-                    combineItems(tokens[1], tokens[2]);
-                }
-}
             default -> {
                 log.log(Level.WARNING, "Comando sconosciuto: {0}", command);
                 System.out.println("Comando sconosciuto.");
@@ -223,6 +220,9 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     case WEAPON -> {
                         System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
                     }
+                    case ARMOR -> {
+                        System.out.println("Non puoi usare un'armatura in questo modo. Usa 'equip' per equipaggiarla.");
+                    }
                     case POTION -> {
                         int healAmount = 20;
                         try {
@@ -267,7 +267,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
             .filter(item -> item.getName().equalsIgnoreCase(itemName))
             .findFirst()
             .ifPresentOrElse(item -> {
-                if (item.getType() != ItemType.WEAPON) {
+                if (item.getType() != ItemType.WEAPON || item.getType() != ItemType.ARMOR) {
                     System.out.println("Non puoi equipaggiare questo oggetto.");
                 } else {
                     context.getPlayer().equip(item);
@@ -330,7 +330,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
         }
     }
     
-    private void combineItems(String name1, String name2) {
+    private void combineItems(String name1, String name2, String name3) {
         Inventory inventory = context.getPlayer().getInventory();
         Item item1 = inventory.stream()
             .filter(item -> item.getName().equalsIgnoreCase(name1))
@@ -344,16 +344,16 @@ public class CommandProcessor extends AbstractCommandProcessor {
             return;
         }
 
-        CompositeItem armaCombinata = new CompositeItem("Arma Combinata");
-        armaCombinata.addItem(item1);
-        armaCombinata.addItem(item2);
-        armaCombinata.setPower(item1.getPower() + item2.getPower());
+        CompositeItem combinedObj = new CompositeItem(name3);
+        combinedObj.addItem(item1);
+        combinedObj.addItem(item2);
+        combinedObj.setPower(item1.getPower() + item2.getPower());
 
         inventory.removeItem(item1);
         inventory.removeItem(item2);
-        inventory.addItem(armaCombinata);
+        inventory.addItem(combinedObj);
 
         log.log(Level.FINE, "Oggetti combinati: {0} + {1}", new Object[]{name1, name2});
-        System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
+        System.out.println("Hai creato un oggetto combinato: " + combinedObj.getName());
     }
 }

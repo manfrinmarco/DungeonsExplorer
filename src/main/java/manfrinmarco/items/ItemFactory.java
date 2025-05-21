@@ -20,6 +20,7 @@ public class ItemFactory {
         for (Object obj : templates) {
             if (obj instanceof ItemTemplate template) {
                 registry.put(template.getName().toLowerCase(), template);
+                System.out.println("ItemFactory: registrato template item:" + template.getName());
                 log.log(Level.FINE, "ItemFactory: registrato template item: {0}", template.getName());
             }
         }

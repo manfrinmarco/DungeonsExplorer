@@ -7,18 +7,18 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class Sword implements ItemTemplate {
+public class Helmet implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Spada")
-                .setType(ItemType.TOOL)
-                .setPower(20)
+                .setName("Elmo")
+                .setType(ItemType.ARMOR)
+                .setPower(0)
                 .build();
     }
 
     @Override
     public String getName() {
-        return "Spada";
+        return "Elmo";
     }
 }

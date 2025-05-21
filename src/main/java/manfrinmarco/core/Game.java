@@ -33,7 +33,7 @@ public class Game {
                     System.out.println("Partita caricata.");
                 } else {
                     System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");
-                    DefaultGameInitializerDebug.initialize(context);
+                    DefaultGameInitializer.initialize(context);
                     System.out.println("Scegli file mappa JSON (invio per default):");
                     String mapFile = scanner.nextLine().trim();
                     if (!mapFile.isEmpty()) {
@@ -46,7 +46,7 @@ public class Game {
                     }
                 }
             } else {
-                DefaultGameInitializerDebug.initialize(context);
+                DefaultGameInitializer.initialize(context);
                 System.out.println("Scegli file mappa JSON (invio per default):");
                 String mapFile = scanner.nextLine().trim();
                 if (!mapFile.isEmpty()) {

@@ -515,3 +515,106 @@ mag 21, 2025 5:17:49 PM manfrinmarco.map.MapLoader load
 FINE: MapLoader: configured CompositeRoom id=isola with subRooms ["nave","porto","giardino","castello"]
 mag 21, 2025 5:17:49 PM manfrinmarco.map.MapLoader load
 INFO: MapLoader: finished loading map root=isola
+mag 21, 2025 5:50:49 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 130
+java.lang.Throwable: Runtime.exit(130)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 5:51:00 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 5:51:04 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 5:51:04 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 5:51:04 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 5:51:04 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 5:51:04 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 5:51:10 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 21, 2025 5:51:18 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 21, 2025 5:51:18 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Pozione
+mag 21, 2025 5:51:29 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+
+mag 21, 2025 5:52:50 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 5:52:53 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 5:52:53 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: stanza1
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 5:52:53 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 5:52:53 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 5:52:53 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 5:52:56 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: guarda
+mag 21, 2025 5:53:01 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: muovi
+mag 21, 2025 5:53:04 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: attacca
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: tentativo di attacco con equipaggiamento: nessuno
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player attack
+FINE: Player.attack: danno totale calcolato = 10
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player attack
+INFO: Player.attack: inflitti 10 danni a Zombie
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: attacco iniziato da Zombie
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: health >= 20, preparazione a infliggere danni
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: calcolato damage = 5
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno in ingresso = 5
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player takeDamage
+FINE: Player.takeDamage: danno dopo armatura = 5
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.Player takeDamage
+INFO: Player.takeDamage: HP rimanenti = 95
+mag 21, 2025 5:53:04 PM manfrinmarco.entities.DefensiveStrategy attack
+FINE: DefensiveStrategy: danni applicati, HP giocatore ora 95
+mag 21, 2025 5:53:31 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+

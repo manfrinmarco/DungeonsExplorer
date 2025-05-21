@@ -42,8 +42,8 @@ public class CommandProcessor extends AbstractCommandProcessor {
         log.log(Level.FINE, "Esecuzione comando: {0}", command);
 
         switch (command) {
-            case "look" -> lookAround();
-            case "go" -> {
+            case "guarda" -> lookAround();
+            case "muovi" -> {
                 if (tokens.length < 2) {
                     log.warning("Comando muovi senza direzione");
                     System.out.println("Dove vuoi andare?");
@@ -51,7 +51,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     moveTo(tokens[1]);
                 }
             }
-            case "attack" -> {
+            case "attacca" -> {
                 Enemy enemy = context.getCurrentRoom().getEnemy();
                 if (enemy == null || !enemy.isAlive()) {
                     log.info("Comando attacca invocato ma nessun nemico presente");
@@ -60,9 +60,9 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
                 attack();
             }
-            case "status" -> showStatus();
+            case "s" -> showStatus();
             case "i" -> showInventory();
-            case "use" -> {
+            case "usa" -> {
                 if (tokens.length < 2) {
                     log.warning("Comando usa invocato senza specificare oggetto");
                     System.out.println("Specifica l'oggetto da usare.");
@@ -70,7 +70,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     useItem(tokens[1]);
                 }
             }
-            case "equip" -> {
+            case "equipagga" -> {
                 if (tokens.length < 2) {
                     log.warning("Comando equip invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi equipaggiare.");
@@ -78,7 +78,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     equipItem(tokens[1]);
                 }
             }
-            case "take" -> {
+            case "prendi" -> {
                 if (tokens.length < 2) {
                     log.warning("Comando prendi invocato senza specificare oggetto");
                     System.out.println("Specifica cosa vuoi prendere.");
@@ -86,7 +86,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     pickItem(tokens[1]);
                 }
             }
-            case "save" -> {
+            case "salva" -> {
                 new Thread(() -> {
                     try {
                         GameStateMemento snapshot = new GameStateMemento(context);
@@ -99,7 +99,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     }
                 }).start();
             }
-            case "load" -> {
+            case "carica" -> {
                 new Thread(() -> {
                     GameStateMemento loaded = GameFileManager.loadMemento();
                     if (loaded != null) {
@@ -119,8 +119,8 @@ public class CommandProcessor extends AbstractCommandProcessor {
                     }
                 }).start();
             }
-            case "explore" -> exploreRooms();
-            case "combine" -> {
+            case "esplora" -> exploreRooms();
+            case "combina" -> {
                 if (tokens.length < 3) {
                     System.out.println("Specifica due oggetti da combinare.");
                 } else {
@@ -195,7 +195,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
             return;
         }
         player.attack(enemy);
-        System.out.println("Hai attaccato il " + enemy.getName() + ". HP rimanenti: " + enemy.getHealth());
+        System.out.println("Hai attaccato " + enemy.getName() + ". HP rimanenti: " + enemy.getHealth());
         if (enemy.isAlive()) {
             enemy.executeStrategy(player);
             System.out.println(enemy.getName() + " ti attacca! HP rimanenti: " + player.getHealth());

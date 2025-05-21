@@ -84,10 +84,9 @@ public class MapLoader {
                 JsonNode items = r.get("items");
                 if (items != null) {
                     items.forEach(itemNode -> {
-                        String iid = itemNode.has("id") ? itemNode.get("id").asText() : "-1";
                         String itype = itemNode.has("type") ? itemNode.get("type").asText() : "Undef";
                         Item item;
-                        if (iid != null) {
+                        if (!itype.equals("Undef")) {
                             item = ItemFactory.create(itype);
                         } else {
                             String name = itemNode.has("name") ? itemNode.get("name").asText() : "Undef";

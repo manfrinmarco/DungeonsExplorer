@@ -4,9 +4,7 @@
     {
       "id": "nave",
       "type": "nave",
-      "exits": { "north": "porto" },
-
-      "items": { "type" :"PozioneMagica"}
+      "exits": { "north": "porto" }
     },
     {
       "id": "porto",
@@ -57,7 +55,7 @@
       "id": "boss",
       "type": "boss",
       "exits": { "north": "cucina", "east": "uscita" },
-      "items": { "type" :"PozioneMagica"},
+      "items": { "type" :"p"},
       "enemy": { "type": "Demone", "drop": { "id": "torcia" } }
     },
     {

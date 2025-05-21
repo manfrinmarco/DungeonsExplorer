@@ -11,7 +11,7 @@ public class MagicPotion implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("PozioneMagica")
+                .setName("p")
                 .setType(ItemType.MAGIC_POTION)
                 .setPower(15)
                 .build();
@@ -19,6 +19,6 @@ public class MagicPotion implements ItemTemplate {
 
     @Override
     public String getId() {
-        return "PozioneMagica";
+        return "p";
     }
 }

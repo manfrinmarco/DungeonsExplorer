@@ -12,6 +12,7 @@ import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemFactory;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
@@ -45,6 +46,8 @@ public class GameInitializerDemo {
         //potion
         Item pozione = new Item("Pozione", ItemType.CURATIVE_POTION, 10);
         stanza1.addItem(pozione);
+        Item magic = ItemFactory.create("PozioneMagica");
+        stanza1.addItem(magic);
 
         //chiave
         Item chiave = new Item("Chiave", ItemType.KEY, 0);

@@ -2276,3 +2276,36 @@ mag 21, 2025 9:08:28 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
 INFO: DefaultGameInitializerDebug: inizializzazione completata
 mag 21, 2025 9:08:31 PM manfrinmarco.core.CommandProcessor executeCommand
 FINE: Esecuzione comando: explore
+mag 21, 2025 9:13:06 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 9:13:07 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 9:13:07 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: cucina 
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 9:13:07 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 9:13:07 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 9:13:07 PM manfrinmarco.core.DefaultGameInitializerDebug initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 9:13:12 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: explore
+mag 21, 2025 9:13:16 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 143
+java.lang.Throwable: Runtime.exit(143)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Terminator$1.handle(Terminator.java:51)
+	at java.base/jdk.internal.misc.Signal$1.run(Signal.java:218)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+

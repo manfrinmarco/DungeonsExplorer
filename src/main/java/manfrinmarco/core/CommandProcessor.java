@@ -16,6 +16,7 @@ import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
+import manfrinmarco.map.RoomIterator;
 import manfrinmarco.security.GameException;
 
 public class CommandProcessor extends AbstractCommandProcessor {
@@ -295,7 +296,9 @@ public class CommandProcessor extends AbstractCommandProcessor {
         // Se ci troviamo nella stanza principale di una CompositeRoom
         if (current instanceof CompositeRoom composite) {
             System.out.println("Stanze interne di " + composite.getName() + ":");
-            for (Room room : composite.getSubRooms()) {
+            RoomIterator iterator = new RoomIterator(composite.getSubRooms());
+            while (iterator.hasNext()) {
+                Room room = iterator.next();
                 System.out.println("- " + room.getName());
             }
         } else {
@@ -306,7 +309,9 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
             if (parent != null) {
                 System.out.println("Stanze interne di " + parent.getName() + ":");
-                for (Room room : parent.getSubRooms()) {
+                RoomIterator iterator = new RoomIterator(parent.getSubRooms());
+                while (iterator.hasNext()) {
+                    Room room = iterator.next();
                     System.out.println("- " + room.getName());
                 }
             } else {
@@ -323,17 +328,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
             }
         }
-    }
-
-    private CompositeRoom findParentComposite(Room room) {
-        // Se GameContext contiene una CompositeRoom come mappa principale
-        Room parent = GameContext.getInstance().getCurrentRoom();
-        if (parent instanceof CompositeRoom composite) {
-            for (Room sub : composite.getSubRooms()) {
-                if (sub == room) return composite;
-            }
-        }
-        return null;
     }
     
     private void combineItems(String name1, String name2) {
@@ -362,5 +356,4 @@ public class CommandProcessor extends AbstractCommandProcessor {
         log.log(Level.FINE, "Oggetti combinati: {0} + {1}", new Object[]{name1, name2});
         System.out.println("Hai creato un oggetto combinato: " + armaCombinata.getName());
     }
-
 }

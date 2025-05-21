@@ -1,8 +1,7 @@
 package manfrinmarco.core;
 
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.events.DropListener;
@@ -55,20 +54,21 @@ public class Game {
                 String mapFile = scanner.nextLine().trim();
                 String name = mapFile + ".json";
                 if (!mapFile.isEmpty()) {
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.submit(() -> {
-                        try {
-                            CompositeRoom map = MapLoader.load(name);
-                            context.setCurrentRoom(map.getMainRoom());
-                            System.out.println("Mappa caricata, inizia il gioco");
-                        } catch (Exception e) {
-                            System.err.println("Errore nel caricamento mappa, uso la demo.");
-                        }
-                    });
-                    executor.shutdown();
+                    try {
+                        CompositeRoom map = MapLoader.load(name);
+                        context.setCurrentRoom(map.getMainRoom());
+                        System.out.println("Mappa caricata, inizia il gioco");
+                    } catch (Exception e) {
+                        System.err.println("Errore nel caricamento mappa, uso la demo.");
+                    }
                 }
             }
             
+            if (context.getCurrentRoom() == null) {
+                System.err.println("Errore critico: nessuna stanza iniziale è stata impostata.");
+                logger.log(Level.SEVERE, "Errore critico: nessuna stanza iniziale è stata impostata.");
+                return;
+            }
             while (true) {
                 System.out.print("\n> ");
                 String input = scanner.nextLine();

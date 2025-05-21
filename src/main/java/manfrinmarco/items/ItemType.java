@@ -6,5 +6,6 @@ public enum ItemType {
     CURATIVE_POTION,
     MAGIC_POTION,
     KEY,
-    TOOL
+    TOOL,
+    DEF
 }

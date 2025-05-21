@@ -46,20 +46,21 @@ public class MapLoader {
             Iterator<JsonNode> it = roomsNode.elements();
             while (it.hasNext()) {
                 JsonNode r = it.next();
-                String id = r.get("id").asText();
-                String name = r.get("name").asText();
-                String desc = r.get("description").asText();
+                String id = r.has("id") ? r.get("id").asText() : "-1";
+                String type = r.has("type") ? r.get("type").asText() : null;
+                String name = r.has("name") ? r.get("name").asText() : r.get("type").asText();
+                String desc = r.has("description") ? r.get("description").asText() : "Non vedi nulla.";
                 boolean composite = r.has("subRooms");
                 Room room;
                 if (composite) {
                     room = new CompositeRoom(name, desc);
-                } else if (r.has("type")) {
-                    room = RoomFactory.createRoom(r.get("type").asText());
+                } else if (type!=null) {
+                    room = RoomFactory.createRoom(type);
                 } else {
                     room = new Room(name, desc);
                 }
                 registry.put(id, room);
-                log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{id, name});
+                log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{type, name});
             }
             log.fine("MapLoader: second pass - configuring rooms");
             // seconda pass: imposta uscite, items, nemici e composizione
@@ -83,13 +84,14 @@ public class MapLoader {
                 JsonNode items = r.get("items");
                 if (items != null) {
                     items.forEach(itemNode -> {
-                        String iid = itemNode.has("id") ? itemNode.get("id").asText() : null;
+                        String iid = itemNode.has("id") ? itemNode.get("id").asText() : "-1";
+                        String itype = itemNode.has("type") ? itemNode.get("type").asText() : "Undef";
                         Item item;
                         if (iid != null) {
-                            item = ItemFactory.create(iid);
+                            item = ItemFactory.create(itype);
                         } else {
-                            String name = itemNode.get("name").asText();
-                            ItemType type = ItemType.valueOf(itemNode.get("type").asText());
+                            String name = itemNode.has("name") ? itemNode.get("name").asText() : "Undef";
+                            ItemType type = ItemType.valueOf(itemNode.has("type") ? itemNode.get("type").asText() : "Undef");
                             int power = itemNode.has("power") ? itemNode.get("power").asInt() : 0;
                             item = new Item(name, type, power);
                         }
@@ -110,7 +112,7 @@ public class MapLoader {
                     }
                     JsonNode drop = e.get("drop");
                     if (drop != null && drop.has("id")) {
-                        enemy.setDrop(ItemFactory.create(drop.get("id").asText()));
+                        enemy.setDrop((Item)ItemFactory.create(drop.get("id").asText()));
                     }
                     room.setEnemy(enemy);
                     log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{enemy.getName(), id});

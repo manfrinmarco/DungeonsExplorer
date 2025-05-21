@@ -3,101 +3,81 @@
   "rooms": [
     {
       "id": "nave",
-      "name": "Nave",
-      "description": "Una vecchia nave attraccata.",
-      "exits": { "north": "porto" }
+      "type": "nave",
+      "exits": { "north": "porto" },
+
+      "items": { "type" :"PozioneMagica"}
     },
     {
       "id": "porto",
-      "name": "Porto",
-      "description": "Un porto di legno, bagnato dalle onde.",
+      "type": "porto",
       "exits": { "south": "nave", "north": "giardino" },
-      "items": [
-        { "name": "Ascia", "type": "WEAPON", "power": 5 }
-      ]
+      "items": { "type": "Ascia"}
     },
     {
       "id": "giardino",
-      "name": "Giardino",
-      "description": "Un giardino pieno di vegetazione.",
+      "type": "giardino",
       "exits": { "south": "porto", "north": "entrata" },
-      "items": [
-        { "name": "Elsa", "type": "WEAPON", "power": 25 }
-      ],
-      "enemy": {
-        "type": "demone",
-        "drop": { "id": "torcia" }
-      }
+      "items": { "type": "Elsa"},
+      "enemy": {"type": "demone","drop": { "id": "torcia" }}
     },
     {
       "id": "entrata",
-      "name": "Entrata",
-      "description": "Una stanza buia, serve una torcia per esplorare.",
+      "type": "entrata",
       "exits": { "south": "giardino", "north": "armeria" }
     },
     {
       "id": "guardie",
-      "name": "Stanza delle Guardie",
-      "description": "Ci sono delle guardie qui.",
+      "type": "guardie",
       "exits": { "south": "entrata", "east": "armeria" },
-      "enemy": {
-        "type": "scheletro",
-        "drop": { "name": "Chiave della Cucina", "type": "KEY" }
-      }
+      "enemy": {"type": "Scheletro","drop": { "id": "Chiave"}}
     },
     {
       "id": "armeria",
-      "name": "Armeria",
-      "description": "Contiene armi e armature abbandonate.",
+      "type": "armeria",
       "exits": { "south": "guardie", "east": "cucina" },
       "items": [
-        { "name": "Lama", "type": "WEAPON", "power": 25 },
-        { "name": "Armatura", "type": "ARMOR", "power": 20 }
+        { "type": "Lama"},
+        { "type": "Armatura"}
       ]
     },
     {
       "id": "cucina",
-      "name": "Cucina",
-      "description": "Odore di stufato e tre pozioni dimenticate.",
+      "type": "cucina",
       "exits": { "west": "armeria", "south": "boss" },
       "locked": true,
-      "keyRequired": { "name": "Chiave della Cucina", "type": "KEY" },
+      "keyRequired": { "name": "Chiave", "type": "KEY" },
       "items": [
-        { "name": "Pozione Curativa 1", "type": "POTION" },
-        { "name": "Pozione Curativa 2", "type": "POTION" },
-        { "name": "Pozione Curativa 3", "type": "POTION" }
+        { "type": "PozioneCurativa"},
+        { "type": "PozioneCurativa"},
+        { "type": "PozioneCurativa"}
       ]
     },
     {
       "id": "boss",
-      "name": "Stanza del Boss",
-      "description": "Un potente nemico ti aspetta qui.",
+      "type": "boss",
       "exits": { "north": "cucina", "east": "uscita" },
-      "enemy": { "type": "demone" }
+      "items": { "type" :"PozioneMagica"},
+      "enemy": { "type": "Demone", "drop": { "id": "torcia" } }
     },
     {
       "id": "uscita",
-      "name": "Uscita",
-      "description": "Hai vinto il gioco! Congratulazioni.",
+      "type": "uscita",
+      "locked": true,
+      "keyRequired": { "name": "Chiave", "type": "KEY" },
       "exits": {},
       "items": []
     },
     {
       "id": "castello",
-      "name": "Castello sull'Isola",
-      "description": "Un castello antico e misterioso.",
-      "subRooms": [
-        "entrata","guardie","armeria","cucina","boss","uscita"
-      ],
+      "type": "castello",
+      "subRooms": ["entrata","guardie","armeria","cucina","boss","uscita"],
       "mainRoom": "entrata"
     },
     {
       "id": "isola",
-      "name": "Isola",
-      "description": "Un luogo remoto e pericoloso.",
-      "subRooms": [
-        "nave","porto","giardino","castello"
-      ],
+      "type": "isola",
+      "subRooms": ["nave","porto","giardino","castello"],
       "mainRoom": "nave"
     }
   ]

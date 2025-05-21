@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.config.GameConfig;
-import manfrinmarco.entities.AggressiveStrategy;
 import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.Player;
@@ -45,6 +44,8 @@ public class DefaultGameInitializerDebug {
         //potion
         Item pozione = new Item("Pozione", ItemType.POTION, 10);
         stanza1.addItem(pozione);
+        Item pozione2 = new Item("Pozione", ItemType.POTION, 10);
+        stanza1.addItem(pozione2);
 
         //chiave
         Item chiave = new Item("Chiave", ItemType.KEY, 0);
@@ -56,7 +57,7 @@ public class DefaultGameInitializerDebug {
         stanza2.setEnemy(nemico);
         nemico.setDrop(spada);
 
-        Enemy boss = new Enemy("Boss", 150, new AggressiveStrategy());
+        Enemy boss = new Enemy("Boss", 150, new DefensiveStrategy());
         boss.setDrop(chiave);
         stanza3.setEnemy(boss);
 

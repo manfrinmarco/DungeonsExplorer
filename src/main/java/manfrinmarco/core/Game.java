@@ -34,8 +34,9 @@ public class Game {
                 } else {
                     System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");
                     DefaultGameInitializerDebug.initialize(context);
-                    System.out.println("Scegli file mappa JSON (invio per default):");
-                    String mapFile = scanner.nextLine().trim();
+                    System.out.println("Scegli file mappa (invio per default):");
+                    String mapFile = scanner.nextLine().trim() + ".json";
+                    System.out.println(mapFile);
                     if (!mapFile.isEmpty()) {
                         try {
                             CompositeRoom map = MapLoader.load(mapFile);

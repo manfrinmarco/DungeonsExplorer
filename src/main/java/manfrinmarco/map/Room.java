@@ -11,6 +11,7 @@ import manfrinmarco.items.Item;
 
 public class Room implements Serializable {
     private static final long serialVersionUID = 1L;
+    protected String id;
     protected String name;
     protected String description;
     protected Map<Direction, Room> exits = new EnumMap<>(Direction.class);
@@ -19,7 +20,14 @@ public class Room implements Serializable {
     protected boolean locked = false;
     protected Item keyRequired;
 
+    public Room(String id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     public Room(String name, String description) {
+        this.id = null;
         this.name = name;
         this.description = description;
     }
@@ -76,4 +84,9 @@ public class Room implements Serializable {
         }
         return false;
     }
+
+    public String getId() {
+        return id;
+    }
 }
+    

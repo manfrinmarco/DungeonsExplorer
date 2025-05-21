@@ -22,7 +22,6 @@ public class ItemFactory {
             if (obj instanceof ItemTemplate template) {
                 registry.put(template.getId().toLowerCase(), template);
                 log.log(Level.FINE, "ItemFactory: registrato template item: {0}", template.getId());
-                System.out.println("Item registrato: " + template.getId());
             }
         }
         initialized = true;

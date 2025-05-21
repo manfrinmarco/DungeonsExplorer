@@ -49,7 +49,7 @@ public class MapLoader {
                 String name = r.get("name").asText();
                 String desc = r.get("description").asText();
                 boolean composite = r.has("subRooms");
-                Room room = composite ? new CompositeRoom(name, desc) : new Room(name, desc);
+                Room room = composite ? new CompositeRoom(name, desc) : RoomFactory.createRoom(id);
                 registry.put(id, room);
                 log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{id, name});
             }

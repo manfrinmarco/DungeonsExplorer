@@ -38,7 +38,7 @@
     {
       "id": "guardie",
       "name": "Stanza delle Guardie",
-      "description": "Una stanza sorvegliata da un nemico.",
+      "description": "Ci sono delle guardie qui.",
       "exits": { "south": "entrata", "east": "armeria" },
       "enemy": {
         "type": "scheletro",

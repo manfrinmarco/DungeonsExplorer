@@ -7,7 +7,7 @@ public class CompositeRoom extends Room {
     private final List<Room> subRooms = new ArrayList<>();
 
     public CompositeRoom(String name, String description) {
-        super(name, description);
+        super(name, name, description);
     }
 
     public void addRoom(Room room) {

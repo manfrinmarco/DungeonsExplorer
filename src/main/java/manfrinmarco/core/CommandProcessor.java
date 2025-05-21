@@ -178,7 +178,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
         }
     }
 
-    
     private void attack() {
         Enemy enemy = context.getCurrentRoom().getEnemy();
         Player player = context.getPlayer();
@@ -301,7 +300,10 @@ public class CommandProcessor extends AbstractCommandProcessor {
             }
         } else {
             // Proviamo a vedere se la stanza corrente appartiene a una CompositeRoom
-            CompositeRoom parent = findParentComposite(current);
+            CompositeRoom parent = null;
+            if (current != null) {
+                parent = current.getSuperRoom();
+            }
             if (parent != null) {
                 System.out.println("Stanze interne di " + parent.getName() + ":");
                 for (Room room : parent.getSubRooms()) {

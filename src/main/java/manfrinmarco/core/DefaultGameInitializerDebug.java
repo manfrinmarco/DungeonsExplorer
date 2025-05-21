@@ -28,11 +28,10 @@ public class DefaultGameInitializerDebug {
         log.fine("Giocatore creato: " + player.getName() + ", HP=" + player.getHealth());
 
         // stanze
-        Room stanza1 = new Room("stanza1", "prima stanza");
-        Room stanza2 = new Room("stanza2", "seconda stanza");
-        Room stanza3 = new Room("stanza3", "terza stanza");
+        Room stanza1 = new Room("cucina ", "prima stanza");
+        Room stanza2 = new Room("armeria", "seconda stanza");
+        Room stanza3 = new Room("stanza del trono", "terza stanza");
         Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
-
         //uscite
         stanza1.setExit(Direction.NORTH, stanza2);
         stanza2.setExit(Direction.SOUTH, stanza1);

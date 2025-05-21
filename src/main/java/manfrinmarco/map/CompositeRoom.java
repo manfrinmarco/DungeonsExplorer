@@ -14,6 +14,7 @@ public class CompositeRoom extends Room {
 
     public void addRoom(Room room) {
         subRooms.add(room);
+        room.setSuperRoom(this);
     }
 
     public void setMainRoom(Room room) {

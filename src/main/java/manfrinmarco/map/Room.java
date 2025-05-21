@@ -66,7 +66,7 @@ public class Room implements Serializable {
         return items;
     }
 
-    private CompositeRoom superRoom;
+    private CompositeRoom superRoom = null;
     public void setSuperRoom (CompositeRoom room){
         this.superRoom = room;
     }

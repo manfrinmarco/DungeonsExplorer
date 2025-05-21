@@ -18,10 +18,23 @@ import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
 import manfrinmarco.security.GameException;
 
+/**
+ * Concrete implementation of a command processor that defines how each user command
+ * is interpreted and executed. This class uses the Template Method pattern:
+ * the method {@code executeCommand(String[] tokens)} is invoked by the superclass
+ * to execute the specific command logic, while the general flow is handled by
+ * {@code AbstractCommandProcessor}.
+ */
 public class CommandProcessor extends AbstractCommandProcessor {
     private final GameContext context = GameContext.getInstance();
     private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
 
+    /**
+     * Implements the specific logic for each command recognized by the game.
+     * Called by the template method defined in AbstractCommandProcessor.
+     * 
+     * @param tokens command and arguments parsed from user input
+     */
     @Override
     protected void executeCommand(String[] tokens) {
         if (tokens.length == 0) return;
@@ -74,30 +87,37 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
             }
             case "save" -> {
-                try {
-                    GameStateMemento snapshot = new GameStateMemento(context);
-                    GameFileManager.saveMemento(snapshot);
-                    log.info("Stato di gioco salvato.");
-                } catch (GameException ge) {
-                    log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
-                }
+                new Thread(() -> {
+                    try {
+                        GameStateMemento snapshot = new GameStateMemento(context);
+                        GameFileManager.saveMemento(snapshot);
+                        System.out.println("Gioco salvato");
+                        log.info("Stato di gioco salvato.");
+                    } catch (GameException ge) {
+                        log.log(Level.INFO, "Errore salvataggio: {0}", ge.getMessage());
+                        System.out.println("Errore durante il salvataggio.");
+                    }
+                }).start();
             }
             case "load" -> {
-                GameStateMemento loaded = GameFileManager.loadMemento();
-                if (loaded != null) {
-                    try {
-                        context.copyFrom(loaded.getSnapshot());
-                        // Ripristina il EventManager e i suoi listener
-                        GameContext.getInstance().setEventManager(new EventManager());
-                        GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
-                        System.out.println("Partita caricata.");
-                        log.info("Stato di gioco caricato.");
-                    } catch (GameException ge) {
-                        log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
-                    } finally {
-                        lookAround();
+                new Thread(() -> {
+                    GameStateMemento loaded = GameFileManager.loadMemento();
+                    if (loaded != null) {
+                        try {
+                            context.copyFrom(loaded.getSnapshot());
+                            GameContext.getInstance().setEventManager(new EventManager());
+                            GameContext.getInstance().getEventManager().subscribe(new ScoreListener());
+                            System.out.println("Partita caricata.");
+                            log.info("Stato di gioco caricato.");
+                            lookAround();
+                        } catch (GameException ge) {
+                            log.log(Level.INFO, "Errore caricamento: {0}", ge.getMessage());
+                            System.out.println("Errore durante il caricamento.");
+                        }
+                    } else {
+                        System.out.println("Nessun salvataggio trovato.");
                     }
-                }
+                }).start();
             }
             case "explore" -> exploreRooms();
             case "combine" -> {
@@ -106,7 +126,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 } else {
                     combineItems(tokens[1], tokens[2]);
                 }
-}
+            }
             default -> {
                 log.log(Level.WARNING, "Comando sconosciuto: {0}", command);
                 System.out.println("Comando sconosciuto.");
@@ -118,24 +138,20 @@ public class CommandProcessor extends AbstractCommandProcessor {
         Room room = context.getCurrentRoom();
         System.out.println("Ti trovi in: " + room.getName());
         System.out.println(room.getDescription());
-        for (Direction dir : Direction.values()) {
-            if (room.getExit(dir) != null) {
-                System.out.println("C'è un passaggio a " + dir.name().toLowerCase());
-            }
-        }
+        java.util.Arrays.stream(Direction.values())
+            .filter(dir -> room.getExit(dir) != null)
+            .forEach(dir -> System.out.println("C'è un passaggio a " + dir.name().toLowerCase()));
         if (room.getEnemy() != null && room.getEnemy().isAlive()) {
-            System.out.println("Un nemico è qui: " + room.getEnemy().getName());
+            System.out.println("C'è un nemico: " + room.getEnemy().getName());
             if (room.getEnemy().getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
-                System.out.println("Il " + room.getEnemy().getName() + " ti coglie di sorpresa!");
+                System.out.println(room.getEnemy().getName() + " ti coglie di sorpresa!");
                 room.getEnemy().executeStrategy(context.getPlayer());
                 System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
             }
         }
         if (!room.getItems().isEmpty()) {
             System.out.println("Oggetti nella stanza:");
-            for (Item item : room.getItems()) {
-                System.out.println("- " + item.getName());
-            }
+            room.getItems().forEach(item -> System.out.println("- " + item.getName()));
         }
     }
 
@@ -155,7 +171,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
             context.setCurrentRoom(next);
             Enemy enemy = next.getEnemy();
             if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
-                System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
+                System.out.println(enemy.getName() + " ti coglie di sorpresa!");
                 enemy.executeStrategy(context.getPlayer());
                 System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
                 if (!context.getPlayer().isAlive()) {
@@ -182,13 +198,13 @@ public class CommandProcessor extends AbstractCommandProcessor {
         System.out.println("Hai attaccato il " + enemy.getName() + ". HP rimanenti: " + enemy.getHealth());
         if (enemy.isAlive()) {
             enemy.executeStrategy(player);
-            System.out.println("Il " + enemy.getName() + " ti attacca! HP rimanenti: " + player.getHealth());
+            System.out.println(enemy.getName() + " ti attacca! HP rimanenti: " + player.getHealth());
             if (!player.isAlive()) {
                 System.out.println("Sei morto! Game Over.");
                 System.exit(0);
             }
         } else {
-            System.out.println("Hai sconfitto il " + enemy.getName() + "!");
+            System.out.println("Hai sconfitto " + enemy.getName() + "!");
             context.getEventManager().notify(new GameEvent("enemy_defeated", "Hai sconfitto un nemico!", enemy));
         }
     }
@@ -200,48 +216,70 @@ public class CommandProcessor extends AbstractCommandProcessor {
 
     private void showInventory() {
         System.out.println("Inventario:");
-        for (Item item : context.getPlayer().getInventory()) {
-            System.out.println("- " + item.getName());
-        }
+        context.getPlayer().getInventory().forEach(item ->
+            System.out.println("- " + item.getName()));
     }
 
     private void useItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(itemName.trim())) {
-                if (item.getType() == ItemType.WEAPON) {
-                    System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
-                    return;
+        Item item = inventory.stream()
+            .filter(i -> i.getName().equalsIgnoreCase(itemName.trim()))
+            .findFirst().orElse(null);
+        if (item != null) {
+            if (item.getType() == ItemType.WEAPON) {
+                System.out.println("Non puoi usare un'arma in questo modo. Usa 'equip' per equipaggiarla.");
+                return;
+            }
+            if (item.getType() == ItemType.CURATIVE_POTION) {
+                int healAmount = 20;
+                try {
+                    healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
+                } catch (NumberFormatException e) {
+                    System.err.println("Valore di healAmount non valido, uso 20 di default.");
                 }
-                if (item.getType() == ItemType.POTION) {
-                    int healAmount = 20;
-                    try {
-                        healAmount = Integer.parseInt(manfrinmarco.config.GameConfig.get("item.potion.healAmount"));
-                    } catch (NumberFormatException e) {
-                        System.err.println("Valore di healAmount non valido, uso 20 di default.");
-                    }
-                    context.getPlayer().heal(healAmount);
-                    System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
-                    inventory.removeItem(item);
-                    return;
-                }
-                if (item.getType() == ItemType.KEY) {
-                    Room room = context.getCurrentRoom();
-                    for (Direction dir : Direction.values()) {
-                        Room adjacent = room.getExit(dir);
-                        if (adjacent != null && adjacent.isLocked() && adjacent.unlock(item)) {
-                            System.out.println("Hai sbloccato la stanza a " + dir.name().toLowerCase() + ".");
-                            inventory.removeItem(item);
-                            return;
-                        }
-                    }
-                    System.out.println("Nessuna porta è stata sbloccata.");
-                    return;
-                }
-                System.out.println("Hai usato " + item.getName() + ".");
+                context.getPlayer().heal(healAmount);
+                System.out.println("Hai usato " + item.getName() + " e recuperato " + healAmount + " HP.");
                 inventory.removeItem(item);
                 return;
             }
+            if (item.getType() == ItemType.MAGIC_POTION){
+                var p = context.getPlayer();
+                p.setPower(p.getBaseDamage() + item.getPower());
+                System.out.println("con la pozione" + item.getName()+ "la tua forza aumentata temporaneamente!");
+                
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ignored) {}
+                    p.setPower(p.getBaseDamage() - item.getPower());
+                    System.out.println("L'effetto della pozione è svanito.");
+    }).start();
+            }
+            if (item.getType() == ItemType.KEY) {
+                Room room = context.getCurrentRoom();
+                boolean unlocked = java.util.Arrays.stream(Direction.values())
+                    .map(room::getExit)
+                    .filter(adjacent -> adjacent != null && adjacent.isLocked() && adjacent.unlock(item))
+                    .findFirst().isPresent();
+                if (unlocked) {
+                    // Find the direction for message
+                    Direction unlockedDir = java.util.Arrays.stream(Direction.values())
+                        .filter(dir -> {
+                            Room adjacent = room.getExit(dir);
+                            return adjacent != null && !adjacent.isLocked();
+                        })
+                        .findFirst().orElse(null);
+                    if (unlockedDir != null)
+                        System.out.println("Hai sbloccato la stanza a " + unlockedDir.name().toLowerCase() + ".");
+                    inventory.removeItem(item);
+                    return;
+                }
+                System.out.println("Nessuna porta è stata sbloccata.");
+                return;
+            }
+            System.out.println("Hai usato " + item.getName() + ".");
+            inventory.removeItem(item);
+            return;
         }
         log.log(Level.INFO, "Oggetto non trovato in inventario: {0}", itemName);
         System.out.println("Oggetto non trovato.");
@@ -249,28 +287,26 @@ public class CommandProcessor extends AbstractCommandProcessor {
 
     private void equipItem(String itemName) {
         Inventory inventory = context.getPlayer().getInventory();
-        for (Item item : inventory) {
-            if (item.getType() != ItemType.WEAPON) {
-                System.out.println("Non puoi equipaggiare questo oggetto.");
-                return;
-            }
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                context.getPlayer().equip(item);
-                return;
-            }
+        Item item = inventory.stream()
+            .filter(i -> i.getName().equalsIgnoreCase(itemName) && i.getType() == ItemType.WEAPON)
+            .findFirst().orElse(null);
+        if (item != null) {
+            context.getPlayer().equip(item);
+        } else {
+            System.out.println("Oggetto non trovato o non equipaggiabile.");
         }
-        System.out.println("Oggetto non trovato o non equipaggiabile.");
     }
 
     private void pickItem(String itemName) {
         Room room = context.getCurrentRoom();
-        for (Item item : room.getItems()) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                context.getPlayer().getInventory().addItem(item);
-                room.removeItem(item);
-                System.out.println("Hai raccolto: " + item.getName());
-                return;
-            }
+        Item item = room.getItems().stream()
+            .filter(i -> i.getName().equalsIgnoreCase(itemName))
+            .findFirst().orElse(null);
+        if (item != null) {
+            context.getPlayer().getInventory().addItem(item);
+            room.removeItem(item);
+            System.out.println("Hai raccolto: " + item.getName());
+            return;
         }
         log.log(Level.INFO, "Tentativo di prendere oggetto non presente: {0}", itemName);
         System.out.println("Oggetto non trovato nella stanza.");
@@ -281,25 +317,19 @@ public class CommandProcessor extends AbstractCommandProcessor {
 
         if (current instanceof CompositeRoom composite) {
             System.out.println("Stanze interne di " + composite.getName() + ":");
-            for (Room r : composite.getSubRooms()) {
-                System.out.println("- " + r.getName());
-            }
+            composite.getSubRooms().forEach(r -> System.out.println("- " + r.getName()));
         } else {
             CompositeRoom parent = findParentComposite(current);
             if (parent != null) {
                 System.out.println("Stanze interne di " + parent.getName() + ":");
-                for (Room r : parent.getSubRooms()) {
-                    System.out.println("- " + r.getName());
-                }
+                parent.getSubRooms().forEach(r -> System.out.println("- " + r.getName()));
             } else {
                 System.out.println("Stanze collegate:");
                 if (current != null) {
-                    for (Direction dir : Direction.values()) {
-                        Room adjacent = current.getExit(dir);
-                        if (adjacent != null) {
-                            System.out.println("- " + dir.name().toLowerCase() + ": " + adjacent.getName());
-                        }
-                    }
+                    java.util.Arrays.stream(Direction.values())
+                        .map(dir -> new Object[]{dir, current.getExit(dir)})
+                        .filter(arr -> arr[1] != null)
+                        .forEach(arr -> System.out.println("- " + ((Direction)arr[0]).name().toLowerCase() + ": " + ((Room)arr[1]).getName()));
                 } else {
                     System.out.println("Errore: stanza corrente non trovata.");
                 }
@@ -308,24 +338,21 @@ public class CommandProcessor extends AbstractCommandProcessor {
     }
     
     private CompositeRoom findParentComposite(Room room) {
-        for (Room candidate : GameContext.getInstance().getAllRooms().values()) {
-            if (candidate instanceof CompositeRoom composite) {
-                for (Room sub : composite.getSubRooms()) {
-                    if (sub == room) return composite;
-                }
-            }
-        }
-        return null;
+        return GameContext.getInstance().getAllRooms().values().stream()
+            .filter(candidate -> candidate instanceof CompositeRoom)
+            .map(candidate -> (CompositeRoom) candidate)
+            .filter(composite -> composite.getSubRooms().stream().anyMatch(sub -> sub == room))
+            .findFirst().orElse(null);
     }
 
     private void combineItems(String name1, String name2) {
         Inventory inventory = context.getPlayer().getInventory();
-        Item item1 = null, item2 = null;
-
-        for (Item item : inventory) {
-            if (item.getName().equalsIgnoreCase(name1)) item1 = item;
-            else if (item.getName().equalsIgnoreCase(name2)) item2 = item;
-        }
+        Item item1 = inventory.stream()
+            .filter(i -> i.getName().equalsIgnoreCase(name1))
+            .findFirst().orElse(null);
+        Item item2 = inventory.stream()
+            .filter(i -> i.getName().equalsIgnoreCase(name2))
+            .findFirst().orElse(null);
 
         if (item1 == null || item2 == null) {
             System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");

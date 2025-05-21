@@ -13,10 +13,17 @@ public class Player extends Entity{
     private Inventory inventory;
     private Item equippedWeapon;
     private Item equippedArmor;
+    private int baseDamage;
 
     public Player(String name, int health) {
         super(name, health);
         this.inventory = new Inventory();
+        try {
+            baseDamage = GameConfig.getInt("player.basedamage");
+        } catch (NumberFormatException e) {
+            System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
+            baseDamage = 10;
+        }
         try {
             this.health = Integer.parseInt(GameConfig.get("player.hp"));
         } catch (NumberFormatException e) {
@@ -29,13 +36,6 @@ public class Player extends Entity{
     @Override
     public void attack(Entity enemy) {
         log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
-        int baseDamage;
-        try {
-            baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
-        } catch (NumberFormatException e) {
-            System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
-            baseDamage = 10;
-        }
         if (equippedWeapon != null) {
             baseDamage += equippedWeapon.getPower();
         }
@@ -74,6 +74,14 @@ public class Player extends Entity{
         String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
         String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
         return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
+    }
+
+    public int getBaseDamage(){
+        return this.baseDamage;
+    }
+    
+    public void setPower(int value){
+        this.baseDamage=value;
     }
 
     public void equip(Item item) {

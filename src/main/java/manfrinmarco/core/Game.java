@@ -1,6 +1,8 @@
 package manfrinmarco.core;
 
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import manfrinmarco.events.DropListener;
@@ -22,9 +24,9 @@ public class Game {
 
         try (Scanner scanner = new Scanner(System.in)) {
             // scegli se iniziare nuova partita o caricare
-            System.out.println("Nuova partita (a) o carica partita esistente (b)?");
+            System.out.println("premi 'N' per giocare una nuova partita, oppure\npremi 'L' carica partita esistente");
             String choice = scanner.nextLine().trim();
-            if ("b".equalsIgnoreCase(choice)) {
+            if ("l".equalsIgnoreCase(choice)) {
                 GameStateMemento m = GameFileManager.loadMemento();
                 if (m != null) {
                     context.copyFrom(m.getSnapshot());
@@ -33,34 +35,37 @@ public class Game {
                     System.out.println("Partita caricata, inizia il gioco");
                 } else {
                     System.out.println("Nessuna salvataggio trovato, avvio una nuova partita.");
-                    DefaultGameInitializerDebug.initialize(context);
-                    System.out.println("Scegli la mappa (invio per demo):");
+                    GameInitializerDemo.initialize(context);
+                    System.out.println("Scegli la mappa da caricare (invio per demo):");
                     String mapFile = scanner.nextLine().trim();
                     String name = mapFile + ".json";
-                    System.out.println(name);
                     if (!mapFile.isEmpty()) {
                         try {
                             CompositeRoom map = MapLoader.load(name);
                             context.setCurrentRoom(map.getMainRoom());
-                            System.err.println("Mappa caricata, inizia il gioco");
+                            System.out.println("Mappa caricata, inizia il gioco");
                         } catch (Exception e) {
                             System.err.println("Errore nel caricamento mappa, uso la demo.");
                         }
                     }
                 }
             } else {
-                DefaultGameInitializerDebug.initialize(context);
+                GameInitializerDemo.initialize(context);
                 System.out.println("Scegli la mappa (invio per demo):");
                 String mapFile = scanner.nextLine().trim();
                 String name = mapFile + ".json";
                 if (!mapFile.isEmpty()) {
-                    try {
-                        CompositeRoom map = MapLoader.load(name);
-                        context.setCurrentRoom(map.getMainRoom());
-                        System.err.println("Mappa caricata, inizia il gioco");
-                    } catch (Exception e) {
-                        System.err.println("Errore nel caricamento mappa, uso la demo.");
-                    }
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    executor.submit(() -> {
+                        try {
+                            CompositeRoom map = MapLoader.load(name);
+                            context.setCurrentRoom(map.getMainRoom());
+                            System.out.println("Mappa caricata, inizia il gioco");
+                        } catch (Exception e) {
+                            System.err.println("Errore nel caricamento mappa, uso la demo.");
+                        }
+                    });
+                    executor.shutdown();
                 }
             }
             

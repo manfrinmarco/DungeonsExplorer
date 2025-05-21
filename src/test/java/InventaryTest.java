@@ -17,7 +17,7 @@ public class InventaryTest {
     public void setUp() {
         inventory = new Inventory();
         sword = new Item("Spada", ItemType.WEAPON, 10);
-        potion = new Item("Pozione", ItemType.POTION, 0);
+        potion = new Item("Pozione", ItemType.CURATIVE_POTION, 0);
     }
 
     @Test

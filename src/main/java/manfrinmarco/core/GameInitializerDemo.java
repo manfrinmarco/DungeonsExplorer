@@ -17,8 +17,8 @@ import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
 
-public class DefaultGameInitializerDebug {
-    private static final Logger log = Logger.getLogger(DefaultGameInitializerDebug.class.getName());
+public class GameInitializerDemo {
+    private static final Logger log = Logger.getLogger(GameInitializerDemo.class.getName());
     @SuppressWarnings("LoggerStringConcat")
     public static void initialize(GameContext context) {
         log.info("DefaultGameInitializerDebug: inizio inizializzazione");
@@ -43,7 +43,7 @@ public class DefaultGameInitializerDebug {
         log.fine("Stanze create e collegate: stanza1, stanza2, stanza3, uscita");
 
         //potion
-        Item pozione = new Item("Pozione", ItemType.POTION, 10);
+        Item pozione = new Item("Pozione", ItemType.CURATIVE_POTION, 10);
         stanza1.addItem(pozione);
 
         //chiave

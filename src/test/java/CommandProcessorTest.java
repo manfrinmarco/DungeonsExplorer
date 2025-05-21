@@ -74,7 +74,7 @@ public class CommandProcessorTest {
 
     @Test
     public void testUsePotionCommand() {
-        Item potion = new Item("Pozione", ItemType.POTION, 0);
+        Item potion = new Item("Pozione", ItemType.CURATIVE_POTION, 0);
         when(inventoryMock.iterator()).thenReturn(java.util.List.of(potion).iterator());
 
         processor.processCommand("usa Pozione");

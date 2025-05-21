@@ -15,7 +15,7 @@ public class ItemFactoryTest {
         Item item = ItemFactory.create("pozione");
         assertNotNull(item);
         assertEquals("Pozione Curativa", item.getName());
-        assertEquals(ItemType.POTION, item.getType());
+        assertEquals(ItemType.CURATIVE_POTION, item.getType());
     }
 
     @Test

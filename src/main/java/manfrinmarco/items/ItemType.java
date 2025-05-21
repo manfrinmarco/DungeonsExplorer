@@ -3,7 +3,8 @@ package manfrinmarco.items;
 public enum ItemType {
     WEAPON,
     ARMOR,
-    POTION,
+    CURATIVE_POTION,
+    MAGIC_POTION,
     KEY,
     TOOL
 }

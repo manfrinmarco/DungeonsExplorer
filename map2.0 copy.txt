@@ -1,0 +1,107 @@
+{
+  "items": [
+      {
+        "id": "i1", // id univoco per item
+        "type": "spada" //se item ha un type allora usa item1 = itemfactory.create("spada")
+      },
+      {
+        "id": "i1", 
+        "type": "spada", 
+        "name": "excalibur",
+        "health": "70"  //con i modificatori come per i nemici
+      },
+      {
+        "id": "r3", 
+        "name": "calderone", 
+        "ItemType": "TOOL" 
+        //come sopra se non c'è type usi costruttore (+Log)
+      }
+  ],
+
+  "enemyes": [
+      {
+        "id": "e1", // id univoco per enemy
+        "type": "scheletro", //se enemy ha un type allora usa enemy1 = enemyfactory.create("scheletro")
+        "name": "pippo", //se il name è diverso da type enemy1.setname( "pippo" )
+        "health": "30"  // se c'è una salute specificata enemy1.setHealth( 20 )
+      },
+      {
+        "id": "e2", 
+        "type": "scheletro", 
+        //in questo caso nessun modificatore quindi usa solo: enemy1 = enemyfactory.create("scheletro")
+      },
+      {
+        "id": "e3", 
+        "name": "zombie", // se non c'è type per evitare eccezioni usa costruttore: enemy = new enemy("zombie", 30, strategia di default) + Log
+        "health": "30" 
+      },
+      {
+        "id": "e4", 
+        "type": "scheletro", 
+        "drop": "i1" //se un enemy ha un drop aggiungi l'item corrispondente enemy4.setDrop(i1)
+      }
+  ],
+
+  "rooms": [
+    {
+      "id": "r1", // id univoco  room
+      "type": "cucina", // roomfactory.createroom("cucina")
+      "exits": { "north": "r2" } //room.setexit(...
+    },
+
+    {
+      "id": "r2",
+      // if there isn't type create a room with room = nue room (name, description)
+      "name": "Armeria",
+      "description": "Contiene armi e armature abbandonate.",
+      "exits": { "south": "r1", "north" : "r3"},
+    },
+    {
+      "id": "r3",
+      "type": "cripta", 
+      "enemy": { "id":"e1"} //if there is enemy add enemy
+    },
+
+    {
+      "id": "r4",
+      "type": "soffitta",
+      "exits": { "south": "r7", "east": "r8" },
+      "enemy": [{"id": "e3"}, {"id": "e2"}]
+    },
+    {
+      "id": "r5",
+      "type": "gabinetto",
+      "exits": { "south": "r2"},
+      "items": [{ "id": "i1"},{ "id": "i2"}]
+    },
+    {
+      "id": "r6",
+      "type": "Cucina",
+      "exits": { "west": "r5", "south": "r4" },
+      "keyRequired": { "id": "i7"} 
+      //if there is key requied room6.setLocked(true, item7);
+    },
+    {
+      "id": "uscita",
+      "name": "Uscita",
+      "description": "Hai vinto il gioco! Congratulazioni.",
+      "exits": {}
+    }
+  ],
+  "compositeRoom" : [
+    {
+      "id": "castello",
+      "name": "Castello sull'Isola",
+      "description": "Un castello antico e misterioso.",
+      "subRooms": ["r1","r2","r3","r4"],
+      "mainRoom": "r2"
+    },
+    {
+      "id": "isola",
+      "name": "Isola",
+      "description": "Un luogo remoto e pericoloso.",
+      "subRooms": ["r7","r8"],
+      "mainRoom": "r7"
+    }
+  ]
+}

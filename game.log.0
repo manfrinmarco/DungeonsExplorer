@@ -1854,3 +1854,59 @@ mag 21, 2025 7:33:08 PM manfrinmarco.items.ItemFactory initIfNeeded
 FINE: ItemFactory: registrato template item: Undef
 mag 21, 2025 7:33:08 PM manfrinmarco.items.ItemFactory create
 WARNING: ItemFactory: item non trovato: PozioneMagica
+mag 21, 2025 8:27:22 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 8:27:24 PM manfrinmarco.core.GameInitializerDemo initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 8:27:24 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 8:27:24 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 8:27:24 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 8:27:24 PM manfrinmarco.core.GameInitializerDemo initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory create
+FINE: ItemFactory.create: richiesta item id='PozioneMagica'
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.items.special
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Axe
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Torch
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.MagicPotion
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Key
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Hilt
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.CurativePotion
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Armor
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Blade
+mag 21, 2025 8:27:24 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.special.Undef
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Ascia
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Torcia
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: p
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Chiave
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Elsa
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: PozioneCurativa
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Armatura
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Lama
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Undef
+mag 21, 2025 8:27:24 PM manfrinmarco.items.ItemFactory create
+WARNING: ItemFactory: item non trovato: PozioneMagica

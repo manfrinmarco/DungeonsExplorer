@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.items.Item;
@@ -46,21 +45,13 @@ public class MapLoader {
             Iterator<JsonNode> it = roomsNode.elements();
             while (it.hasNext()) {
                 JsonNode r = it.next();
-                String id = r.has("id") ? r.get("id").asText() : "-1";
-                String type = r.has("type") ? r.get("type").asText() : null;
-                String name = r.has("name") ? r.get("name").asText() : r.get("type").asText();
-                String desc = r.has("description") ? r.get("description").asText() : "Non vedi nulla.";
+                String id = r.get("id").asText();
+                String name = r.get("name").asText();
+                String desc = r.get("description").asText();
                 boolean composite = r.has("subRooms");
-                Room room;
-                if (composite) {
-                    room = new CompositeRoom(name, desc);
-                } else if (type!=null) {
-                    room = RoomFactory.createRoom(type);
-                } else {
-                    room = new Room(name, desc);
-                }
+                Room room = composite ? new CompositeRoom(name, desc) : new Room(name, desc);
                 registry.put(id, room);
-                log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{type, name});
+                log.log(Level.FINE, "MapLoader: created room id={0} name={1}", new Object[]{id, name});
             }
             log.fine("MapLoader: second pass - configuring rooms");
             // seconda pass: imposta uscite, items, nemici e composizione
@@ -84,13 +75,13 @@ public class MapLoader {
                 JsonNode items = r.get("items");
                 if (items != null) {
                     items.forEach(itemNode -> {
-                        String itype = itemNode.has("type") ? itemNode.get("type").asText() : "Undef";
+                        String iid = itemNode.has("id") ? itemNode.get("id").asText() : null;
                         Item item;
-                        if (!itype.equals("Undef")) {
-                            item = ItemFactory.create(itype);
+                        if (iid != null) {
+                            item = ItemFactory.create(iid);
                         } else {
-                            String name = itemNode.has("name") ? itemNode.get("name").asText() : "Undef";
-                            ItemType type = ItemType.valueOf(itemNode.has("type") ? itemNode.get("type").asText() : "Undef");
+                            String name = itemNode.get("name").asText();
+                            ItemType type = ItemType.valueOf(itemNode.get("type").asText());
                             int power = itemNode.has("power") ? itemNode.get("power").asInt() : 0;
                             item = new Item(name, type, power);
                         }
@@ -101,20 +92,14 @@ public class MapLoader {
                 // enemy
                 JsonNode e = r.get("enemy");
                 if (e != null) {
-                    Enemy enemy;
-                    if (e.has("type")) {
-                        enemy = EnemyFactory.createEnemy(e.get("type").asText());
-                    } else {
-                        String ename = e.has("name") ? e.get("name").asText() : "Nemico";
-                        int strength = e.has("strength") ? e.get("strength").asInt() : 10;
-                        enemy = new Enemy(ename, strength, new DefensiveStrategy());
-                    }
+                    String etype = e.get("type").asText();
+                    Enemy enemy = EnemyFactory.createEnemy(etype);
                     JsonNode drop = e.get("drop");
                     if (drop != null && drop.has("id")) {
-                        enemy.setDrop((Item)ItemFactory.create(drop.get("id").asText()));
+                        enemy.setDrop(ItemFactory.create(drop.get("id").asText()));
                     }
                     room.setEnemy(enemy);
-                    log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{enemy.getName(), id});
+                    log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{etype, id});
                 }
                 // composite
                 if (room instanceof CompositeRoom && r.has("subRooms")) {

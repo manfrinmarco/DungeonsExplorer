@@ -12,7 +12,7 @@ public class ItemFactoryTest {
 
     @Test
     void testCreateValidItem() {
-        Item item = ItemFactory.create("pozione");
+        Item item = ItemFactory.createItem("pozione");
         assertNotNull(item);
         assertEquals("Pozione Curativa", item.getName());
         assertEquals(ItemType.POTION, item.getType());
@@ -21,7 +21,7 @@ public class ItemFactoryTest {
     @Test
     void testCreateInvalidItemThrowsException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            ItemFactory.create("non_esiste");
+            ItemFactory.createItem("non_esiste");
         });
         assertTrue(exception.getMessage().contains("Item non trovato"));
     }

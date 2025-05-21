@@ -26,7 +26,7 @@ public class ItemFactory {
         initialized = true;
     }
 
-    public static Item create(String id) {
+    public static Item createItem(String id) {
         log.log(Level.FINE, "ItemFactory.create: richiesta item id=''{0}''", id);
         initIfNeeded();
         ItemTemplate template = registry.get(id.toLowerCase());

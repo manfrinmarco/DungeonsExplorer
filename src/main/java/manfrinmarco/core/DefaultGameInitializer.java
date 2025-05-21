@@ -12,6 +12,7 @@ import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
+import manfrinmarco.items.ItemFactory;
 import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
@@ -42,22 +43,22 @@ public class DefaultGameInitializer {
         log.fine("Stanze create e collegate: stanza1, stanza2, stanza3, uscita");
 
         //potion
-        Item pozione = new Item("Pozione", ItemType.POTION, 10);
+        Item pozione = ItemFactory.createItem("pozione");
         stanza1.addItem(pozione);
-        Item pozione2 = new Item("Pozione", ItemType.POTION, 10);
+        Item pozione2 = ItemFactory.createItem("pozione");
         stanza1.addItem(pozione2);
 
         //chiave
-        Item chiave = new Item("Chiave", ItemType.KEY, 0);
+        Item chiave = ItemFactory.createItem("chiave");
         uscita.setLocked(true, chiave);
 
         //nemici
-        Item spada = new Item("Spada", ItemType.WEAPON, 50);
+        Item spada = ItemFactory.createItem("spada");
         Enemy nemico = EnemyFactory.createEnemy("Orco");
         stanza2.setEnemy(nemico);
         nemico.setDrop(spada);
 
-        Enemy boss = new Enemy("Boss", 150, new DefensiveStrategy());
+        Enemy boss = EnemyFactory.createEnemy("Demone");
         boss.setDrop(chiave);
         stanza3.setEnemy(boss);
 

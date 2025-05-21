@@ -43,7 +43,7 @@ public class DefaultGameInitializerPro {
         giardino.addItem(new Item("Elsa", ItemType.WEAPON, 25));
 
         Enemy giardinoEnemy = EnemyFactory.createEnemy("demone");
-        Item torcia = ItemFactory.create("Torcia");
+        Item torcia = ItemFactory.createItem("Torcia");
         giardinoEnemy.setDrop(torcia);
         giardino.setEnemy(giardinoEnemy);
         log.log(Level.FINE, "Zona ''Giardino'' configurata con nemico: {0}", giardinoEnemy.getName());

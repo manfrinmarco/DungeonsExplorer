@@ -78,7 +78,7 @@ public class MapLoader {
                         String iid = itemNode.has("id") ? itemNode.get("id").asText() : null;
                         Item item;
                         if (iid != null) {
-                            item = ItemFactory.create(iid);
+                            item = ItemFactory.createItem(iid);
                         } else {
                             String name = itemNode.get("name").asText();
                             ItemType type = ItemType.valueOf(itemNode.get("type").asText());
@@ -96,7 +96,7 @@ public class MapLoader {
                     Enemy enemy = EnemyFactory.createEnemy(etype);
                     JsonNode drop = e.get("drop");
                     if (drop != null && drop.has("id")) {
-                        enemy.setDrop(ItemFactory.create(drop.get("id").asText()));
+                        enemy.setDrop(ItemFactory.createItem(drop.get("id").asText()));
                     }
                     room.setEnemy(enemy);
                     log.log(Level.FINE, "MapLoader: added enemy {0} to room id={1}", new Object[]{etype, id});

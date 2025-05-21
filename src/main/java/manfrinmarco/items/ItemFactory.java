@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import manfrinmarco.io.ReflectionLoader;
 import manfrinmarco.security.GameException;
+
 public class ItemFactory {
     private static final Logger log = Logger.getLogger(ItemFactory.class.getName());
     private static final Map<String, ItemTemplate> registry = new HashMap<>();

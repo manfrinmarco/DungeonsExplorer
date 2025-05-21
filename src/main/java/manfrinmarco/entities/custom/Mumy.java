@@ -5,8 +5,8 @@ import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
 
 @AutoLoad
-public class Mummia extends Enemy {
-    public Mummia() {
+public class Mumy extends Enemy {
+    public Mumy() {
         super("Mummia", 30, new DefensiveStrategy());
     }
 }

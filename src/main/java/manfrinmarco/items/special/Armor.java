@@ -7,18 +7,18 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class AnelloDelFuoco implements ItemTemplate {
+public class Armor implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Anello del Fuoco")
-                .setType(ItemType.WEAPON)
-                .setPower(15)
+                .setName("Armatura")
+                .setType(ItemType.ARMOR)
+                .setPower(30)
                 .build();
     }
 
     @Override
     public String getId() {
-        return "anellofuoco";
+        return "Armatura";
     }
 }

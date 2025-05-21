@@ -6,8 +6,8 @@ import manfrinmarco.entities.Enemy;
 
 
 @AutoLoad
-public class Spettro extends Enemy {
-    public Spettro() {
+public class Ghost extends Enemy {
+    public Ghost() {
         super("Spettro", 35, new DefensiveStrategy());
     }
 }

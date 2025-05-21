@@ -6,7 +6,7 @@ manca in ordine di priorità:
 - mappa demo -> done
 - save / reload status -> done 
 - import map from file (json) -> done 
+- aggiungere logs + gameException -> done 
 
-- aggiungere logs + gameException
 - eseguire gli unit test
-- mappa finale
+

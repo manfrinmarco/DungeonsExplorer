@@ -12,7 +12,6 @@ import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemFactory;
-import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
@@ -22,7 +21,7 @@ public class DefaultGameInitializer {
 
     public static void initialize(GameContext context) {
         log.info("Inizializzazione del gioco predefinito");
-        Player player = new Player("Eroe", Integer.parseInt(GameConfig.get("player.hp")));
+        Player player = new Player("Eroe", GameConfig.getInt("player.hp"));
         Inventory inventory = new Inventory();
         player.setInventory(inventory);
         context.setPlayer(player);
@@ -33,16 +32,18 @@ public class DefaultGameInitializer {
         Room porto = new Room("Porto", "Un porto di legno, bagnato dalle onde.");
         nave.setExit(Direction.NORTH, porto);
         porto.setExit(Direction.SOUTH, nave);
-        porto.addItem(new Item("Ascia", ItemType.WEAPON, 5));
+        Item ascia = ItemFactory.create("Ascia");
+        porto.addItem(ascia);
         log.fine("Zona 'Costa' configurata con stanze Nave e Porto");
 
         // Zona 2: Giardino
         Room giardino = new Room("Giardino", "Un giardino pieno di vegetazione.");
         porto.setExit(Direction.NORTH, giardino);
         giardino.setExit(Direction.SOUTH, porto);
-        giardino.addItem(new Item("Elsa", ItemType.WEAPON, 25));
+        Item elsa = ItemFactory.create("Elsa");
+        giardino.addItem(elsa);
 
-        Enemy giardinoEnemy = EnemyFactory.createEnemy("demone");
+        Enemy giardinoEnemy = EnemyFactory.createEnemy("Demone");
         Item torcia = ItemFactory.create("Torcia");
         giardinoEnemy.setDrop(torcia);
         giardino.setEnemy(giardinoEnemy);
@@ -69,15 +70,19 @@ public class DefaultGameInitializer {
         guardie.setExit(Direction.EAST, armeria);
 
         // Blocco accesso cucina con chiave
-        Item chiave = new Item("Chiave della Cucina", ItemType.KEY);
+        Item chiave = ItemFactory.create("Chiave");
         cucina.setLocked(true, chiave);
         armeria.setExit(Direction.EAST, cucina);
         cucina.setExit(Direction.WEST, armeria);
 
         // Pozioni nella cucina
-        cucina.addItem(new Item("Pozione Curativa 1", ItemType.POTION));
-        cucina.addItem(new Item("Pozione Curativa 2", ItemType.POTION));
-        cucina.addItem(new Item("Pozione Curativa 3", ItemType.POTION));
+        Item pozione1 = ItemFactory.create("Pozione");
+        Item pozione2 = ItemFactory.create("Pozione");
+        Item pozione3 = ItemFactory.create("Pozione");
+        cucina.addItem(pozione1);
+        cucina.addItem(pozione2);
+        cucina.addItem(pozione3);
+
 
         // Accesso boss e uscita
         cucina.setExit(Direction.SOUTH, boss);
@@ -85,14 +90,16 @@ public class DefaultGameInitializer {
         boss.setExit(Direction.EAST, uscita);
 
         // Drop torcia già previsto in giardino
-        Enemy guardia = EnemyFactory.createEnemy("scheletro");
+        Enemy guardia = EnemyFactory.createEnemy("Scheletro");
         guardia.setDrop(chiave);
         guardie.setEnemy(guardia);
 
-        armeria.addItem(new Item("Lama", ItemType.WEAPON, 25));
-        armeria.addItem(new Item("Armatura", ItemType.ARMOR, 20));
+        Item lama = ItemFactory.create("Lama");
+        Item armatura = ItemFactory.create("Armatura");
+        armeria.addItem(lama);
+        armeria.addItem(armatura);
 
-        Enemy bossEnemy = EnemyFactory.createEnemy("demone");
+        Enemy bossEnemy = EnemyFactory.createEnemy("Demone");
         boss.setEnemy(bossEnemy);
 
         // Composizione castello

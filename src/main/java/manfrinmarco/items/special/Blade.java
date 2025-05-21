@@ -7,18 +7,18 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class ChiaveDorata implements ItemTemplate {
+public class Blade implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Chiave Dorata")
-                .setType(ItemType.KEY)
-                .setPower(0)
+                .setName("Lama")
+                .setType(ItemType.WEAPON)
+                .setPower(50)
                 .build();
     }
 
     @Override
     public String getId() {
-        return "chiavedorata";
+        return "Lama";
     }
 }

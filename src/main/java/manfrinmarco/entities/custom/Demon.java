@@ -5,8 +5,8 @@ import manfrinmarco.entities.AggressiveStrategy;
 import manfrinmarco.entities.Enemy;
 
 @AutoLoad
-public class Demone extends Enemy {
-    public Demone() {
+public class Demon extends Enemy {
+    public Demon() {
         super("Demone", 60, new AggressiveStrategy());
     }
 }

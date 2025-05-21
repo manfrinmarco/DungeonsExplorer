@@ -2458,3 +2458,125 @@ mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory initIfNeeded
 FINE: EnemyFactory: registrato template nemico: spettro
 mag 21, 2025 9:25:51 PM manfrinmarco.entities.EnemyFactory createEnemy
 WARNING: EnemyFactory: nemico non trovato: Orco
+mag 21, 2025 9:37:55 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 9:37:56 PM manfrinmarco.core.DefaultGameInitializer initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 9:37:56 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 9:37:56 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 9:37:56 PM manfrinmarco.core.DefaultGameInitializer initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 9:37:56 PM manfrinmarco.core.DefaultGameInitializer initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory createItem
+FINE: ItemFactory.create: richiesta item id='pozione'
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 9:37:56 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.items.custom
+mag 21, 2025 9:37:56 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Sword
+mag 21, 2025 9:37:56 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Torch
+mag 21, 2025 9:37:56 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Key
+mag 21, 2025 9:37:56 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.CurativePotion
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Spada
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Torcia
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: chiave
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: pozionecurativa
+mag 21, 2025 9:37:56 PM manfrinmarco.items.ItemFactory createItem
+WARNING: ItemFactory: item non trovato: pozione
+mag 21, 2025 9:38:29 PM manfrinmarco.core.Game start
+INFO: Avvio del gioco
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+INFO: DefaultGameInitializerDebug: inizio inizializzazione
+mag 21, 2025 9:38:30 PM manfrinmarco.config.GameConfig <clinit>
+INFO: Caricamento configurazione da file: game.properties
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.Player <init>
+INFO: Player creato: Eroe con HP iniziali: 100
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+FINE: Giocatore creato: Eroe, HP=100
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+FINE: Stanze create e collegate: stanza1, stanza2, stanza3, uscita
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+FINE: ItemFactory.create: richiesta item id='pozione'
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.items.custom
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Sword
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Torch
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Key
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.items.custom.Potion
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Spada
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: Torcia
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: chiave
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+FINE: ItemFactory: registrato template item: pozione
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+INFO: ItemFactory.create: creato item: pozione
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+FINE: ItemFactory.create: richiesta item id='chiave'
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+INFO: ItemFactory.create: creato item: chiave
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+FINE: ItemFactory.create: richiesta item id='spada'
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory initIfNeeded
+INFO: ItemFactory: inizializzazione dinamica dei template
+mag 21, 2025 9:38:30 PM manfrinmarco.items.ItemFactory createItem
+INFO: ItemFactory.create: creato item: spada
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'Scheletro'
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+INFO: EnemyFactory: inizializzazione dinamica dei template nemici
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+INFO: ReflectionLoader: caricamento classi annotate in package manfrinmarco.entities.custom
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Skeleton
+mag 21, 2025 9:38:30 PM manfrinmarco.io.ReflectionLoader instantiateAnnotated
+FINE: ReflectionLoader: istanziata classe manfrinmarco.entities.custom.Spettro
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: scheletro
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+FINE: EnemyFactory: registrato template nemico: spettro
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory createEnemy
+INFO: EnemyFactory.createEnemy: creato nemico: Scheletro
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory createEnemy
+FINE: EnemyFactory.createEnemy: richiesta nemico di tipo 'Spettro'
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory initIfNeeded
+INFO: EnemyFactory: inizializzazione dinamica dei template nemici
+mag 21, 2025 9:38:30 PM manfrinmarco.entities.EnemyFactory createEnemy
+INFO: EnemyFactory.createEnemy: creato nemico: Spettro
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+FINE: CompositeRoom 'Castello' creato con stanze e mainRoom: cucina 
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+INFO: Sottoscrizione ScoreListener completata
+mag 21, 2025 9:38:30 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.ScoreListener
+mag 21, 2025 9:38:30 PM manfrinmarco.events.EventManager subscribe
+INFO: EventManager: listener sottoscritto: manfrinmarco.events.DropListener
+mag 21, 2025 9:38:30 PM manfrinmarco.core.DefaultGameInitializer initialize
+INFO: DefaultGameInitializerDebug: inizializzazione completata
+mag 21, 2025 9:38:34 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: look
+mag 21, 2025 9:38:37 PM manfrinmarco.core.CommandProcessor executeCommand
+FINE: Esecuzione comando: take
+mag 21, 2025 9:38:37 PM manfrinmarco.items.Inventory addItem
+INFO: Inventory: aggiunto oggetto Pozione

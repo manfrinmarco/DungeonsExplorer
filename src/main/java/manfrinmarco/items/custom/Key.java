@@ -7,11 +7,11 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class ChiaveDorata implements ItemTemplate {
+public class Key implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Chiave Dorata")
+                .setName("Chiave")
                 .setType(ItemType.KEY)
                 .setPower(0)
                 .build();
@@ -19,6 +19,6 @@ public class ChiaveDorata implements ItemTemplate {
 
     @Override
     public String getName() {
-        return "chiavedorata";
+        return "chiave";
     }
 }

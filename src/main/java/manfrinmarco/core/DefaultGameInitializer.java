@@ -4,7 +4,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import manfrinmarco.config.GameConfig;
-import manfrinmarco.entities.DefensiveStrategy;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
@@ -13,7 +12,6 @@ import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemFactory;
-import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
@@ -23,7 +21,9 @@ public class DefaultGameInitializer {
     @SuppressWarnings("LoggerStringConcat")
     public static void initialize(GameContext context) {
         log.info("DefaultGameInitializerDebug: inizio inizializzazione");
-        Player player = new Player("Eroe", Integer.parseInt(GameConfig.get("player.hp")));
+
+        //player
+        Player player = new Player("Eroe", GameConfig.getInt("player.hp"));
         Inventory inventory = new Inventory();
         player.setInventory(inventory);
         context.setPlayer(player);
@@ -34,7 +34,6 @@ public class DefaultGameInitializer {
         Room stanza2 = new Room("armeria", "seconda stanza");
         Room stanza3 = new Room("stanza del trono", "terza stanza");
         Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
-        //uscite
         stanza1.setExit(Direction.NORTH, stanza2);
         stanza2.setExit(Direction.SOUTH, stanza1);
         stanza2.setExit(Direction.NORTH, stanza3);
@@ -42,23 +41,18 @@ public class DefaultGameInitializer {
         stanza3.setExit(Direction.NORTH, uscita);
         log.fine("Stanze create e collegate: stanza1, stanza2, stanza3, uscita");
 
-        //potion
+        // items
         Item pozione = ItemFactory.createItem("pozione");
         stanza1.addItem(pozione);
-        Item pozione2 = ItemFactory.createItem("pozione");
-        stanza1.addItem(pozione2);
-
-        //chiave
         Item chiave = ItemFactory.createItem("chiave");
         uscita.setLocked(true, chiave);
-
-        //nemici
         Item spada = ItemFactory.createItem("spada");
-        Enemy nemico = EnemyFactory.createEnemy("Orco");
+
+        //enemyies
+        Enemy nemico = EnemyFactory.createEnemy("Scheletro");
         stanza2.setEnemy(nemico);
         nemico.setDrop(spada);
-
-        Enemy boss = EnemyFactory.createEnemy("Demone");
+        Enemy boss = EnemyFactory.createEnemy("Spettro");
         boss.setDrop(chiave);
         stanza3.setEnemy(boss);
 

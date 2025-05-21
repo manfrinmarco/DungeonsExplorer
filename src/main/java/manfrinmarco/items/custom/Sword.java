@@ -7,18 +7,18 @@ import manfrinmarco.items.ItemTemplate;
 import manfrinmarco.items.ItemType;
 
 @AutoLoad
-public class PozioneCurativa implements ItemTemplate {
+public class Sword implements ItemTemplate {
     @Override
     public Item create() {
         return new ItemBuilder()
-                .setName("Pozione Curativa")
-                .setType(ItemType.POTION)
+                .setName("Spada")
+                .setType(ItemType.TOOL)
                 .setPower(0)
                 .build();
     }
 
     @Override
     public String getName() {
-        return "pozione";
+        return "Spada";
     }
 }

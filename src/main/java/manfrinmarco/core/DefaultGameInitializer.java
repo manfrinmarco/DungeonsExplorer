@@ -3,13 +3,11 @@ package manfrinmarco.core;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import manfrinmarco.config.GameConfig;
 import manfrinmarco.entities.Enemy;
 import manfrinmarco.entities.EnemyFactory;
 import manfrinmarco.entities.Player;
 import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
-import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemFactory;
 import manfrinmarco.map.CompositeRoom;
@@ -23,9 +21,7 @@ public class DefaultGameInitializer {
         log.info("DefaultGameInitializerDebug: inizio inizializzazione");
 
         //player
-        Player player = new Player("Eroe", GameConfig.getInt("player.hp"));
-        Inventory inventory = new Inventory();
-        player.setInventory(inventory);
+        Player player = new Player("Eroe");
         context.setPlayer(player);
         log.fine("Giocatore creato: " + player.getName() + ", HP=" + player.getHealth());
 

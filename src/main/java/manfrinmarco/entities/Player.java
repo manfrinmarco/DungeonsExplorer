@@ -10,22 +10,21 @@ import manfrinmarco.items.Item;
 public class Player extends Entity{
     private static final long serialVersionUID = 1L;
     private static final Logger log = Logger.getLogger(Player.class.getName());
+
     private Inventory inventory;
     private Item equippedWeapon;
     private Item equippedArmor;
 
+    public Player(String name) {
+        super(name, GameConfig.getInt("player.hp"));
+        this.inventory = new Inventory();
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
+    }
+
     public Player(String name, int health) {
         super(name, health);
         this.inventory = new Inventory();
-        if (health == 0){
-            try {
-                this.health = GameConfig.getInt("player.hp");
-            } catch (NumberFormatException e) {
-                log.warning("Valore di player.hp non valido, uso fallback a 100.");
-                this.health = 100;
-            }
-            log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
-        }
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
     }
 
     @Override
@@ -46,20 +45,6 @@ public class Player extends Entity{
         log.log(Level.INFO, "Player.attack: inflitti {0} danni a {1}", new Object[]{baseDamage, enemy.getName()});
     }
 
-    public void heal(int amount) {
-        log.log(Level.FINE, "Player.heal: tentativo di guarigione di {0} HP", amount);
-        this.health = Math.min(100, this.health + amount);
-        log.log(Level.INFO, "Player.heal: HP attuali = {0}", this.health);
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
     @Override
     public void takeDamage(int damage) {
         log.log(Level.FINE, "Player.takeDamage: danno in ingresso = {0}", damage);
@@ -72,10 +57,12 @@ public class Player extends Entity{
         log.log(Level.INFO, "Player.takeDamage: HP rimanenti = {0}", this.health);
     }
 
-    public String getStatus() {
-        String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
-        String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
-        return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public void equip(Item item) {
@@ -105,5 +92,11 @@ public class Player extends Entity{
                 System.out.println("Questo oggetto non può essere equipaggiato.");
             }
         }
+    }
+
+    public String getStatus() {
+        String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
+        String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
+        return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
     }
 }

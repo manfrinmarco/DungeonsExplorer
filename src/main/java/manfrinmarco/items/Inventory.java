@@ -23,6 +23,10 @@ public class Inventory implements Iterable<Item>, Serializable{
         log.log(Level.INFO, "Inventory: rimosso oggetto {0}", item.getName());
     }
 
+    public boolean contains(Item item) {
+        return items.contains(item);
+    }
+
     @Override
     public Iterator<Item> iterator() {
         return items.iterator();

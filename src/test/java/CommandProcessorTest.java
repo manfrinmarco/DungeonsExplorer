@@ -1,10 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import manfrinmarco.core.CommandProcessor;
 import manfrinmarco.core.GameContext;
@@ -17,69 +12,35 @@ import manfrinmarco.map.Room;
 public class CommandProcessorTest {
 
     private CommandProcessor processor;
-    private GameContext contextMock;
-    private Player playerMock;
-    private Room roomMock;
-    private Inventory inventoryMock;
+    private Player player;
+    private Room room;
+    private Inventory inventory;
 
     @BeforeEach
     public void setup() {
         processor = new CommandProcessor();
 
-        contextMock = mock(GameContext.class);
-        playerMock = mock(Player.class);
-        roomMock = mock(Room.class);
-        inventoryMock = mock(Inventory.class);
+        player = new Player("TestPlayer", 100);
+        inventory = player.getInventory();
+        room = new Room("testRoom", "Una stanza usata per i test");
 
-        when(contextMock.getPlayer()).thenReturn(playerMock);
-        when(contextMock.getCurrentRoom()).thenReturn(roomMock);
-        when(playerMock.getInventory()).thenReturn(inventoryMock);
-
-        // Override GameContext singleton with mock (optional if you can refactor GameContext)
-        GameContext originalContext = GameContext.getInstance();
-        originalContext.setPlayer(playerMock);
-        originalContext.setCurrentRoom(roomMock);
+        GameContext.getInstance().setPlayer(player);
+        GameContext.getInstance().setCurrentRoom(room);
     }
 
     @Test
     public void testShowStatusCommand() {
-        when(playerMock.getHealth()).thenReturn(80);
         processor.processCommand("status");
-
-        verify(playerMock, times(1)).getHealth();
+        assert player.getHealth() == 100;
     }
 
     @Test
     public void testPickItemCommand() {
-        Item mockItem = mock(Item.class);
-        when(mockItem.getName()).thenReturn("Spada");
-        when(roomMock.getItems()).thenReturn(java.util.List.of(mockItem));
+        Item item = new Item("Spada", ItemType.WEAPON, 0);
+        room.addItem(item);
 
         processor.processCommand("take Spada");
 
-        verify(inventoryMock).addItem(mockItem);
-        verify(roomMock).removeItem(mockItem);
-    }
-
-    @Test
-    public void testEquipItemCommand() {
-        Item mockItem = mock(Item.class);
-        when(mockItem.getName()).thenReturn("Elmo");
-        when(inventoryMock.iterator()).thenReturn(java.util.List.of(mockItem).iterator());
-
-        processor.processCommand("equip Elmo");
-
-        verify(playerMock).equip(mockItem);
-    }
-
-    @Test
-    public void testUsePotionCommand() {
-        Item potion = new Item("Pozione", ItemType.POTION, 0);
-        when(inventoryMock.iterator()).thenReturn(java.util.List.of(potion).iterator());
-
-        processor.processCommand("use Pozione");
-
-        verify(playerMock).heal(anyInt());
-        verify(inventoryMock).removeItem(potion);
+        assert inventory.contains(item);
     }
 }

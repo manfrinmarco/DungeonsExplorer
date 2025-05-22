@@ -99,4 +99,10 @@ public class Player extends Entity{
         String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";
         return String.format("HP: %d | Arma: %s | Armatura: %s", this.health, arma, armatura);
     }
+
+    public void heal(int amount) {
+        log.log(Level.FINE, "Player.heal: tentativo di guarigione di {0} HP", amount);
+        this.health = Math.min(100, this.health + amount);
+        log.log(Level.INFO, "Player.heal: HP attuali = {0}", this.health);
+    }
 }

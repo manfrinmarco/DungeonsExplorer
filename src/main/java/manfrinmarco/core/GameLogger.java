@@ -27,8 +27,8 @@ public class GameLogger {
 
         // File rotating nella cartella logs
         try {
-            String logFile = logDir + GameConfig.get("log.file");
-            FileHandler file = new FileHandler("logs/game.log", 1_000_000, 3, true);
+            File logFile = new File(logDir, GameConfig.get("log.file"));  // logs/game.log
+            FileHandler file = new FileHandler(logFile.getPath(), 1_000_000, 3, true);
             file.setLevel(Level.FINE);
             file.setFormatter(new SimpleFormatter());
             root.addHandler(file);

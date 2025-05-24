@@ -14,29 +14,35 @@ public class Player extends Entity{
     private Inventory inventory;
     private Item equippedWeapon;
     private Item equippedArmor;
+    private int baseDamage;
 
     public Player(String name) {
         super(name, GameConfig.getInt("player.hp"));
         this.inventory = new Inventory();
-        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
-    }
-
-    public Player(String name, int health) {
-        super(name, health);
-        this.inventory = new Inventory();
-        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
-    }
-
-    @Override
-    public void attack(Entity enemy) {
-        log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
-        int baseDamage;
         try {
             baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
         } catch (NumberFormatException e) {
             System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
             baseDamage = 10;
         }
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
+    }
+
+    public Player(String name, int health) {
+        super(name, health);
+        this.inventory = new Inventory();
+        try {
+            baseDamage = Integer.parseInt(GameConfig.get("player.basedamage"));
+        } catch (NumberFormatException e) {
+            System.err.println("Valore di player.basedamage non valido, uso fallback a 10.");
+            baseDamage = 10;
+        }
+        log.log(Level.INFO, "Player creato: {0} con HP iniziali: {1}", new Object[]{name, this.health});
+    }
+
+    @Override
+    public void attack(Entity enemy) {
+        log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
         if (equippedWeapon != null) {
             baseDamage += equippedWeapon.getPower();
         }
@@ -106,5 +112,13 @@ public class Player extends Entity{
         log.log(Level.FINE, "Player.heal: tentativo di guarigione di {0} HP", amount);
         this.health = Math.min(100, this.health + amount);
         log.log(Level.INFO, "Player.heal: HP attuali = {0}", this.health);
+    }
+
+    public int getBaseDamage() {
+        return this.baseDamage;
+    }
+
+    public void setPower(int i) {
+        this.baseDamage = i;
     }
 }

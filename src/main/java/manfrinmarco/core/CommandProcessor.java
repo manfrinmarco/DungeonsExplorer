@@ -265,6 +265,21 @@ public class CommandProcessor extends AbstractCommandProcessor {
                             System.out.println("Nessuna porta è stata sbloccata.");
                         }
                     }
+                    case MAGIC -> {
+                        var p = context.getPlayer();
+                        int bonus = item.getPower();
+                        p.setPower(p.getBaseDamage() + bonus);
+                        System.out.println("Con la pozione " + item.getName() + " la tua forza è aumentata temporaneamente!");
+                        inventory.removeItem(item); // rimuovilo subito
+
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(10000); // durata effetto
+                            } catch (InterruptedException ignored) {}
+                            p.setPower(p.getBaseDamage()); // ripristina valore base
+                            System.out.println("L'effetto della magia è svanito.");
+                        }).start();
+                    }
                     default -> {
                         System.out.println("Hai usato " + item.getName() + ".");
                         inventory.removeItem(item);

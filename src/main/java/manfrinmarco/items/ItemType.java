@@ -4,6 +4,7 @@ public enum ItemType {
     WEAPON,
     ARMOR,
     POTION,
+    MAGIC,
     KEY,
     TOOL
 }

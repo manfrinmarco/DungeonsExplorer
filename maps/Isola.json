@@ -1,14 +1,14 @@
 {
   "items": [
-    { "id": "torcia", "type": "ITEM" },
-    { "id": "chiave_cucina", "type": "KEY" },
-    { "id": "ascia", "type": "WEAPON", "power": 5 },
-    { "id": "elsa", "type": "WEAPON", "power": 25 },
-    { "id": "lama", "type": "WEAPON", "power": 25 },
-    { "id": "armatura", "type": "ARMOR", "power": 20 },
-    { "id": "pozione1", "type": "POTION" },
-    { "id": "pozione2", "type": "POTION" },
-    { "id": "pozione3", "type": "POTION" }
+    { "id": "torcia", "type": "torcia" },
+    { "id": "chiave_cucina", "type": "chiave" },
+    { "id": "ascia", "type": "ascia", "power": 5 },
+    { "id": "elsa", "type": "elsa", "power": 25 },
+    { "id": "lama", "type": "lama", "power": 25 },
+    { "id": "armatura", "type": "elmo", "power": 20 },
+    { "id": "pozione1", "type": "pozione" },
+    { "id": "pozione2", "type": "pozione" },
+    { "id": "pozione3", "type": "pozione" }
   ],
   "enemyes": [
     { "id": "demone1", "type": "demone", "drop": "torcia" },

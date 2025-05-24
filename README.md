@@ -1,44 +1,5 @@
-# Dungeon Explorer
 
-Dungeon Explorer è un gioco di avventura testuale sviluppato in Java SE, dove il giocatore esplora un dungeon composto da stanze, mostri, oggetti e trappole. L'obiettivo è sopravvivere e uscire vivo dal dungeon.
 
-## ✅ Caratteristiche principali
-- Navigazione libera tra stanze
-- Combattimento con nemici
-- Inventario e oggetti
-- Salvataggio e caricamento del gioco
-- Sicurezza: input sanitizzato, eccezioni gestite, logging
-
-## 🧠 Tecnologie e pattern utilizzati
-| Tecnologia / Pattern | Descrizione |
-|----------------------|-------------|
-| Factory Pattern | Creazione dinamica di entità, stanze, oggetti |
-| Composite Pattern | Struttura gerarchica di stanze e oggetti |
-| Iterator Pattern | Navigazione inventario, stanze |
-| Exception Shielding | Classe `GameException` per gestire errori user-friendly |
-| Singleton | `GameContext` per lo stato globale |
-| Strategy | IA dei nemici configurabile |
-| Observer | Eventi di gioco |
-| Template Method | Comandi eseguiti secondo uno schema |
-| Memento | Salvataggio stato del gioco |
-| Stream API / Lambda | Filtraggio entità |
-| Multithreading | Eventi asincroni |
-| Reflection | Caricamento dinamico nemici/item |
-| Custom Annotations | `@AutoLoad` per classi da riflettere |
-| Inversion of Control | Configurazioni centralizzate in `GameConfig` |
-
-## 📦 Setup e Esecuzione
-1. Clona il repository
-2. Compila con `javac` o usa un IDE (IntelliJ / Eclipse)
-3. Esegui `Main.java`
-
-## 📌 Limitazioni e sviluppi futuri
-- Attualmente la mappa è statica
-- Interfaccia solo testuale
-- AI dei nemici molto semplice
-
-## 📐 Diagrammi (UML + Architettura)
-*(Da aggiungere: Class diagram e Component diagram)*
 # 🧭 Dungeon Explorer
 
 Dungeon Explorer è un gioco di avventura testuale sviluppato in **Java SE**, dove il giocatore esplora un dungeon pieno di nemici, stanze, oggetti e sorprese. Il gioco integra diversi pattern di progettazione, tecnologie Java avanzate e buone pratiche di sicurezza.
@@ -46,91 +7,97 @@ Dungeon Explorer è un gioco di avventura testuale sviluppato in **Java SE**, do
 ## ✅ Caratteristiche principali
 
 - Navigazione tra stanze tramite comandi testuali
-- Combattimenti a turni contro nemici con strategie
-- Equipaggiamento e inventario dinamico
-- Salvataggio/caricamento dello stato di gioco
-- Mappa modulare (Composite Room)
-- Supporto a caricamento dinamico di nemici e oggetti via reflection
-- Eventi asincroni e logging
-- Input sanitizzato e gestione sicura degli errori
-
----
+- Combattimenti a turni contro nemici con strategie dinamiche
+- Equipaggiamento e inventario
+- Combinazione di oggetti e creazione di oggetti compositi
+- Caricamento dinamico di stanze, nemici e oggetti (Reflection + Annotazioni)
+- Mappe modulari tramite file JSON
+- Salvataggio e caricamento dello stato (Memento + Java I/O)
+- Eventi di gioco asincroni e logging esteso
+- Input sanitizzato e gestione sicura delle eccezioni
 
 ## 🧠 Tecnologie e Design Pattern utilizzati
 
 | Tecnologia / Pattern     | Descrizione |
 |--------------------------|-------------|
-| **Factory**              | Creazione dinamica di stanze e nemici |
-| **Composite**            | Stanze e oggetti composti |
+| **Factory**              | Creazione dinamica di stanze, oggetti e nemici |
+| **Composite**            | Stanze composte (`CompositeRoom`) e oggetti (`CompositeItem`) |
 | **Iterator**             | Iterazione su stanze e inventario |
-| **Exception Shielding**  | Gestione sicura degli errori con `GameException` |
-| **Singleton**            | Stato globale del gioco con `GameContext` |
-| **Strategy**             | Intelligenza nemici (`AggressiveStrategy`, `DefensiveStrategy`) |
-| **Observer**             | Eventi di gioco come sconfitta nemico |
-| **Template Method**      | Gestione comandi base (`AbstractCommandProcessor`) |
-| **Memento**              | Salvataggio dello stato con `GameStateMemento` |
+| **Exception Shielding**  | `GameException` e log strutturati |
+| **Singleton**            | `GameContext` condiviso |
+| **Strategy**             | Comportamento dei nemici: aggressivo o difensivo |
+| **Observer**             | Eventi di gioco: sconfitta nemico, drop oggetti, ecc. |
+| **Template Method**      | Gestione comandi tramite `AbstractCommandProcessor` |
+| **Memento**              | Salvataggio e ripristino stato gioco (`GameStateMemento`) |
 | **Builder**              | Costruzione oggetti (`ItemBuilder`) |
-| **Reflection**           | Caricamento classi annotate con `@AutoLoad` |
-| **Custom Annotation**    | `@AutoLoad` per marcare classi dinamiche |
-| **Inversion of Control** | Configurazioni tramite `GameConfig` |
-| **Stream / Lambda**      | Filtri su inventario e oggetti |
-| **Multithreading**       | Eventi asincroni e attacchi automatici |
-| **Java I/O**             | Salvataggio/caricamento file (`GameFileManager`) |
-| **Logging**              | Logging eventi e azioni con `GameLogger` |
-| **Input Sanitization**   | Pulizia input utente (`InputSanitizer`) |
-
----
+| **Reflection**           | Caricamento dinamico classi annotate |
+| **Custom Annotations**   | `@AutoLoad` per istanziazione automatica |
+| **IoC / Config**         | Parametri caricati da `game.properties` tramite `GameConfig` |
+| **Stream / Lambda**      | Ricerca oggetti in inventario |
+| **Multithreading**       | Salvataggio/caricamento asincroni, potenziamenti temporanei |
+| **Java I/O**             | Persistenza stato gioco su file binario |
+| **Logging**              | Log avanzato con rotazione file e livelli FINE/INFO |
+| **Sanitizzazione Input** | Pulizia input utente via `InputSanitizer` |
 
 ## ▶️ Comandi supportati
 
-- `guarda`: mostra la stanza e gli elementi presenti
-- `muovi [direzione]`: spostati tra le stanze
-- `attacca`: attacca il nemico presente
-- `usa [oggetto]`: usa un oggetto dall'inventario
-- `equip [oggetto]`: equipaggia arma/armatura
-- `prendi [oggetto]`: raccogli un oggetto dalla stanza
-- `esplora`: mostra le stanze collegate o contenute
-- `combina [oggetto1] [oggetto2]`: crea oggetto composto
-- `stato`: mostra HP e oggetti equipaggiati
-- `salva`: salva lo stato di gioco
-- `carica`: carica una partita salvata
+- `look`: osserva la stanza corrente
+- `status`: mostra i tuoi HP
+- `i`: mostra l'inventario
+- `explore`: esplora le stanze interne o collegate
+- `go <direzione>`: muoviti (es: `go north`)
+- `attack`: attacca il nemico presente
+- `use <nome>`: usa un oggetto
+- `equip <nome>`: equipaggia un oggetto
+- `take <nome>`: prendi un oggetto dalla stanza
+- `combine <o1> + <o2> = <nuovo>`: combina due oggetti
+- `save`: salva lo stato di gioco
+- `load`: carica l'ultima partita salvata
+- `help`: mostra i comandi
 - `exit`: esce dal gioco
 
----
+## ⚙️ Setup ed Esecuzione
 
-## ⚙️ Setup e Avvio
-
-1. Clona il repository
-2. Compila il progetto:
-   ```bash
+1. Clona il progetto:
+   ```
+   git clone <repo-url>
+   ```
+2. Compila:
+   ```
    javac -d bin src/**/*.java
    ```
 3. Esegui:
-   ```bash
+   ```
    java -cp bin manfrinmarco.Main
    ```
 
----
+## 📐 Diagrammi UML e Architettura
+
+- [x] Class Diagram (entità principali e relazioni)
+- [x] Component Diagram (core, mappa, oggetti, eventi, ecc.)
+
+*(I diagrammi devono essere inclusi come immagini nel progetto)*
 
 ## 📌 Limitazioni e sviluppi futuri
 
-- La mappa attualmente è statica (ma estendibile via file)
-- Nessuna interfaccia grafica (solo CLI)
-- Nemici con intelligenza semplice (ma strategica)
-- Nessuna validazione incrociata su oggetti compositi
+- Interfaccia solo testuale (CLI)
+- AI nemici semplice, ma estendibile
+- Nessuna serializzazione cross-version
+- Nessun supporto multiplayer o rete
+
+## 🧪 Testing
+
+- Test unitari con JUnit per:
+  - `Player`, `Enemy`, `Inventory`, `CommandProcessor`, `GamePersistence`, `EnemyFactory`, `ItemFactory`
+- Mockito per simulazione `EventManager` e `Logger`
+- Logging di test configurato a livello FINE
+
+## 📚 Requisiti soddisfatti
+
+- **Design Patterns richiesti**: ✅ Factory, Composite, Iterator, Exception Shielding
+- **Tecnologie Java SE**: ✅ Collection, Generics, Logging, Java I/O, JUnit
+- **Sicurezza**: ✅ Nessun crash, input sanitizzato, eccezioni schermate
+- **Caratteristiche avanzate**: ✅ Reflection, Custom Annotations, Strategy, Observer, Template Method, Memento, Stream API, Multithreading
 
 ---
-
-## 📐 Diagrammi UML e Architettura
-
-🧩 Includere:
-- Class Diagram (struttura delle entità)
-- Component Diagram (pacchetti e flussi)
-
----
-
-## 🧪 Test e copertura
-
-- Unit test presenti per `Player`, `Enemy`, `Inventory`
-- Test eseguibili via JUnit
-- Mockito usato per `EventManager` e `Logger`
+© Progetto sviluppato da Marco Manfrin – progetto per l'esame di OOP at Epicode 

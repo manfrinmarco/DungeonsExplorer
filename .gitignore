@@ -24,3 +24,6 @@ bin/
 *.ipr
 *.iws
 .nb-gradle/
+
+# === cartella wip ===
+tmp

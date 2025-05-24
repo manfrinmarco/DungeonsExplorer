@@ -43,9 +43,11 @@ public class Player extends Entity{
     @Override
     public void attack(Entity enemy) {
         log.log(Level.FINE, "Player.attack: tentativo di attacco con equipaggiamento: {0}", equippedWeapon != null ? equippedWeapon.getName() : "nessuno");
+        int damage = baseDamage;
         if (equippedWeapon != null) {
-            baseDamage += equippedWeapon.getPower();
+            damage += equippedWeapon.getPower();
         }
+        enemy.takeDamage(damage);
         log.log(Level.FINE, "Player.attack: danno totale calcolato = {0}", baseDamage);
         enemy.takeDamage(baseDamage);
         log.log(Level.INFO, "Player.attack: inflitti {0} danni a {1}", new Object[]{baseDamage, enemy.getName()});

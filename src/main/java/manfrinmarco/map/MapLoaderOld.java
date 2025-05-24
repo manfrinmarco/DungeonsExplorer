@@ -30,7 +30,8 @@ import manfrinmarco.security.GameException;
  *   "enemy": { "type": "goblin", "drop": { "id":"Chiave","type":"KEY" } }
  * }
  */
-public class MapLoaderOld {
+@Deprecated
+ public class MapLoaderOld {
     private static final Logger log = Logger.getLogger(MapLoader.class.getName());
 
     public static CompositeRoom load(String jsonFile) {

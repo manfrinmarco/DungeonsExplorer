@@ -1,103 +1,68 @@
 {
   "items": [
       {
-        "id": "i1", 
-        "type": "spada" 
+        "id": "i1",
+        "type": "chiave"
       },
       {
-        "id": "i1", 
-        "type": "spada", 
-        "name": "excalibur",
-        "health": "70" 
+        "id": "i2", 
+        "type": "spada"
       },
       {
-        "id": "r3", 
-        "name": "calderone", 
-        "ItemType": "TOOL" 
+        "id": "i3", 
+        "type": "pozione"
       }
   ],
 
   "enemyes": [
       {
-        "id": "e1", 
-        "type": "scheletro", 
-        "name": "pippo", 
-        "health": "30"  
+        "id": "e1",
+        "type": "scheletro"
       },
       {
         "id": "e2", 
-        "type": "scheletro"      
-      },
-      {
-        "id": "e3", 
-        "name": "zombie", 
-        "health": "30" 
-      },
-      {
-        "id": "e4", 
-        "type": "scheletro", 
+        "type": "spettro",
         "drop": "i1"
       }
   ],
 
   "rooms": [
     {
-      "id": "r1", 
-      "type": "cucina", 
-      "exits": { "north": "r2" }
+      "id": "r1",
+      "type": "armeria",
+      "exits": { "north": "r2" },
+      "items": [{ "id": "i3"}]
     },
 
     {
       "id": "r2",
-      "name": "Armeria",
-      "description": "Contiene armi e armature abbandonate.",
-      "exits": { "south": "r1", "north" : "r3"}
+      "type": "cucina",
+      "exits": { "south": "r1", "north" : "r3"},
+      "enemy": { "id": "e1"}
     },
     {
       "id": "r3",
-      "type": "cripta", 
-      "enemy": { "id":"e1"} 
+      "type": "bossRoom",
+      "exits": { "south": "r2", "north" : "r4"},
+      "enemy": {"id": "e2"}
     },
 
     {
       "id": "r4",
-      "type": "soffitta",
-      "exits": { "south": "r7", "east": "r8" },
-      "enemy": [{"id": "e3"}, {"id": "e2"}]
-    },
-    {
-      "id": "r5",
-      "type": "gabinetto",
-      "exits": { "south": "r2"},
-      "items": [{ "id": "i1"},{ "id": "i2"}]
-    },
-    {
-      "id": "r6",
-      "type": "Cucina",
-      "exits": { "west": "r5", "south": "r4" },
-      "keyRequired": { "id": "i7"} 
-    },
-    {
-      "id": "uscita",
-      "name": "Uscita",
-      "description": "Hai vinto il gioco! Congratulazioni.",
-      "exits": {}
+      "type": "uscita",
+      "keyRequired": { "id": "i1"}
     }
-  ],
-  "compositeRoom" : [
+],
+
+"compositeRoom" : [
     {
-      "id": "castello",
+      "id": "c1",
       "name": "Castello sull'Isola",
       "description": "Un castello antico e misterioso.",
       "subRooms": ["r1","r2","r3","r4"],
-      "mainRoom": "r2"
-    },
-    {
-      "id": "isola",
-      "name": "Isola",
-      "description": "Un luogo remoto e pericoloso.",
-      "subRooms": ["r7","r8"],
-      "mainRoom": "r7"
+      "mainRoom": "r1"
     }
-  ]
+  ],
+  
+  "startPoint" : "c1"
 }

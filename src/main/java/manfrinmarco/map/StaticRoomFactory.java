@@ -1,5 +1,6 @@
 package manfrinmarco.map;
 
+@Deprecated
 public class StaticRoomFactory {
     public static Room createRoom(String type) {
         return switch (type.toLowerCase()) {

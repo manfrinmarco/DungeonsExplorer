@@ -13,41 +13,37 @@ import manfrinmarco.items.ItemFactory;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
+import manfrinmarco.map.RoomFactory;
 
 public class DefaultGameInitializer {
     private static final Logger log = Logger.getLogger(DefaultGameInitializer.class.getName());
     @SuppressWarnings("LoggerStringConcat")
     public static void initialize(GameContext context) {
-        log.info("DefaultGameInitializerDebug: inizio inizializzazione");
 
+        log.info("DefaultGameInitializerDebug: INIT");
         //player
         Player player = new Player("Eroe");
         context.setPlayer(player);
         log.fine("Giocatore creato: " + player.getName() + ", HP=" + player.getHealth());
 
         // stanze
-        Room stanza1 = new Room("cucina ", "prima stanza");
-        Room stanza2 = new Room("armeria", "seconda stanza");
-        Room stanza3 = new Room("stanza del trono", "terza stanza");
-        Room uscita = new Room("Uscita", "Hai vinto il gioco! Congratulazioni.");
+        Room stanza1 = RoomFactory.createRoom("corridoio");
+        Room stanza2 = RoomFactory.createRoom("armeria");
+        Room stanza3 = RoomFactory.createRoom("bossRoom");
+        Room uscita = RoomFactory.createRoom("uscita");
+
         stanza1.setExit(Direction.NORTH, stanza2);
         stanza2.setExit(Direction.SOUTH, stanza1);
         stanza2.setExit(Direction.NORTH, stanza3);
         stanza3.setExit(Direction.SOUTH, stanza2);
         stanza3.setExit(Direction.NORTH, uscita);
+
         log.fine("Stanze create e collegate: stanza1, stanza2, stanza3, uscita");
 
         // items
-        Item pozione = ItemFactory.createItem("pozione");
-        stanza1.addItem(pozione);
         Item chiave = ItemFactory.createItem("chiave");
         uscita.setLocked(true, chiave);
         Item spada = ItemFactory.createItem("spada");
-        Item elmo = ItemFactory.createItem("elmo");
-        Item torcia = ItemFactory.createItem("torcia");
-        stanza1.addItem(elmo);
-        stanza1.addItem(spada);
-        stanza1.addItem(torcia);
 
         //enemyies
         Enemy nemico = EnemyFactory.createEnemy("Scheletro");
@@ -66,9 +62,11 @@ public class DefaultGameInitializer {
         log.log(Level.FINE, "CompositeRoom ''Castello'' creato con stanze e mainRoom: {0}", castello.getMainRoom().getName());
 
         context.setCurrentRoom(castello.getMainRoom());
-        log.info("Sottoscrizione ScoreListener completata");
         context.getEventManager().subscribe(new ScoreListener());
+        log.info("Sottoscrizione ScoreListener completata");
         context.getEventManager().subscribe(new DropListener());
-        log.info("DefaultGameInitializerDebug: inizializzazione completata");
+        log.info("Sottoscrizione ScoreListener completata");
+
+        log.info("DefaultGameInitializerDebug: END");
     }
 }

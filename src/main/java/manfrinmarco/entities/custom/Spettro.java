@@ -1,7 +1,7 @@
 package manfrinmarco.entities.custom;
 
 import manfrinmarco.annotations.AutoLoad;
-import manfrinmarco.entities.DefensiveStrategy;
+import manfrinmarco.entities.AggressiveStrategy;
 import manfrinmarco.entities.EnemyStrategy;
 import manfrinmarco.entities.EnemyTemplate;
 
@@ -19,6 +19,6 @@ public class Spettro implements EnemyTemplate {
 
     @Override
     public EnemyStrategy getStrategy() {
-        return new DefensiveStrategy();
+        return new AggressiveStrategy();
     }
 }

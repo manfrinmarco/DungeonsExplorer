@@ -1,15 +1,42 @@
 package manfrinmarco.map;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import manfrinmarco.io.ReflectionLoader;
+import manfrinmarco.security.GameException;
+
 public class RoomFactory {
+    private static final Logger log = Logger.getLogger(RoomFactory.class.getName());
+    private static final Map<String, RoomTemplate> registry = new HashMap<>();
+    private static boolean initialized = false;
+
+    private static void initIfNeeded() {
+        log.info("RoomFactory: inizializzazione dinamica dei template stanza");
+        if (initialized) return;
+
+        List<Object> templates = ReflectionLoader.instantiateAnnotated("manfrinmarco.map.custom");
+        for (Object obj : templates) {
+            if (obj instanceof RoomTemplate template) {
+                registry.put(template.getType().toLowerCase(), template);
+                log.log(Level.FINE, "RoomFactory: registrato template stanza: {0}", template.getType());
+            }
+        }
+        initialized = true;
+    }
+
     public static Room createRoom(String type) {
-        return switch (type.toLowerCase()) {
-            case "corridoio" -> new Room("Corridoio", "Un lungo corridoio buio.");
-            case "cella" -> new Room("Cella", "Una piccola cella abbandonata.");
-            case "entrata" -> new Room("Entrata", "L'ingresso del castello.");
-            case "sala" -> new Room("Sala del Trono", "La grande sala del trono.");
-            case "armeria" -> new Room("Armeria Oscura", "Contiene armi abbandonate.");
-            case "cripta" -> new Room("Cripta", "Una cripta buia e fredda.");
-            default -> new Room("Stanza misteriosa", "Non riesci a distinguere nulla.");
-        };
+        log.log(Level.FINE, "RoomFactory.create: richiesta stanza tipo=''{0}''", type);
+        initIfNeeded();
+        RoomTemplate template = registry.get(type.toLowerCase());
+        if (template == null) {
+            log.log(Level.WARNING, "RoomFactory: tipo stanza non trovato: {0}", type);
+            throw new GameException("Tipo stanza non trovato: " + type);
+        }
+        log.log(Level.INFO, "RoomFactory.create: creata stanza tipo: {0}", type);
+        return template.create();
     }
 }

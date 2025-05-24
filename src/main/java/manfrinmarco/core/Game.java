@@ -34,11 +34,11 @@ public class Game {
                 } else {
                     System.out.println("Nessuna partita salvata trovata, avvio nuova partita.");
                     DefaultGameInitializer.initialize(context);
-                    System.out.println("Scegli file mappa JSON (invio per default):");
+                    System.out.println("Scegli mappa (invio per default):");
                     String mapFile = scanner.nextLine().trim();
                     if (!mapFile.isEmpty()) {
                         try {
-                            CompositeRoom map = MapLoader.load(mapFile);
+                            CompositeRoom map = MapLoader.load(mapFile+".json");
                             context.setCurrentRoom(map.getMainRoom());
                         } catch (Exception e) {
                             System.err.println("Errore caricamento mappa, uso configurazione di default.");
@@ -51,7 +51,7 @@ public class Game {
                 String mapFile = scanner.nextLine().trim();
                 if (!mapFile.isEmpty()) {
                     try {
-                        CompositeRoom map = MapLoader.load(mapFile);
+                        CompositeRoom map = MapLoader.load(mapFile+".json");
                         context.setCurrentRoom(map.getMainRoom());
                     } catch (Exception e) {
                         System.err.println("Errore caricamento mappa, uso configurazione di default.");

@@ -24,7 +24,7 @@ import manfrinmarco.security.GameException;
 public class MapLoader {
     private static final Logger log = Logger.getLogger(MapLoader.class.getName());
 
-    public static CompositeRoom load(String filePath) {
+    public static CompositeRoom load(String fileName) {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Room> rooms = new HashMap<>();
         Map<String, Item> itemRegistry = new HashMap<>();
@@ -33,7 +33,7 @@ public class MapLoader {
         String startPointId = null;
 
         try {
-            JsonNode root = mapper.readTree(new File(filePath));
+            JsonNode root = mapper.readTree(new File("maps/"+fileName));
 
             if (root.has("startPoint")) {
                 startPointId = root.get("startPoint").asText();

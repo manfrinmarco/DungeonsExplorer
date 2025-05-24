@@ -74,6 +74,7 @@ public class Player extends Entity{
                     log.log(Level.INFO, "Player.equip: disarmato weapon = {0}", equippedWeapon.getName());
                 }
                 this.equippedWeapon = item;
+                this.inventory.removeItem(item);
                 System.out.println("Hai equipaggiato l'arma: " + item.getName());
                 log.log(Level.INFO, "Player.equip: equipaggiato weapon = {0}", item.getName());
             }
@@ -84,6 +85,7 @@ public class Player extends Entity{
                     log.log(Level.INFO, "Player.equip: disarmato armor = {0}", equippedArmor.getName());
                 }
                 this.equippedArmor = item;
+                this.inventory.removeItem(item);
                 System.out.println("Hai indossato l'armatura: " + item.getName());
                 log.log(Level.INFO, "Player.equip: equipaggiato armor = {0}", item.getName());
             }

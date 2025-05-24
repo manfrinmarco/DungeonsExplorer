@@ -158,16 +158,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 return;
             }
             context.setCurrentRoom(next);
-            Enemy enemy = next.getEnemy();
-            if (enemy != null && enemy.isAlive() && enemy.getStrategy() instanceof manfrinmarco.entities.AggressiveStrategy) {
-                System.out.println("Il " + enemy.getName() + " ti coglie di sorpresa!");
-                enemy.executeStrategy(context.getPlayer());
-                System.out.println("Hai subito un attacco! HP attuali: " + context.getPlayer().getHealth());
-                if (!context.getPlayer().isAlive()) {
-                    System.out.println("Sei morto! Game Over.");
-                    System.exit(0);
-                }
-            }
             System.out.println("Ti muovi verso " + dir.name().toLowerCase());
             lookAround();
         } catch (IllegalArgumentException e) {

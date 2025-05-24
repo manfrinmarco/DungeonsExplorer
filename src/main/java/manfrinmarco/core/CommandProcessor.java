@@ -1,5 +1,6 @@
 package manfrinmarco.core;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,7 +25,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
     private static final Logger log = Logger.getLogger(CommandProcessor.class.getName());
 
     @Override
-    protected void executeCommand(String[] tokens) {
+    protected void executeCommand(String[] tokens, String line) {
         if (tokens.length == 0) return;
         String command = tokens[0].toLowerCase();
         log.log(Level.FINE, "Esecuzione comando: {0}", command);
@@ -54,29 +55,51 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 if (tokens.length < 2) {
                     System.out.println("Specifica l'oggetto da usare.");
                 } else {
-                    useItem(tokens[1]);
+                    //useItem(tokens[1]);
+                    String itemName = String.join(" ", Arrays.copyOfRange(tokens, 1, tokens.length));
+                    useItem(itemName);
                 }
             }
             case "equip" -> {
                 if (tokens.length < 2) {
                     System.out.println("Specifica cosa vuoi equipaggiare.");
                 } else {
-                    equipItem(tokens[1]);
+                    //equipItem(tokens[1]);
+                    String itemName = String.join(" ", Arrays.copyOfRange(tokens, 1, tokens.length));
+                    equipItem(itemName);
                 }
             }
             case "take" -> {
                 if (tokens.length < 2) {
                     System.out.println("Specifica cosa vuoi prendere.");
                 } else {
-                    pickItem(tokens[1]);
+                    //pickItem(tokens[1]);
+                    String itemName = String.join(" ", Arrays.copyOfRange(tokens, 1, tokens.length));
+                    pickItem(itemName);
                 }
             }
             
             case "combine" -> {
-                if (tokens.length < 3) {
-                    System.out.println("Specifica due oggetti da combinare.");
-                } else {
-                    combineItems(tokens[1], tokens[2], tokens[3]);
+                // Esempio comando: combine pozione rossa + erba magica = pozione super
+                String input = line.substring("combine".length()).trim();
+                
+                if (!input.contains("+") || !input.contains("=")) {
+                    System.out.println("Sintassi non valida. Usa: combine oggetto1 + oggetto2 = nuovoOggetto");
+                    break;
+                }
+
+                try {
+                    String[] parts = input.split("=");
+                    String[] items = parts[0].split("\\+");
+
+                    String name1 = items[0].trim();
+                    String name2 = items[1].trim();
+                    String name3 = parts[1].trim();
+
+                    combineItems(name1, name2, name3);
+                } catch (Exception e) {
+                    System.out.println("Errore nel parsing del comando combine. Controlla la sintassi.");
+                    log.log(Level.WARNING, "Errore parsing combine: " + input, e);
                 }
             }
             case "save" -> {

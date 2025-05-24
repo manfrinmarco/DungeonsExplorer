@@ -6,7 +6,7 @@ public abstract class AbstractCommandProcessor {
     public final void processCommand(String input) {
         String sanitized = sanitizeInput(input);
         String[] tokens = parseCommand(sanitized);
-        executeCommand(tokens);
+        executeCommand(tokens, input);
     }
 
     protected String sanitizeInput(String input) {
@@ -17,5 +17,5 @@ public abstract class AbstractCommandProcessor {
         return input.trim().split("\\s+");
     }
 
-    protected abstract void executeCommand(String[] tokens);
+    protected abstract void executeCommand(String[] tokens, String line);
 }

@@ -10,6 +10,7 @@ import manfrinmarco.events.DropListener;
 import manfrinmarco.events.ScoreListener;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemFactory;
+import manfrinmarco.items.ItemType;
 import manfrinmarco.map.CompositeRoom;
 import manfrinmarco.map.Direction;
 import manfrinmarco.map.Room;
@@ -28,6 +29,14 @@ public class DefaultGameInitializer {
 
         // stanze
         Room stanza1 = RoomFactory.createRoom("corridoio");
+
+        //region tmp
+        Item elsa = new Item("elsa", ItemType.WEAPON);
+        Item lama = new Item("lama", ItemType.WEAPON);
+        stanza1.addItem(elsa);
+        stanza1.addItem(lama);
+        //endregion
+
         Room stanza2 = RoomFactory.createRoom("armeria");
         Room stanza3 = RoomFactory.createRoom("bossRoom");
         Room uscita = RoomFactory.createRoom("uscita");

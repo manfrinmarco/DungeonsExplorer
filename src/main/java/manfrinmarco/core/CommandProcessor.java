@@ -133,6 +133,9 @@ public class CommandProcessor extends AbstractCommandProcessor {
                         System.out.println("Nessun salvataggio trovato.");
                     }
                 }).start();
+            } 
+            case "help" -> {
+                showHelp();
             }
             default -> {
                 log.log(Level.WARNING, "Comando sconosciuto: {0}", command);
@@ -388,4 +391,23 @@ public class CommandProcessor extends AbstractCommandProcessor {
         log.log(Level.FINE, "Oggetti combinati: {0} + {1} -> {2}", new Object[]{name1, name2, name3});
         System.out.println("Hai creato un oggetto combinato: " + combinedObj.getName());
     }
+
+    private void showHelp() {
+    System.out.println("""
+    Comandi disponibili:
+    - look: osserva la stanza corrente
+    - status: mostra i tuoi HP
+    - i: mostra l'inventario
+    - explore: esplora le stanze vicine o interne
+    - go <direzione>: muoviti nella direzione indicata (es. 'go north')
+    - attack: attacca il nemico nella stanza
+    - use <nome oggetto>: usa un oggetto nell'inventario
+    - equip <nome oggetto>: equipaggia un'arma o armatura
+    - take <nome oggetto>: raccogli un oggetto dalla stanza
+    - combine <oggetto1> + <oggetto2> = <nuovo nome>: combina due oggetti
+    - save: salva la partita
+    - load: carica l'ultima partita salvata
+    - help: mostra questo messaggio di aiuto
+    """);
+}
 }

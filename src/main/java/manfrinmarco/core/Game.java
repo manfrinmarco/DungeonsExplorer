@@ -22,9 +22,9 @@ public class Game {
 
         try (Scanner scanner = new Scanner(System.in)) {
             // scegli se iniziare nuova partita o caricare
-            System.out.println("Nuova partita (a) o carica partita esistente (b)?");
+            System.out.println("premi un tasto per una nuova partita o premi 'C' per caricare un salvataggio");
             String choice = scanner.nextLine().trim();
-            if ("b".equalsIgnoreCase(choice)) {
+            if ("C".equalsIgnoreCase(choice)) {
                 GameStateMemento m = GameFileManager.loadMemento();
                 if (m != null) {
                     context.copyFrom(m.getSnapshot());
@@ -58,7 +58,7 @@ public class Game {
                     }
                 }
             }
-            
+
             while (true) {
                 System.out.print("\n> ");
                 String input = scanner.nextLine();

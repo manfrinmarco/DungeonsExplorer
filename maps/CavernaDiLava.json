@@ -1,0 +1,46 @@
+{
+  "items": [
+    { "id": "i1", "type": "scudo" },
+    { "id": "i2", "type": "pozione" },
+    { "id": "i3", "type": "chiave" }
+  ],
+  "enemyes": [
+    { "id": "e1", "type": "demone" },
+    { "id": "e2", "type": "draghetto", "drop": "i3" }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "type": "entrata",
+      "exits": { "east": "r2" },
+      "items": [{ "id": "i2" }]
+    },
+    {
+      "id": "r2",
+      "type": "caverna",
+      "exits": { "west": "r1", "east": "r3" },
+      "enemy": { "id": "e1" }
+    },
+    {
+      "id": "r3",
+      "type": "cratere",
+      "exits": { "west": "r2", "east": "r4" },
+      "enemy": { "id": "e2" }
+    },
+    {
+      "id": "r4",
+      "type": "uscita",
+      "keyRequired": { "id": "i3" }
+    }
+  ],
+  "compositeRoom": [
+    {
+      "id": "c1",
+      "name": "Caverna di Lava",
+      "description": "Una grotta bollente, piena di pericoli ardenti.",
+      "subRooms": ["r1", "r2", "r3", "r4"],
+      "mainRoom": "r1"
+    }
+  ],
+  "startPoint": "c1"
+}

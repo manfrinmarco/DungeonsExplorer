@@ -1,0 +1,46 @@
+{
+  "items": [
+    { "id": "i1", "type": "arco" },
+    { "id": "i2", "type": "freccia" },
+    { "id": "i3", "type": "chiave" }
+  ],
+  "enemyes": [
+    { "id": "e1", "type": "lupo" },
+    { "id": "e2", "type": "strega", "drop": "i3" }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "type": "radura",
+      "exits": { "north": "r2" },
+      "items": [{ "id": "i2" }]
+    },
+    {
+      "id": "r2",
+      "type": "sentiero",
+      "exits": { "south": "r1", "north": "r3" },
+      "enemy": { "id": "e1" }
+    },
+    {
+      "id": "r3",
+      "type": "alberoSacro",
+      "exits": { "south": "r2", "north": "r4" },
+      "enemy": { "id": "e2" }
+    },
+    {
+      "id": "r4",
+      "type": "uscita",
+      "keyRequired": { "id": "i3" }
+    }
+  ],
+  "compositeRoom": [
+    {
+      "id": "c1",
+      "name": "Foresta Proibita",
+      "description": "Un luogo oscuro dove nessuno osa avventurarsi.",
+      "subRooms": ["r1", "r2", "r3", "r4"],
+      "mainRoom": "r1"
+    }
+  ],
+  "startPoint": "c1"
+}

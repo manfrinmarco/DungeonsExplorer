@@ -1,0 +1,90 @@
+{
+  "items": [
+    { "id": "torcia", "type": "ITEM" },
+    { "id": "chiave_cucina", "type": "KEY" },
+    { "id": "ascia", "type": "WEAPON", "power": 5 },
+    { "id": "elsa", "type": "WEAPON", "power": 25 },
+    { "id": "lama", "type": "WEAPON", "power": 25 },
+    { "id": "armatura", "type": "ARMOR", "power": 20 },
+    { "id": "pozione1", "type": "POTION" },
+    { "id": "pozione2", "type": "POTION" },
+    { "id": "pozione3", "type": "POTION" }
+  ],
+  "enemyes": [
+    { "id": "demone1", "type": "demone", "drop": "torcia" },
+    { "id": "scheletro1", "type": "scheletro", "drop": "chiave_cucina" },
+    { "id": "demone_boss", "type": "demone" }
+  ],
+  "rooms": [
+    {
+      "id": "nave",
+      "type": "nave",
+      "exits": { "north": "porto" }
+    },
+    {
+      "id": "porto",
+      "type": "porto",
+      "exits": { "south": "nave", "north": "giardino" },
+      "items": [{ "id": "ascia" }]
+    },
+    {
+      "id": "giardino",
+      "type": "giardino",
+      "exits": { "south": "porto", "north": "entrata" },
+      "items": [{ "id": "elsa" }],
+      "enemy": { "id": "demone1" }
+    },
+    {
+      "id": "entrata",
+      "type": "entrata",
+      "exits": { "south": "giardino", "north": "armeria" }
+    },
+    {
+      "id": "guardie",
+      "type": "guardie",
+      "exits": { "south": "entrata", "east": "armeria" },
+      "enemy": { "id": "scheletro1" }
+    },
+    {
+      "id": "armeria",
+      "type": "armeria",
+      "exits": { "south": "guardie", "east": "cucina" },
+      "items": [{ "id": "lama" }, { "id": "armatura" }]
+    },
+    {
+      "id": "cucina",
+      "type": "cucina",
+      "exits": { "west": "armeria", "south": "boss" },
+      "keyRequired": { "id": "chiave_cucina" },
+      "items": [{ "id": "pozione1" }, { "id": "pozione2" }, { "id": "pozione3" }]
+    },
+    {
+      "id": "boss",
+      "type": "bossRoom",
+      "exits": { "north": "cucina", "east": "uscita" },
+      "enemy": { "id": "demone_boss" }
+    },
+    {
+      "id": "uscita",
+      "type": "uscita",
+      "exits": {}
+    }
+  ],
+  "compositeRoom": [
+    {
+      "id": "castello",
+      "name": "Castello sull'Isola",
+      "description": "Un castello antico e misterioso.",
+      "subRooms": ["entrata", "guardie", "armeria", "cucina", "boss", "uscita"],
+      "mainRoom": "entrata"
+    },
+    {
+      "id": "isola",
+      "name": "Isola",
+      "description": "Un luogo remoto e pericoloso.",
+      "subRooms": ["nave", "porto", "giardino", "castello"],
+      "mainRoom": "nave"
+    }
+  ],
+  "startPoint": "isola"
+}

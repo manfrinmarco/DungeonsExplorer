@@ -1,0 +1,46 @@
+{
+  "items": [
+    { "id": "i1", "type": "chiave" },
+    { "id": "i2", "type": "spada" },
+    { "id": "i3", "type": "pozione" }
+  ],
+  "enemyes": [
+    { "id": "e1", "type": "goblin" },
+    { "id": "e2", "type": "mago", "drop": "i1" }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "type": "biblioteca",
+      "exits": { "east": "r2" },
+      "items": [{ "id": "i3" }]
+    },
+    {
+      "id": "r2",
+      "type": "salone",
+      "exits": { "west": "r1", "east": "r3" },
+      "enemy": { "id": "e1" }
+    },
+    {
+      "id": "r3",
+      "type": "torre",
+      "exits": { "west": "r2", "east": "r4" },
+      "enemy": { "id": "e2" }
+    },
+    {
+      "id": "r4",
+      "type": "uscita",
+      "keyRequired": { "id": "i1" }
+    }
+  ],
+  "compositeRoom": [
+    {
+      "id": "c1",
+      "name": "Castello Incantato",
+      "description": "Un antico castello avvolto nella magia.",
+      "subRooms": ["r1", "r2", "r3", "r4"],
+      "mainRoom": "r1"
+    }
+  ],
+  "startPoint": "c1"
+}

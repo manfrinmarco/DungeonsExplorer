@@ -50,7 +50,6 @@ public class CommandProcessor extends AbstractCommandProcessor {
                 }
                 attack();
             }
-            // TODO: gli oggetti possono avere un nome con più parole
             case "use" -> {
                 if (tokens.length < 2) {
                     System.out.println("Specifica l'oggetto da usare.");
@@ -345,15 +344,35 @@ public class CommandProcessor extends AbstractCommandProcessor {
     
     private void combineItems(String name1, String name2, String name3) {
         Inventory inventory = context.getPlayer().getInventory();
+
         Item item1 = inventory.stream()
             .filter(item -> item.getName().equalsIgnoreCase(name1))
             .findFirst().orElse(null);
+
         Item item2 = inventory.stream()
             .filter(item -> item.getName().equalsIgnoreCase(name2))
             .findFirst().orElse(null);
 
         if (item1 == null || item2 == null) {
             System.out.println("Uno o entrambi gli oggetti non sono nell'inventario.");
+            return;
+        }
+
+        if (!item1.isCombinable() || !item2.isCombinable()) {
+            System.out.println("Uno o entrambi gli oggetti non possono essere combinati.");
+            return;
+        }
+
+        if (!item1.getType().equals(item2.getType())) {
+            System.out.println("Gli oggetti devono essere dello stesso tipo per essere combinati.");
+            return;
+        }
+
+        // Verifica che name3 non sia già usato
+        boolean nameExists = inventory.stream()
+            .anyMatch(item -> item.getName().equalsIgnoreCase(name3));
+        if (nameExists) {
+            System.out.println("Esiste già un oggetto con il nome \"" + name3 + "\" nell'inventario.");
             return;
         }
 
@@ -366,7 +385,7 @@ public class CommandProcessor extends AbstractCommandProcessor {
         inventory.removeItem(item2);
         inventory.addItem(combinedObj);
 
-        log.log(Level.FINE, "Oggetti combinati: {0} + {1}", new Object[]{name1, name2});
+        log.log(Level.FINE, "Oggetti combinati: {0} + {1} -> {2}", new Object[]{name1, name2, name3});
         System.out.println("Hai creato un oggetto combinato: " + combinedObj.getName());
     }
 }

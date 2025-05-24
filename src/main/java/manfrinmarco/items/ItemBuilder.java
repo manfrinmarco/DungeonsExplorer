@@ -4,6 +4,7 @@ public class ItemBuilder {
     private String name;
     private ItemType type;
     private int power;
+    private boolean combinable;
 
     public ItemBuilder setName(String name) {
         this.name = name;
@@ -20,7 +21,14 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setCombinable(boolean combinable) {
+        this.combinable = combinable;
+        return this;
+    }
+
     public Item build() {
-        return new Item(name, type, power);
+        Item item = new Item(name, type, power);
+        item.setCombinable(combinable);
+        return item;
     }
 }

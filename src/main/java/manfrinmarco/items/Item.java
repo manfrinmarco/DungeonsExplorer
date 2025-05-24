@@ -7,6 +7,8 @@ public class Item implements Serializable{
     protected String name;
     protected ItemType type;
     protected int power;
+    protected boolean  combinable = false;
+    
 
     public Item(String name, ItemType type) {
         this.name = name;
@@ -34,5 +36,13 @@ public class Item implements Serializable{
 
     public int getPower() {
         return power;
+    }
+
+    public void setCombinable(boolean value){
+        this.combinable = value;
+    }
+
+    public boolean isCombinable(){
+        return this.combinable;
     }
 }

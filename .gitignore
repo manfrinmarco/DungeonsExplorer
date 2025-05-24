@@ -1,1 +1,26 @@
-game.log.*
+# === Cartella dei log e file di salvataggio ===
+logs/
+savegame.dat
+
+# === Output di compilazione ===
+/target/
+bin/
+
+# === File temporanei o generati ===
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# === File di sistema ===
+.DS_Store
+
+# === Configurazioni IDE ===
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.nb-gradle/

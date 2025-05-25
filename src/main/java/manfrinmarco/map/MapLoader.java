@@ -46,7 +46,7 @@ public class MapLoader {
                     Item item;
                     if (itemNode.has("type")) {
                         item = ItemFactory.createItem(itemNode.get("type").asText());
-                        // TODO: add feature
+                        // possible feature to add
                         //if (itemNode.has("name")) item.setName(itemNode.get("name").asText());
                         //if (itemNode.has("health")) item.setPower(itemNode.get("health").asInt());
                         log.log(Level.INFO, "Item creato con factory: {0}", item.getName());
@@ -69,7 +69,7 @@ public class MapLoader {
                     // Create enemy:
                     if (enemyNode.has("type")) {
                         enemy = EnemyFactory.createEnemy(enemyNode.get("type").asText());
-                        // TODO: add feature
+                        // possible feature to add
                         // if (enemyNode.has("name") && !enemyNode.get("name").asText().equalsIgnoreCase(enemy.getName())) {
                         //     enemy.setName(enemyNode.get("name").asText());
                         // }

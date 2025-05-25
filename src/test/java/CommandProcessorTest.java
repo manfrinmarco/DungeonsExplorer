@@ -1,9 +1,12 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import manfrinmarco.core.CommandProcessor;
 import manfrinmarco.core.GameContext;
 import manfrinmarco.entities.Player;
+import manfrinmarco.items.CompositeItem;
 import manfrinmarco.items.Inventory;
 import manfrinmarco.items.Item;
 import manfrinmarco.items.ItemType;
@@ -43,4 +46,20 @@ public class CommandProcessorTest {
 
         assert inventory.contains(item);
     }
+
+    @Test
+    void shouldCombineItemsAndSumPower() {
+        Item sword = new Item("Spada", ItemType.WEAPON, 10);
+        Item shield = new Item("Scudo", ItemType.ARMOR, 5);
+
+        CompositeItem combined = new CompositeItem("SpadaScudo");
+        combined.addItem(sword);
+        combined.addItem(shield);
+        combined.setPower(sword.getPower() + shield.getPower());
+
+        assertEquals(15, combined.getPower(), "Il power combinato deve essere la somma dei due oggetti");
+        assertTrue(combined.toString().contains("SpadaScudo"), "Il nome deve contenere 'SpadaScudo'");
+    }
 }
+
+

@@ -20,4 +20,17 @@ public class EventManagerTest {
 
         verify(listener, times(1)).onEvent(event);
     }
+
+    @Test
+    void shouldNotifySubscribedListeners() {
+        EventManager eventManager = new EventManager();
+        EventListener listener = mock(EventListener.class);
+
+        eventManager.subscribe(listener);
+        GameEvent event = new GameEvent("test", "test message");
+
+        eventManager.notify(event);
+
+        verify(listener, times(1)).onEvent(event);
+    }
 }

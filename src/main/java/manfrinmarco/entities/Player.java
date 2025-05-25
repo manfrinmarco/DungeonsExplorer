@@ -104,6 +104,14 @@ public class Player extends Entity{
         }
     }
 
+    public Item getEquippedArmor(){
+        return this.equippedArmor;
+    }
+
+    public Item getEquippedWeapon(){
+        return this.equippedWeapon;
+    }
+
     public String getStatus() {
         String arma = (equippedWeapon != null) ? equippedWeapon.getName() + " (+" + equippedWeapon.getPower() + ")" : "Nessuna";
         String armatura = (equippedArmor != null) ? equippedArmor.getName() + " (+" + equippedArmor.getPower() + ")" : "Nessuna";

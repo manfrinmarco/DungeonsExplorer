@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Item implements Serializable{
     private static final long serialVersionUID = 1L;
+    
     protected String name;
     protected ItemType type;
     protected int power;

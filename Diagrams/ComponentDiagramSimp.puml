@@ -1,0 +1,36 @@
+@startuml SimpleComponentDiagram
+
+title Dungeon Explorer - Component Diagram (Semplificato)
+
+package "Core" {
+  [Game] --> [GameContext]
+  [Game] --> [CommandProcessor]
+  [GameContext] --> [Player]
+  [GameContext] --> [Room]
+}
+
+package "Entities & Items" {
+  [Room] --> [Enemy]
+  [Room] --> [Item]
+  [Player] --> [Inventory]
+  [Inventory] --> [Item]
+}
+
+package "Factories" {
+  [Game] --> [EnemyFactory]
+  [Game] --> [ItemFactory]
+  [EnemyFactory] --> [Enemy]
+  [ItemFactory] --> [Item]
+}
+
+package "Persistence & Config" {
+  [GameFileManager] --> [GameContext]
+  [GameLogger] --> [GameConfig]
+}
+
+package "Events" {
+  [GameContext] --> [EventManager]
+  [EventManager] --> [GameEvent]
+}
+
+@enduml

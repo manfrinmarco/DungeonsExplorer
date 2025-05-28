@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeItem extends Item {
+    
     private final List<Item> components = new ArrayList<>();
 
     public CompositeItem(String name) {

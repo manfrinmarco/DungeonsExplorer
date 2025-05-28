@@ -1,52 +1,83 @@
 @startuml ComponentDiagram
-' COMPONENT DIAGRAM — Dungeon Explorer
 
-package "Application" {
-  [Main] --> [Game]
-}
+title Dungeon Explorer - Component Diagram 
 
 package "Core" {
   [Game] --> [GameContext]
+  [Game] --> [DefaultGameInitializer]
   [Game] --> [CommandProcessor]
-  [GameContext] --> [EventManager]
-  [Game] --> [GameLogger]
-  [Game] --> [GameFileManager]
-  [Game] --> [GameStateMemento]
-}
-
-package "Entities" {
   [GameContext] --> [Player]
-  [Room] --> [Enemy]
-  [Enemy] --> [EnemyStrategy]
-  [Player] --> [Inventory]
-  [Inventory] --> [Item]
-}
-
-package "Items" {
-  [Item] --> [ItemType]
-  [CompositeItem] --> [Item]
-  [ItemBuilder] --> [Item]
+  [GameContext] --> [Room]
+  [GameContext] --> [EventManager]
+  [CommandProcessor] --> [GameContext]
+  [CommandProcessor] --> [GameFileManager]
+  [CommandProcessor] --> [InputSanitizer]
+  [CommandProcessor] --> [EventManager]
+  [CommandProcessor] --> [GameStateMemento]
 }
 
 package "Map" {
-  [Room] --> [Item]
   [Room] --> [Enemy]
-  [Room] --> [Room] : exits
+  [Room] --> [Item]
   [CompositeRoom] --> [Room]
-  [RoomIterator] --> [Room]
+  [MapLoader] --> [Room]
+  [MapLoader] --> [EnemyFactory]
+  [MapLoader] --> [ItemFactory]
+  [MapLoader] --> [ReflectionLoader]
+}
+
+package "Entities" {
+  [Enemy] --> [EnemyStrategy] <<interface>>
+  [EnemyFactory] --> [EnemyTemplate] <<interface>>
+  [EnemyTemplate] --> [AggressiveStrategy]
+  [EnemyTemplate] --> [DefensiveStrategy]
+  [Player] --> [Inventory]
+}
+
+package "Items" {
+  [ItemFactory] --> [ItemTemplate] <<interface>>
+  [ItemFactory] --> [ReflectionLoader]
+  [CompositeItem] --> [Item]
+  [ItemBuilder] --> [Item]
+  [Inventory] --> [Item]
 }
 
 package "Events" {
+  [EventManager] --> [EventListener] <<interface>>
   [EventManager] --> [GameEvent]
-  [EventManager] --> [EventListener]
-  [ScoreListener] ..> [EventListener]
+  [ScoreListener] ..> [GameEvent]
+  [DropListener] ..> [GameEvent]
 }
 
-package "IO & Config" {
-  [GameFileManager] --> [GameContext]
-  [InputSanitizer] --> [CommandProcessor]
-  [ReflectionLoader] --> [@AutoLoad]
-  [GameConfig] --> [DefaultGameInitializer]
-  [GameLogger] --> [game.log]
+package "IO" {
+  [GameFileManager] --> [GameStateMemento]
+  [GameFileManager] --> [GameException]
+  [ReflectionLoader] --> [@AutoLoad] <<stereotype>>
 }
+
+package "Config & Logging" {
+  [GameLogger] --> [GameConfig]
+  [GameConfig] --> [game.properties]
+}
+
+package "Security" {
+  [GameException]
+}
+
+note right of [ReflectionLoader]
+  Usa reflection per istanziare classi
+  annotate con <<@AutoLoad>>.
+end note
+
+note right of [GameContext]
+  Singleton che conserva lo stato del gioco:
+  player, stanza corrente, punteggio, eventi.
+end note
+
+note right of [CommandProcessor]
+  Gestisce l'input del giocatore,
+  esegue i comandi e coordina
+  interazioni tra componenti.
+end note
+
 @enduml

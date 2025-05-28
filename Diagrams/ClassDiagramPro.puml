@@ -1,0 +1,517 @@
+@startuml ClassDiagram
+
+title Dungeon Explorer - Class Diagram (Pro)
+
+package annotations {
+    annotation AutoLoad {
+    }
+
+    AutoLoad : Retention = RUNTIME
+}
+
+package config{
+  class GameConfig {
+    +get()
+    +getInt()
+    +getBoolean()
+    +getDouble()
+  }
+}
+
+package core {
+  class Game {
+    +start()
+  }
+
+  class GameContext {
+    - player: Player
+    - currentRoom: Room
+    - score: int
+    - eventManager: EventManager
+    -- 
+    + getInstance(): GameContext
+    + setPlayer(player: Player): void
+    + getPlayer(): Player
+    + setCurrentRoom(room: Room): void
+    + getCurrentRoom(): Room
+    + getEventManager(): EventManager
+    + setEventManager(manager: EventManager): void
+    + increaseScore(amount: int): void
+    + getScore(): int
+    + copyFrom(other: GameContext): void
+    + cloneContext(): GameContext
+  }
+
+  class GameStateMemento {
+    - snapshot: GameContext
+    --
+    + GameStateMemento(current: GameContext)
+    + getSnapshot(): GameContext
+  }
+
+  class GameLogger {
+    + configure(): void
+  }
+
+  abstract class AbstractCommandProcessor {
+    + processCommand(input: String): void
+    # sanitizeInput(input: String): String
+    # parseCommand(input: String): String[]
+    # abstract executeCommand(tokens: String[], line: String): void
+  }
+
+  class CommandProcessor {
+    - context: GameContext
+    --
+    + executeCommand(tokens: String[], line: String): void
+    + lookAround(): void
+    + moveTo(dirString: String): void
+    + attack(): void
+    + showStatus(): void
+    + showInventory(): void
+    + useItem(itemName: String): void
+    + equipItem(itemName: String): void
+    + pickItem(itemName: String): void
+    + exploreRooms(): void
+    + combineItems(name1: String, name2: String, name3: String): void
+    + showHelp(): void
+  }
+
+  class DefaultGameInitializer {
+    + initialize(context: GameContext): void
+  }
+}
+
+package entities {
+
+  abstract class Entity {
+    - name: String
+    - health: int
+    --
+    + Entity(name: String, health: int)
+    + getName(): String
+    + getHealth(): int
+    + isAlive(): boolean
+    + attack(enemy: Entity): void
+    + takeDamage(damage: int): void
+  }
+
+  class Player {
+    - inventory: Inventory
+    - equippedWeapon: Item
+    - equippedArmor: Item
+    - baseDamage: int
+    --
+    + Player(name: String)
+    + Player(name: String, health: int)
+    + attack(enemy: Entity): void
+    + takeDamage(damage: int): void
+    + getInventory(): Inventory
+    + setInventory(inventory: Inventory): void
+    + equip(item: Item): void
+    + getEquippedWeapon(): Item
+    + getEquippedArmor(): Item
+    + getStatus(): String
+    + heal(amount: int): void
+    + getBaseDamage(): int
+    + setPower(i: int): void
+  }
+
+  class Enemy {
+    - strategy: EnemyStrategy
+    - drop: Item
+    --
+    + Enemy(name: String, health: int, strategy: EnemyStrategy)
+    + getDrop(): Item
+    + setDrop(drop: Item): void
+    + getStrategy(): EnemyStrategy
+    + executeStrategy(player: Player): void
+  }
+
+  interface EnemyStrategy {
+    + attack(enemy: Enemy, player: Player): void
+  }
+
+  class AggressiveStrategy {
+    + attack(enemy: Enemy, player: Player): void
+  }
+
+  class DefensiveStrategy {
+    + attack(enemy: Enemy, player: Player): void
+  }
+
+  interface EnemyTemplate {
+    + getName(): String
+    + getHealth(): int
+    + getStrategy(): EnemyStrategy
+    + create(): Enemy
+  }
+
+  class EnemyFactory {
+    - initialized: boolean
+    - registry: Map<String, EnemyTemplate>
+    --
+    + createEnemy(type: String): Enemy
+  }
+
+  class Skeleton {
+    + getName(): String
+    + getHealth(): int
+    + getStrategy(): EnemyStrategy
+  }
+}
+
+package items {
+  enum ItemType {
+    + WEAPON
+    + ARMOR
+    + POTION
+    + KEY
+    + MAGIC
+  }
+
+  class Item {
+    - name: String
+    - type: ItemType
+    - power: int
+    - combinable: boolean
+    --
+    + Item(name: String, type: ItemType)
+    + Item(name: String, type: ItemType, power: int)
+    + toString(): String
+    + getName(): String
+    + getType(): ItemType
+    + getPower(): int
+    + setCombinable(combinable: boolean): void
+    + isCombinable(): boolean
+  }
+
+  class CompositeItem {
+    - components: List<Item>
+    --
+    + CompositeItem(name: String)
+    + addItem(item: Item): void
+    + getComponents(): List<Item>
+    + setPower(power: int): void
+  }
+
+  class ItemBuilder {
+    - name: String
+    - type: ItemType
+    - power: int
+    - combinable: boolean
+    --
+    + setName(name: String): ItemBuilder
+    + setType(type: ItemType): ItemBuilder
+    + setPower(power: int): ItemBuilder
+    + setCombinable(combinable: boolean): ItemBuilder
+    + build(): Item
+  }
+
+  interface ItemTemplate {
+    + create(): Item
+    + getName(): String
+  }
+
+  class ItemFactory {
+    - registry: Map<String, ItemTemplate>
+    - initialized: boolean
+    --
+    + createItem(id: String): Item
+  }
+
+  class Sword {
+    + create(): Item
+    + getName(): String
+  }
+
+
+  class Inventory {
+    - items: List<Item>
+    --
+    + addItem(item: Item): void
+    + removeItem(item: Item): void
+    + contains(item: Item): boolean
+    + iterator(): Iterator<Item>
+    + stream(): Stream<Item>
+  }
+}
+
+package map {
+  enum Direction {
+    NORTH
+    SOUTH
+    EAST
+    WEST
+  }
+
+  class Room {
+    - name: String
+    - description: String
+    - exits: Map<Direction, Room>
+    - locked: boolean
+    - keyRequired: Item
+    - enemy: Enemy
+    - items: List<Item>
+    - superRoom: CompositeRoom
+    --
+    + Room(name: String, description: String)
+    + getName(): String
+    + getDescription(): String
+    + getExit(direction: Direction): Room
+    + setExit(direction: Direction, room: Room): void
+    + isLocked(): boolean
+    + setLocked(locked: boolean, keyRequired: Item): void
+    + unlock(key: Item): boolean
+    + getEnemy(): Enemy
+    + setEnemy(enemy: Enemy): void
+    + addItem(item: Item): void
+    + removeItem(item: Item): void
+    + getItems(): List<Item>
+    + setSuperRoom(room: CompositeRoom): void
+    + getSuperRoom(): CompositeRoom
+  }
+
+  interface RoomTemplate {
+    + getType(): String
+    + create(): Room
+  }
+
+  class RoomFactory {
+    - registry: Map<String, RoomTemplate>
+    - initialized: boolean
+    --
+    + createRoom(type: String): Room
+  }
+
+  class Hall {
+    + getType(): String
+    + create(): Room
+  }
+
+  class CompositeRoom {
+    - subRooms: List<Room>
+    - mainRoom: Room
+    --
+    + CompositeRoom(name: String, description: String)
+    + addRoom(Room): void
+    + setMainRoom(Room): void
+    + getMainRoom(): Room
+    + getSubRooms(): List<Room>
+  }
+
+  class RoomIterator {
+    - iterator: Iterator<Room>
+    --
+    + RoomIterator(rooms: List<Room>)
+    + hasNext(): boolean
+    + next(): Room
+  }
+
+  class MapLoader {
+    + load(fileName: String): CompositeRoom
+  }
+}
+
+package io {
+
+  class GameFileManager {
+    - SAVE_FILE: String
+    --
+    + saveMemento(memento: GameStateMemento): void
+    + loadMemento(): GameStateMemento
+  }
+
+  class InputSanitizer {
+    + clean(input: String): String
+  }
+
+  class ReflectionLoader {
+    + instantiateAnnotated(packageName: String): List<Object>
+  }
+}
+
+package events {
+
+  class EventManager {
+    - listeners: List<EventListener>
+    --
+    + subscribe(listener: EventListener): void
+    + notify(event: GameEvent): void
+  }
+
+  interface EventListener {
+    + onEvent(event: GameEvent): void
+  }
+
+  class GameEvent {
+    - type: String
+    - message: String
+    - payload: Object
+    --
+    + GameEvent(type: String, message: String)
+    + GameEvent(type: String, message: String, payload: Object)
+    + getType(): String
+    + getMessage(): String
+    + getPayload(): Object
+  }
+
+  class DropListener {
+    + onEvent(event: GameEvent): void
+  }
+
+  class ScoreListener {
+    + onEvent(event: GameEvent): void
+  }
+}
+
+package security{
+  class GameException {
+    - errorCode: String
+    --
+    + GameException(message: String)
+    + GameException(errorCode: String, message: String)
+    + GameException(message: String, cause: Throwable)
+    + GameException(errorCode: String, message: String, cause: Throwable)
+    + getErrorCode(): String
+    + toString(): String
+  }
+
+}
+
+class Main {
+    + main(args: String[]): void
+  }
+
+Player --|> Entity
+Enemy --|> Entity
+CompositeItem --|> Item
+DefensiveStrategy ..|> EnemyStrategy
+AggressiveStrategy ..|> EnemyStrategy
+Skeleton ..|> EnemyTemplate
+Hall ..|> RoomTemplate
+DropListener ..|> EventListener
+ScoreListener ..|> EventListener
+RoomIterator ..|> Iterator
+GameException --|> RuntimeException
+AbstractCommandProcessor <|-- CommandProcessor
+
+Skeleton ..> AutoLoad : «annotated»
+Hall ..> AutoLoad : «annotated»
+Sword ..> AutoLoad : «annotated»
+ReflectionLoader ..> AutoLoad : «checks annotation»
+
+Enemy --> EnemyStrategy
+Enemy --> Player
+Enemy --> Item
+EnemyTemplate --> Enemy : create()
+EnemyTemplate --> EnemyStrategy
+EnemyFactory --> EnemyTemplate : uses registry
+EnemyFactory --> Enemy : returns
+EnemyFactory --> ReflectionLoader : instantiates
+EnemyFactory --> GameException : throws
+
+Player --> Inventory
+Player --> Item
+Player --> GameConfig
+
+Item --> ItemType
+ItemBuilder --> Item : «builds»
+ItemBuilder --> ItemType
+ItemTemplate --> Item : «creates»
+ItemFactory --> ItemTemplate : uses registry
+ItemFactory --> Item : returns
+ItemFactory --> ReflectionLoader : uses
+ItemFactory --> GameException : throws
+CompositeItem --> Item : «contains»
+Inventory --> Item : «contains»
+Sword ..|> ItemTemplate
+Sword ..> ItemBuilder
+
+Room --> Direction : «uses»
+Room --> Item : uses
+Room --> Enemy
+Room --> CompositeRoom : optional parent
+Room --> Room : «exits»
+RoomTemplate --> Room : «creates»
+RoomFactory --> RoomTemplate : uses registry
+RoomFactory --> Room : creates
+RoomFactory --> ReflectionLoader : uses
+RoomFactory --> GameException : throws
+CompositeRoom --|> Room
+CompositeRoom --> Room : «contains»
+MapLoader --> CompositeRoom
+MapLoader --> Room
+MapLoader --> Item
+MapLoader --> Enemy
+MapLoader --> Direction
+MapLoader --> ItemFactory
+MapLoader --> EnemyFactory
+MapLoader --> GameException : throws
+MapLoader --> ObjectMapper
+MapLoader --> JsonNode
+MapLoader --> ItemType
+MapLoader --> DefensiveStrategy
+
+CommandProcessor --|> AbstractCommandProcessor
+AbstractCommandProcessor --> InputSanitizer : uses
+CommandProcessor --> GameContext
+CommandProcessor --> Logger
+CommandProcessor --> GameStateMemento
+CommandProcessor --> GameFileManager
+CommandProcessor --> EventManager
+CommandProcessor --> ScoreListener
+CommandProcessor --> Player
+CommandProcessor --> Enemy
+CommandProcessor --> Inventory
+CommandProcessor --> Item
+CommandProcessor --> CompositeItem
+CommandProcessor --> Room
+CommandProcessor --> Direction
+CommandProcessor --> CompositeRoom
+CommandProcessor --> RoomIterator
+CommandProcessor --> GameException
+
+GameContext --> Player
+GameContext --> Room
+GameContext --> EventManager
+GameContext --> GameStateMemento : snapshot
+GameStateMemento --> GameContext
+
+DefaultGameInitializer --> GameContext
+DefaultGameInitializer --> Player
+DefaultGameInitializer --> Logger
+DefaultGameInitializer --> Enemy
+DefaultGameInitializer --> EnemyFactory
+DefaultGameInitializer --> ScoreListener
+DefaultGameInitializer --> DropListener
+DefaultGameInitializer --> Item
+DefaultGameInitializer --> ItemFactory
+DefaultGameInitializer --> Room
+DefaultGameInitializer --> CompositeRoom
+DefaultGameInitializer --> RoomFactory
+DefaultGameInitializer --> Direction
+
+EventManager --> EventListener : «notifies»
+EventManager --> GameEvent
+EventListener --> GameEvent : «uses»
+DropListener --> GameEvent
+DropListener --> Enemy
+DropListener --> Item
+DropListener --> Room
+DropListener --> GameContext : «singleton access»
+ScoreListener --> GameEvent
+ScoreListener --> GameContext : «singleton access»
+ScoreListener --> GameConfig : «reads config»
+
+GameFileManager --> GameStateMemento
+GameFileManager --> GameException : throws
+GameLogger --> Logger
+GameLogger --> Handler
+GameLogger --> FileHandler
+GameLogger --> SimpleFormatter
+GameLogger --> GameConfig
+Game --> GameLogger : «configure»
+
+Main --> Game : «creates and starts»
+@enduml

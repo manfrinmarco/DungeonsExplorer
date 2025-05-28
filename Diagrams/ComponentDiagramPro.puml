@@ -1,0 +1,120 @@
+@startuml ComponentDiagram
+
+title Dungeon Explorer - Component Diagram (pro)
+
+package "manfrinmarco" {
+  [Main] --> [Game]
+}
+
+package "core" {
+  [Game]
+  [GameContext]
+  [CommandProcessor]
+  [GameLogger]
+  [GameFileManager]
+  [DefaultGameInitializer]
+  [GameStateMemento]
+}
+
+package "entities" {
+  [Player]
+  [Enemy]
+  [EnemyFactory]
+  [EnemyStrategy] <<interface>>
+}
+
+package "items" {
+  [Item]
+  [ItemFactory]
+  [Inventory]
+  [CompositeItem]
+  [ItemTemplate] <<interface>>
+}
+
+package "map" {
+  [Room]
+  [RoomFactory]
+  [CompositeRoom]
+  [MapLoader]
+  [RoomTemplate] <<interface>>
+}
+
+package "events" {
+  [EventManager]
+  [DropListener]
+  [ScoreListener]
+  [EventListener] <<interface>>
+}
+
+package "io" {
+  [InputSanitizer]
+  [ReflectionLoader]
+}
+
+package "config" {
+  [GameConfig]
+}
+
+package "annotations" {
+  [AutoLoad] <<stereotype>>
+}
+
+package "security" {
+  [GameException] <<exception>>
+}
+
+' Dipendenze principali tra componenti
+[Main] --> [Game]
+
+[Game] --> [GameLogger]
+[Game] --> [GameContext]
+[Game] --> [DefaultGameInitializer]
+
+[GameContext] --> [Player]
+[GameContext] --> [Room]
+[GameContext] --> [EventManager]
+[GameContext] --> [GameStateMemento]
+
+[CommandProcessor] --> [GameContext]
+[CommandProcessor] --> [GameFileManager]
+[CommandProcessor] --> [InputSanitizer]
+[CommandProcessor] --> [Inventory]
+[CommandProcessor] --> [Item]
+[CommandProcessor] --> [CompositeItem]
+[CommandProcessor] --> [Room]
+[CommandProcessor] --> [Enemy]
+[CommandProcessor] --> [Player]
+[CommandProcessor] --> [Direction]
+[CommandProcessor] --> [GameException]
+
+[DefaultGameInitializer] --> [GameContext]
+[DefaultGameInitializer] --> [EnemyFactory]
+[DefaultGameInitializer] --> [ItemFactory]
+[DefaultGameInitializer] --> [RoomFactory]
+[DefaultGameInitializer] --> [ScoreListener]
+[DefaultGameInitializer] --> [DropListener]
+
+[EnemyFactory] --> [EnemyTemplate] 
+[EnemyFactory] --> [ReflectionLoader]
+
+[ItemFactory] --> [ItemTemplate]
+[ItemFactory] --> [ReflectionLoader]
+
+[RoomFactory] --> [RoomTemplate]
+[RoomFactory] --> [ReflectionLoader]
+
+[MapLoader] --> [RoomFactory]
+[MapLoader] --> [ItemFactory]
+[MapLoader] --> [EnemyFactory]
+[MapLoader] --> [GameException]
+
+[GameLogger] --> [GameConfig]
+
+[GameFileManager] --> [GameStateMemento]
+[GameFileManager] --> [GameException]
+
+[DropListener] --> [GameContext]
+[ScoreListener] --> [GameContext]
+[ScoreListener] --> [GameConfig]
+
+@enduml

@@ -12,6 +12,7 @@ import manfrinmarco.security.GameException;
 public class EnemyFactory {
     private static final Logger log = Logger.getLogger(EnemyFactory.class.getName());
     private static final Map<String, EnemyTemplate> registry = new HashMap<>();
+    
     private static boolean initialized = false;
 
     private static void initIfNeeded() {

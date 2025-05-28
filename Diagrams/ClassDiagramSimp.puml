@@ -1,0 +1,55 @@
+@startuml SimpleClassDiagram
+
+title Dungeon Explorer - Class Diagram (Semplificato)
+
+package core {
+  class GameContext {
+    - player: Player
+    - currentRoom: Room
+    + getInstance(): GameContext
+  }
+
+  class Game
+  class CommandProcessor
+}
+
+package entities {
+  abstract class Entity {
+    - name: String
+    - health: int
+  }
+
+  class Player
+  class Enemy
+}
+
+package items {
+  class Item
+  class Inventory
+}
+
+package map {
+  class Room
+}
+
+package events {
+  class EventManager
+}
+
+' -- RELAZIONI --
+
+GameContext --> Player
+GameContext --> Room
+Game --> CommandProcessor
+Game --> GameContext
+CommandProcessor --> GameContext
+
+Player --|> Entity
+Enemy --|> Entity
+Player --> Inventory
+Inventory --> Item
+Room --> Enemy
+Room --> Item
+GameContext --> EventManager
+
+@enduml

@@ -90,6 +90,10 @@ Game --> GameLogger
 Game --> GameFileManager
 Game --> GameStateMemento
 
+CommandProcessor --> GameContext
+
+Player --|> Entity
+Enemy --|> Entity
 Player --> Inventory
 Player --> Item
 Enemy --> EnemyStrategy
@@ -98,10 +102,14 @@ DefensiveStrategy ..|> EnemyStrategy
 
 Inventory --> Item
 CompositeItem --> Item
+ItemBuilder --> Item
+
 Room --> Item
 Room --> Enemy
 Room --> Room : exits
+CompositeRoom --|> Room
 CompositeRoom --> Room
+RoomIterator --> Room
 
 EventManager --> EventListener
 EventManager --> GameEvent

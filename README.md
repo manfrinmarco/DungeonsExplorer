@@ -76,6 +76,12 @@ Dungeon Explorer è un gioco di avventura testuale sviluppato in **Java SE**, do
 - Class Diagram (entità principali e relazioni)
 - Component Diagram (core, mappa, oggetti, eventi, ecc.)
 
+### Class Diagram (semplificato)
+![Class Diagram Semplificato](Diagrams/out/SimpleClassDiagram.png)
+
+### Component Diagram (semplificato)
+![Component Diagram semplificato](Diagrams/out/SimpleComponentDiagram.png)
+
 *(i diagrammi sono presenti nella cartella 'Diagrams' in 3 versioni: diagramma 'Pro? con tutte le relazioni e diagramma 'Base' più leggibile.
 In Più è presente una versione Semplificata per maggiore leggibilità)*
 

@@ -73,16 +73,16 @@ Dungeon Explorer è un gioco di avventura testuale sviluppato in **Java SE**, do
 
 ## 📐 Diagrammi UML e Architettura
 
-- [x] Class Diagram (entità principali e relazioni)
-- [x] Component Diagram (core, mappa, oggetti, eventi, ecc.)
+- Class Diagram (entità principali e relazioni)
+- Component Diagram (core, mappa, oggetti, eventi, ecc.)
 
-*(I diagrammi devono essere inclusi come immagini nel progetto)*
+*(i diagrammi sono presenti nella cartella 'Diagrams' in 3 versioni: diagramma 'Pro? con tutte le relazioni e diagramma 'Base' più leggibile.
+In Più è presente una versione Semplificata per maggiore leggibilità)*
 
 ## 📌 Limitazioni e sviluppi futuri
 
 - Interfaccia solo testuale (CLI)
 - AI nemici semplice, ma estendibile
-- Nessuna serializzazione cross-version
 - Nessun supporto multiplayer o rete
 
 ## 🧪 Testing
